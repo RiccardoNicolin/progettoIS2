@@ -48,7 +48,7 @@ else {
   var foundemail = userlist.find( (value1) => {return (value1.email == req.body.email)});
   var foundusername = userlist.find( (value2) => {return (value2.username == req.body.username)});
   */
-  var foundemail = userlist.find(req.body.email);
+  var foundemail = userlist.find( (value1) => {return (value1.email == req.body.email)});
   var foundusername = userlist.find( (value2) => {return (value2.username == req.body.username)});
   console.log(typeof (foundemail));
   console.log(typeof (foundusername));
