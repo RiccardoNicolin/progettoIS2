@@ -9,8 +9,11 @@ const lista_utenti = {
         dati.lista_utenti.push(utente);
         return;
     },
-    cercaPerMail(mail){
-        return dati.lista_utenti.find(x => x.mail == mail);
+    cercaPerMail(email){
+        return dati.lista_utenti.find(x => x.email == email);
+    },
+    cercaPerNome(nome){
+        return dati.lista_utenti.find(x => x.nome == nome);
     },
     tutti(){
         return dati.lista_utenti;
@@ -36,7 +39,7 @@ const seguite = {
         return;
     },
     ricercaUtente(persona){
-        return dati.seguite.filter( x => x.utente.mail == persona.mail);
+        return dati.seguite.filter( x => x.utente.email == persona.email);
     }
 }
 /*
@@ -57,9 +60,9 @@ utente2 segue firefly e brek
 */
 
 var utente1 = {
-    username: "Prova",
-    password: "prova",
-    mail : "standard@mail.com"
+    username: "Admin",
+    password: "Password",
+    email : "admin@mail.com"
 }
 
 var utente2 = {
