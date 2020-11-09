@@ -22,17 +22,29 @@ function Utente(username, password, email){
   this.email = email;
 }
 
+function cercaPerMail(email){
+  return userlist.find(x => x.email == email);
+}
+
 // User list
 
-var userlist = [{
+/*var userlist = [{
   username: "Admin",
   password: "Password",
   email: "admin@admin.it"  
-}];
+}];*/
+
+var userlist = [];
+userlist.push({
+  username: "Admin",
+  password: "Password",
+  email: "admin@admin.it"  
+});
 
 // User signup
 app.post('/signup', function (req, res) {
-
+console.log(req.body.email);
+console.log(req.body.username);
   /*//check for existing email/username
   var found = userlist.find( (value) => {
     return (value.username == req.body.username | value.email == req.body.email);
@@ -48,8 +60,9 @@ else {
   var foundemail = userlist.find( (value1) => {return (value1.email == req.body.email)});
   var foundusername = userlist.find( (value2) => {return (value2.username == req.body.username)});
   */
-  var foundemail = userlist.find( (value1) => {return (value1.email == req.body.email)});
-  var foundusername = userlist.find( (value2) => {return (value2.username == req.body.username)});
+ 
+  var foundemail = cercaPerMail(req.body.email);
+  var foundusername = userlist.find( (value2) => (value2.username == req.body.username));
   console.log(typeof (foundemail));
   console.log(typeof (foundusername));
   //if it doesn't exist then create new user
@@ -60,13 +73,12 @@ else {
         return res.status(500).send("Error during password hashing");
       }
       else {
-        const user = new Utente({
+        userlist.push({
           username: req.body.username,
           email: req.body.email,
-          password: hashedpassword,
-         });
+          password: hashedpassword  
+        });
          
-         userlist.push(user);
          res.status(201).location("/user/" + req.body.username).send("User creation successful!");
       }
     });
