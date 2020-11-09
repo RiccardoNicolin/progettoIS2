@@ -57,9 +57,9 @@ utente2 segue firefly e brek
 */
 
 var utente1 = {
-    "username": "Prova",
-    "password": "prova",
-    "mail" : "standard@mail.com"
+    username: "Prova",
+    password: "prova",
+    mail : "standard@mail.com"
 }
 
 var utente2 = {
