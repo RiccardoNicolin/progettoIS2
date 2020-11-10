@@ -2,10 +2,10 @@ var express    = require('express');
 var bodyParser = require('body-parser');
 var bcrypt = require('bcrypt');
 var app = express();
+const db = require('../DB.js');
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-
 app.use('/', express.static('public'));
 
 // starting the server
@@ -14,17 +14,6 @@ app.listen(port, function(){
   console.log('Server listening at http://localhost:' + port);  
 });
 
-// Definining a user
-
-function Utente(username, password, email){
-  this.username = username;
-  this.password = password;
-  this.email = email;
-}
-
-function cercaPerMail(email){
-  return userlist.find(x => x.email == email);
-}
 
 // User list
 
@@ -61,8 +50,8 @@ else {
   var foundusername = userlist.find( (value2) => {return (value2.username == req.body.username)});
   */
  
-  var foundemail = cercaPerMail(req.body.email);
-  var foundusername = userlist.find( (value2) => (value2.username == req.body.username));
+  var foundemail = db.lista_utenti.cercaPerMail(req.body.email);
+  var foundusername = db.lista_utenti.cercaPerNome(req.body.username);
   console.log(typeof (foundemail));
   console.log(typeof (foundusername));
   //if it doesn't exist then create new user

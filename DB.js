@@ -6,7 +6,7 @@ const dati = {
 
 const lista_utenti = {
     insert (utente){
-        dati.lista_utenti.push(utente);
+        dati.lista_utenti.push({nome: utente.nome, email: utente.email, password: utente.password});
         return;
     },
     cercaPerMail(email){
@@ -113,5 +113,5 @@ seguite.insert(
 module.exports = {
     lista_serie,
     lista_utenti,
-    guardate
+    seguite
 }
