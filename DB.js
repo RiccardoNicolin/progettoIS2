@@ -113,5 +113,5 @@ seguite.insert(
 module.exports = {
     lista_serie,
     lista_utenti,
-    guardate
+    seguite
 }
