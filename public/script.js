@@ -7,7 +7,7 @@ function registraUtente(){
     if (user.length == 0 || mail.length==0 || pass.length==0){
         document.getElementById("Message").innerHTML = "COMPILARE TUTTI I CAMPI, GRAZIE";
     }else{
-        fetch('../appwithsalting.js', {
+        fetch('./', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify( { username: user, email: mail, password:pass } )
@@ -16,8 +16,7 @@ function registraUtente(){
             document.getElementById("Message").innerHTML = resp;
             return;
         })
-        .catch( error => console.error(error) ); // If there is any error you will catch them here
-    
+        .catch( error => console.error(error) );
     }
     
 };
