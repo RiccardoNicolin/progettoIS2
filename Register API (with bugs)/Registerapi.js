@@ -62,7 +62,7 @@ else {
   */
  
   var foundemail = cercaPerMail(req.body.email);
-  var foundusername = userlist.find( (value2) => (value2.username == req.body.username));
+  var foundusername = cercaPerNome(req.body.username);
   console.log(typeof (foundemail));
   console.log(typeof (foundusername));
   //if it doesn't exist then create new user
