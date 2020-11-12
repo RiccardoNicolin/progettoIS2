@@ -6,7 +6,7 @@ const dati = {
 
 const lista_utenti = {
     insert (utente){
-        dati.lista_utenti.push({nome: utente.useraome, email: utente.email, password: utente.password});
+        dati.lista_utenti.push({nome: utente.username, email: utente.email, password: utente.password});
         return;
     },
     cercaPerMail(email){
