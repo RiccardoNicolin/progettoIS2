@@ -52,13 +52,9 @@ else {
  
   var foundemail = db.lista_utenti.cercaPerMail(req.body.email);
   var foundusername = db.lista_utenti.cercaPerNome(req.body.username);
-<<<<<<< HEAD:Register API (with bugs)/Registerapi.js
-  console.log(typeof (foundemail));
-  console.log(typeof (foundusername));
-=======
  /* console.log(typeof (foundemail));
   console.log(typeof (foundusername));*/
->>>>>>> UI_V1:Register API (with bugs)/appwithsalting.js
+  
   //if it doesn't exist then create new user
   if (typeof (foundemail) == 'undefined' && typeof (foundusername) == 'undefined'){
     //hashing the password, salting it 10fold and checking if hash was successfull
