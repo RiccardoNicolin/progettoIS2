@@ -6,7 +6,7 @@ const dati = {
 
 const lista_utenti = {
     insert (utente){
-        dati.lista_utenti.push({nome: utente.nome, email: utente.email, password: utente.password});
+        dati.lista_utenti.push({nome: utente.useraome, email: utente.email, password: utente.password});
         return;
     },
     cercaPerMail(email){
@@ -68,7 +68,7 @@ var utente1 = {
 var utente2 = {
     username: "Beppe",
     password: "canto",
-    mail : "beppe@mail.com"
+    email : "beppe@mail.com"
 }
 
 var Firefly = {

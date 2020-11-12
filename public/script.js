@@ -1,3 +1,4 @@
+const { features } = require("process");
 
 function registraUtente(){
     var user = document.getElementById("Username").value;
@@ -12,8 +13,8 @@ function registraUtente(){
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify( { username: user, email: mail, password:pass } )
         } )
-        .then((resp) => {
-            document.getElementById("Message").innerHTML = resp;
+        .then((res) => {
+            document.getElementById("Message").innerHTML = res.statusText;
             return;
         })
         .catch( error => console.error(error) );

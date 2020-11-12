@@ -23,12 +23,12 @@ app.listen(port, function(){
   email: "admin@admin.it"  
 }];*/
 
-var userlist = [];
+/*var userlist = [];
 userlist.push({
   username: "Admin",
   password: "Password",
   email: "admin@admin.it"  
-});
+});*/
 
 // User signup
 app.post('/signup', function (req, res) {
@@ -52,8 +52,8 @@ else {
  
   var foundemail = db.lista_utenti.cercaPerMail(req.body.email);
   var foundusername = db.lista_utenti.cercaPerNome(req.body.username);
-  console.log(typeof (foundemail));
-  console.log(typeof (foundusername));
+ /* console.log(typeof (foundemail));
+  console.log(typeof (foundusername));*/
   //if it doesn't exist then create new user
   if (typeof (foundemail) == 'undefined' && typeof (foundusername) == 'undefined'){
     //hashing the password, salting it 10fold and checking if hash was successfull
@@ -62,7 +62,7 @@ else {
         return res.status(500).send("Error during password hashing");
       }
       else {
-        userlist.push({
+      db.lista_utenti.insert({
           username: req.body.username,
           email: req.body.email,
           password: hashedpassword  
@@ -81,5 +81,5 @@ else {
 
 // Getting the list of users
 app.get('/userlist', function (req, res) {
-  res.send(userlist);
+  res.send(db.lista_utenti.tutti());
 });
