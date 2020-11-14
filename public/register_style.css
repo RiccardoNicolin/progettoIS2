@@ -8,15 +8,21 @@ body {
     text-align: right;
     float: left;
     line-height: 2;
+
 }
 
-
+#nomi{
+    width:100px;
+    margin-left: auto;
+    margin-right: 0;
+    text-align: center;
+}
 #pass_form{
     width:49%;
     text-align: left;
     float: left;
     margin-bottom: 20px;
     line-height: 2;
-    padding-left:2%;
+    padding-left:2;
     
 }
