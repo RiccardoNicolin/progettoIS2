@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>REGISTRAZIONE</title>
+        <link rel="stylesheet" href="register_style.css">
     </head>
 
     <body>
@@ -9,15 +10,27 @@
         <span>Per registrarti compila i campi sottostanti:</span>
         <br><br>
         <form action="/Register API (with bugs)/appwithsalting.js" method="POST" name="Register" id="register_form">
-            <span>Nome Utente:</span>
-            <input name="username"  id="Username"/> 
+            
+                
+                
+
             <br>
-            <span>Email:</span>
-            <input name="email"  id="Email"/>
-            <br>
-            <span>Password:</span>
-            <input name="password"  id="Password"/>
-            <br>
+            <div id="Etichette">
+                <span>Nome Utente:</span>
+                <br>
+                <span>Email:</span>
+                <br>
+                <span>Password:</span>
+            </div>
+           
+            <div id="pass_form">
+                <input name="username"  id="Username"/>
+                <br>
+                <input name="email"  id="Email"/>
+                <br>
+                <input name="password"  id="Password"/>
+                <br>
+            </div>
             <button type="button" onclick="registraUtente()">registrati</button>
             <br>
             <span id="Message"></span>
