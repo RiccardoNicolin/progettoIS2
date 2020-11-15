@@ -19,14 +19,22 @@ const lista_utenti = {
         return dati.lista_utenti;
     }
 };
-
+// bisogna fixare il push delle serie also
 const lista_serie = {
     insert(serie){
-        dati.lista_serie.push(serie);
+        dati.lista_serie.push({
+            nome: serie.nome,
+            genere : serie.genere,
+            attori : serie.attori,
+            Stagioni : serie.Stagioni
+        });
         return;
     },
     cercaPerNome(nome){
         return dati.lista_serie.find(x => x.nome = nome);
+    },
+    cercaPerGenere(genere){
+        return dati.lista_serie.find(x => x.genere = genere);
     },
     tutti(){
         return dati.lista_serie;
@@ -73,7 +81,7 @@ var utente2 = {
 
 var Firefly = {
     nome: "Firefly",
-    genere : ["SCI_FI", "Avventura"],
+    genere : ["SCI_FI", "Avventura", "hot"],
     attori : ["Nathan Fillion"],
     Stagioni : 1
 }
