@@ -30,12 +30,23 @@ const lista_serie = {
         });
         return;
     },
+
     cercaPerNome(nome){
         return dati.lista_serie.find(x => x.nome = nome);
     },
-    cercaPerGenere(genere){
-        return dati.lista_serie.find(x => x.genere = genere);
-    },
+
+  /*  cercaPerGenere(genere){
+        return dati.lista_serie.map(x => x.genere);
+
+         .map( (serie) => {
+            return {
+                self: '/series/' + serie.nome,
+                title: serie.nome
+            };
+        });
+    },*/
+    
+
     tutti(){
         return dati.lista_serie;
     }
