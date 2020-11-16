@@ -1,3 +1,5 @@
+var bcrypt = require('bcrypt');
+
 const dati = {
     lista_utenti: [],
     lista_serie: [],
@@ -6,7 +8,8 @@ const dati = {
 
 const lista_utenti = {
     insert (utente){
-        dati.lista_utenti.push({nome: utente.username, email: utente.email, password: utente.password});
+        hashedpassword = bcrypt.hash(utente.password, 10);
+        dati.lista_utenti.push({nome: utente.username, email: utente.email, password:  hashedpassword});
         return;
     },
     cercaPerMail(email){
