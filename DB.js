@@ -26,7 +26,8 @@ const lista_serie = {
             nome: serie.nome,
             genere : serie.genere,
             attori : serie.attori,
-            Stagioni : serie.Stagioni
+            Stagioni : serie.Stagioni,
+            Hot: serie.hot
         });
         return;
     },
@@ -34,6 +35,10 @@ const lista_serie = {
     cercaPerNome(nome){
         return dati.lista_serie.find(x => x.nome = nome);
     },
+
+    cercaSeHot(hot) {
+        return dati.lista_serie.filter(obj => obj.hot == hot);
+      },
 
   /*  cercaPerGenere(genere){
         return dati.lista_serie.map(x => x.genere);
@@ -94,14 +99,16 @@ var Firefly = {
     nome: "Firefly",
     genere : ["SCI_FI", "Avventura", "hot"],
     attori : ["Nathan Fillion"],
-    Stagioni : 1
+    Stagioni : 1,
+    hot: 1
 }
 
 var Brek = {
     nome : "Breaking Bad",
     genere: ["Drammatico", "Thriller"],
     attori: ["Bryan Cranston", "Aaron Paul"],
-    Stagioni: 5
+    Stagioni: 5,
+    hot: 0
 }
 
 lista_utenti.insert(utente1);
