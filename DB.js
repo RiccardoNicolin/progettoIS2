@@ -30,7 +30,8 @@ const lista_serie = {
             genere : serie.genere,
             attori : serie.attori,
             stagioni : serie.stagioni,
-            hot: serie.hot
+            hot: serie.hot,
+            locandina: serie.locandina
         });
         return;
     },
@@ -107,7 +108,8 @@ var Firefly = {
     genere : ["SCI_FI", "Avventura", "hot"],
     attori : ["Nathan Fillion"],
     stagioni : 1,
-    hot: 1
+    hot: 1,
+    locandina: "https://upload.wikimedia.org/wikipedia/it/thumb/a/af/Fireflyopeninglogo.JPG/260px-Fireflyopeninglogo.JPG"
 }
 
 var Brek = {
@@ -115,7 +117,8 @@ var Brek = {
     genere: ["Drammatico", "Thriller"],
     attori: ["Bryan Cranston", "Aaron Paul"],
     stagioni: 5,
-    hot: 0
+    hot: 0,
+    locandina: "https://upload.wikimedia.org/wikipedia/it/b/b8/Breaking_Bad_Pilot_logo.png"
 }
 
 lista_utenti.insert(utente1);

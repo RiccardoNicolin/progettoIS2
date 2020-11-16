@@ -14,13 +14,14 @@ function settaserie(){
     fetch('http://localhost:3000/series/'+titolo)
     .then((res) => res.json())
     .then (json => {
-        //let dati = JSON.parse(json);
-        //console.log(dati);
         document.getElementById("titolo").innerHTML += json.nome;
         document.getElementById("attori").innerHTML += json.attori;
         document.getElementById("genere").innerHTML += json.genere;
-    });
+        document.getElementById("locandina").innerHTML = "<img src="+json.locandina+">";
+        var s = json.stagioni;
+        document.getElementById("stagioni").innerHTML += s.toString();
 
-};
+    });
+}
 
 settaserie();
