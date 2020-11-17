@@ -8,8 +8,7 @@ const dati = {
 
 const lista_utenti = {
     insert (utente){
-        hashedpassword = bcrypt.hash(utente.password, 10);
-        dati.lista_utenti.push({nome: utente.nome, email: utente.email, password: hashedpassword});
+        dati.lista_utenti.push({nome: utente.nome, email: utente.email, password: utente.password});
         return;
     },
     cercaPerMail(email){
@@ -95,13 +94,13 @@ utente2 segue firefly e brek
 
 var utente1 = {
     username: "Admin",
-    password: "Password",
+    password: bcrypt.hash("Password", 10),
     email : "admin@mail.com"
 }
 
 var utente2 = {
     username: "Beppe",
-    password: "canto",
+    password: bcrypt.hash("canto", 10),
     mail : "beppe@mail.com"
 }
 
