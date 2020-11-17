@@ -9,8 +9,7 @@ function getParameterByName(name, url = window.location.href) {
 };
 
 function settaserie(){
-    var titolo = getParameterByName('name');
-    var testo;
+    var titolo = getParameterByName('nome');
     fetch('http://localhost:3000/series/'+titolo)
     .then((res) => res.json())
     .then (json => {
