@@ -1,14 +1,14 @@
-var bcrypt = require('bcrypt');
 const express = require('express');
 const router = express.Router();
 const db = require('../../../DB.js');
+var bcrypt = require('bcrypt');
 
 
 // User signup
 router.post('/', (req, res, next) =>{
 console.log(req.body.email);
 console.log(req.body.username);
-
+console.log(req.body.password);
 // Check if user submitted all fields
 if (typeof (req.body.email) == "undefined" | (req.body.username) == "undefined" | typeof (req.body.password) == "undefined"){
   res.status(500).send("Username, Email and Password are mandatory")
@@ -27,12 +27,8 @@ else {
         return res.status(500).send("Error during password hashing");
       }
       else {
-        db.dati.lista_utenti.push({
-          username: req.body.username,
-          email: req.body.email,
-          password: hashedpass  
-        });
-         
+        let user = {nome: req.body.username, email: req.body.email, password: hashedpass};
+        db.lista_utenti.insert(user);
          res.status(201).location("/user/" + req.body.username).send("User creation successful!");
       }
     });
@@ -43,3 +39,5 @@ else {
    }
 }
 });
+
+module.exports = router;
