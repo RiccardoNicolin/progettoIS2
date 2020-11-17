@@ -11,13 +11,15 @@ router.get('/:nome', (req, res, next) =>{
         nome : serie.nome,
         genere: serie.genere,
         attori: serie.attori,
-        Stagioni: serie.Stagioni
+        stagioni: serie.stagioni,
+        locandina: serie.locandina
     });
 });
 
 router.patch('/:nome', (req, res, next) =>{
     const id = req.params.nome;
     //edit series
+    
 });
 
 module.exports = router;

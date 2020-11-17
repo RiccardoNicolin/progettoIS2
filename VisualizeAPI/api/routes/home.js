@@ -8,7 +8,12 @@ router.get('/', (req, res) =>{
         let serieshot = db.lista_serie.cercaSeHot(1);
         console.log(db.lista_serie.tutti());
         console.log(serieshot);
-        res.status(200).json(serieshot);
+        let seriesnew = db.lista_serie.cercaSeNew(1);
+        console.log(seriesnew);
+        res.status(200).json({
+            "Serie Hot":{serieshot},
+            "Serie Nuove":{seriesnew}
+            });
    
 });
 
