@@ -51,10 +51,19 @@ const lista_serie = {
         });
     },*/
     
+    cercaPerTag(tag)
+    {
+        function cercaTag(item)
+        {
+            return item.hot.includes(tag)
+        }
+
+        return dati.lista_serie.filter(cercaTag)
+    },
 
     tutti(){
         return dati.lista_serie;
-    }
+    },
 };
 
 const seguite = {
