@@ -19,6 +19,7 @@ router.get('/:nome', (req, res, next) =>{
 router.patch('/:nome', (req, res, next) =>{
     const id = req.params.nome;
     //edit series
+    
 });
 
 module.exports = router;
