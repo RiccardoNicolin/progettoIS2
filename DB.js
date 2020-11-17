@@ -8,8 +8,7 @@ const dati = {
 
 const lista_utenti = {
     insert (utente){
-        hashedpassword = bcrypt.hash(utente.password, 10);
-        dati.lista_utenti.push({nome: utente.nome, email: utente.email, password: hashedpassword});
+        dati.lista_utenti.push({nome: utente.nome, email: utente.email, password: utente.password});
         return;
     },
     cercaPerMail(email){
@@ -31,6 +30,7 @@ const lista_serie = {
             attori : serie.attori,
             stagioni : serie.stagioni,
             hot: serie.hot,
+            news: serie.news,
             locandina: serie.locandina
         });
         return;
@@ -40,24 +40,25 @@ const lista_serie = {
         return dati.lista_serie.find(x => x.nome = nome);
     },
 
-    ishot(value){
-        return value == 1;
-    },
-    
     cercaSeHot(hot) {
         return dati.lista_serie.filter(obj => obj.hot == hot);
       },
 
-  /*  cercaPerGenere(genere){
-        return dati.lista_serie.map(x => x.genere);
+    cercaSeNew(news) {
+        return dati.lista_serie.filter(obj => obj.news == news);
+      },
 
-         .map( (serie) => {
-            return {
-                self: '/series/' + serie.nome,
-                title: serie.nome
-            };
+
+    eliminatag(array, tag){
+    var pos= array.indexOf(tag);
+    array.slice(pos,pos+1);
+},
+
+  cercaPerGenere(genere){
+        return dati.lista_serie.filter(series =>{
+            return series.genere == genere;
         });
-    },*/
+},
     
 
     tutti(){
@@ -93,13 +94,13 @@ utente2 segue firefly e brek
 
 var utente1 = {
     username: "Admin",
-    password: "Password",
+    password: bcrypt.hash("Password", 10),
     email : "admin@mail.com"
 }
 
 var utente2 = {
     username: "Beppe",
-    password: "canto",
+    password: bcrypt.hash("canto", 10),
     mail : "beppe@mail.com"
 }
 
@@ -109,6 +110,7 @@ var Firefly = {
     attori : ["Nathan Fillion"],
     stagioni : 1,
     hot: 1,
+    news: 0,
     locandina: "https://upload.wikimedia.org/wikipedia/it/thumb/a/af/Fireflyopeninglogo.JPG/260px-Fireflyopeninglogo.JPG"
 }
 
@@ -118,6 +120,7 @@ var Brek = {
     attori: ["Bryan Cranston", "Aaron Paul"],
     stagioni: 5,
     hot: 0,
+    news: 1,
     locandina: "https://upload.wikimedia.org/wikipedia/it/b/b8/Breaking_Bad_Pilot_logo.png"
 }
 
