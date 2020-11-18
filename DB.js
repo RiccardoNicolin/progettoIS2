@@ -110,13 +110,8 @@ var utente1 = {
 
 var utente2 = {
     username: "Beppe",
-<<<<<<< HEAD
-    password: "canto",
-    email : "beppe@mail.com"
-=======
     password: bcrypt.hash("canto", 10),
     mail : "beppe@mail.com"
->>>>>>> Visualize_V1
 }
 
 var Firefly = {
