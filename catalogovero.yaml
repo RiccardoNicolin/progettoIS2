@@ -1,0 +1,350 @@
+openapi: 3.0.0
+info:
+  version: '1.0'
+  title: "Assignments OpenAPI 3.0"
+  description: API for managing the tv series website
+  license:
+    name: MIT
+servers:
+  - url: http://assignments-api.herokuapp.com.com/api/v1
+    description: Heroku
+  - url: http://localhost:3000/api/v1
+    description: Localhost
+paths:
+  /users:
+    post:
+      description: >-
+        Creates a new user in the system.
+      summary: Create a new user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: 'User created. Link in the Location header'
+          #potremmo metterci l'header alla prossima locazione, ci penso dopo
+    get:
+      description: 'get all the users'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+
+  /users/{email}:
+    get:
+      description: >-
+        Gets information about a specific user, identified by an email
+      summary: Get a user
+      parameters:
+        - name: email
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'email of the requested user'
+      responses:
+        '200':
+          description: 'The user corresponding to the input email'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /shows:
+    post:
+      description: >-
+        Creates a new show in the system.
+      summary: Create a new show
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Show'
+      responses:
+        '201':
+          description: 'show created. Link in the Location header'
+          #potremmo metterci l'header alla prossima locazione, ci penso dopo
+    get:
+      description: 'get all the shows'
+      parameters:
+        - in: query
+          name: year
+          schema:
+            type: string
+          description: 'year of production'
+        - in: query
+          name: score
+          schema:
+            type: integer
+          description: 'score of the show'
+        - in: query
+          name: title
+          schema: 
+            type: string
+          description: 'partial or total name of the show'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Show'
+  /shows/{title}:
+    get:
+      description: 'get a particular show'
+      parameters:
+        - name: title
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'title of the requested show'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref= '#/components/schemas/Show'
+    patch:
+      description: 'get a particular show'
+      parameters:
+        - name: title
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'title of the requested show'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Show'
+      responses:
+        '200':
+          description: 'show updated. Link in the Location header'
+          #potremmo metterci l'header alla prossima locazione, ci penso dopo
+  /shows/{title}/episode:
+    post:
+      description: >-
+        Creates a new episode in the system.
+      summary: Create a new episode
+      parameters:
+      - name: title
+        in: path
+        schema:
+          type: string
+        required: true
+        description: 'title of the requested show'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Episode'
+      responses:
+        '201':
+          description: 'episode created. Link in the Location header'
+          #potremmo metterci l'header alla prossima locazione, ci penso dopo
+    get:
+      description: 'get all the episode of a show'
+      parameters:
+        - name: title
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'title of the requested show'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Episode'
+  /shows/{title}/episode/{name}:
+    get:
+      description: 'get a particular episode'
+      parameters:
+        - name: title
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'title of the requested show'
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'name of the requested episode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref= '#/components/schemas/Episode'
+    patch:
+      description: 'update a particular episode'
+      parameters:
+        - name: title
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'title of the requested show'
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'name of the requested episode'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Episode'
+      responses:
+        '200':
+          description: 'Episode updated. Link in the Location header'
+          #potremmo metterci l'header alla prossima locazione, ci penso dopo
+      
+components:
+  schemas:
+    Followed:
+      type: object
+      required:
+        - show
+        - episode
+      properties:
+        show:
+          type: string
+          description: 'link to the show the user is following'
+        episode:
+          type: string
+          description: 'link to the episode the user is at'  
+    User:
+      type: object
+      required:
+        - username
+        - email
+        - password
+      properties:
+        username:
+          type: string
+          description: 'Username of the user'
+        email:
+          type: string
+          description: 'Email address of the user'
+        password:
+          type: string
+          description: 'Hashed password of the user'
+        favourites:
+          type: array
+          items: 
+            type: string
+          description: 'favourite series of the user'
+        completed:
+          type: array
+          items: 
+            type: string
+          description: 'series completed by the user'
+        watching:
+          type: array
+          items:
+            $ref = '#/components/schemas/Followed'
+          description: 'series the user is following and episodes the user is at'
+    Show:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: 'title of the show'
+        year:
+          type: string
+          minLength: 4
+          description: 'year the show came out'
+        poster:
+          type: string
+          format: byte
+          description: 'poster of the show'
+        tags:
+          type: array
+          items: 
+            type: string
+          description: 'tag della serie'
+        episodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/Episode'
+          description: 'episodi della serie'
+        score:
+          type: integer
+          description: 'score della serie'
+    Actor:
+      type: object
+      required:
+        - name
+        - surname
+        - birth
+      properties:
+        name:
+          type: string
+          description: 'name of the actor'
+        surname:
+          type: string
+          description: 'surname of the actor'
+        birth:
+          type: string
+          format: date
+          description: 'date of birth of the actor'
+        photo:
+          type: string
+          format: byte
+          description: 'photo of the actor'
+    Starring:
+      type: object
+      required:
+      - actor
+      - serie
+      properties:
+        actor:
+          type: string
+          description: 'link to the actor profile'
+        show:
+          type: string
+          description: 'link to the show page'
+    Episode:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: 'name of the episode Stagione+numeroep'
+        summary:
+          type: string
+          description: 'summary of the episode'
+        score:
+          type: integer
+          description: 'score of the episode'
+        prec:
+          type: string
+          description: 'link to the precedent episode if exist'
+        succ:
+          type: string
+          description: 'link to the successive episode if exist'
+    
+    
