@@ -8,8 +8,7 @@ const dati = {
 
 const lista_utenti = {
     insert (utente){
-        hashedpassword = bcrypt.hash(utente.password, 10);
-        dati.lista_utenti.push({nome: utente.username, email: utente.email, password:  hashedpassword});
+        dati.lista_utenti.push({nome: utente.nome, email: utente.email, password: utente.password});
         return;
     },
     cercaPerMail(email){
@@ -93,11 +92,9 @@ copiare schema seguite per guardate
 2 UTENTI:
 utente1 usr:Prova passw:prova mail:standard@gmail.com
 utente2 usr:Beppe passw: canto mail: beppe@gmail.com
-
 2 SERIE
 Firefly nome: Firefly   genere :SCI_FI, Avventura    attori: Nathan Fillion     Stagioni : 1
 Brek  nome : Breaking Bad   genere: Drammatico Thriller     attori: Bryan Cranston, Aaron Paul    Stagioni: 5
-
 utente1 segue firefly
 utente2 segue firefly e brek
 */
