@@ -10,7 +10,7 @@ function getParameterByName(name, url = window.location.href) {
 
 function settaserie(){
     var titolo = getParameterByName('nome');
-    fetch('http://localhost:3000/series/'+titolo)
+    fetch('./series/'+titolo)
     .then((res) => res.json())
     .then (json => {
         document.getElementById("titolo").innerHTML += json.nome;
