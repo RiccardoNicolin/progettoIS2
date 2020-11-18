@@ -14,6 +14,10 @@ router.get('/', (req, res) =>{
    
 });
 
+router.get('/userlist', (req, res) => { 
+    res.send(db.lista_utenti.tutti());
+});
+
 router.post('/', (req, res) =>{
     //post req for home page, esempio postare manualmente hot in frontpage
     if (typeof (req.body.nome) !== "undefined" & (req.body.genere) !== "undefined" & typeof (req.body.attori) !== "undefined" & typeof (req.body.Stagioni) !== "undefined"){
