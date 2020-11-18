@@ -60,7 +60,7 @@ const lista_serie = {
         });
 },
     
-    cercaPerTag(tag)
+    cercaPerTag(tag) //assolutamente da testare
     {
         function cercaTag(item)
         {
