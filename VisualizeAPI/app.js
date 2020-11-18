@@ -4,7 +4,7 @@ const db = require('../DB.js');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/', express.static('pubblic'));
+app.use('/', express.static('public'));
 
 const homeRoutes = require('./api/routes/home');
 const seriesRoutes = require('./api/routes/series');

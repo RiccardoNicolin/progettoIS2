@@ -37,7 +37,7 @@ const lista_serie = {
     },
 
     cercaPerNome(nome){
-        return dati.lista_serie.find(x => x.nome = nome);
+        return dati.lista_serie.find(x => x.nome == nome);
     },
 
     cercaSeHot(hot) {
