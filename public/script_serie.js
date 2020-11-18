@@ -16,7 +16,7 @@ function settaserie(){
         document.getElementById("titolo").innerHTML += json.nome;
         document.getElementById("attori").innerHTML += json.attori;
         document.getElementById("genere").innerHTML += json.genere;
-        document.getElementById("locandina").innerHTML = "<img src="+json.locandina+">";
+        document.getElementById("locandina").innerHTML = '<img src='+json.locandina+' style="width:200px;height:200px;">';
         var s = json.stagioni;
         document.getElementById("stagioni").innerHTML += s.toString();
 
