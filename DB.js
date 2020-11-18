@@ -64,10 +64,10 @@ const lista_serie = {
     {
         function cercaTag(item)
         {
-            return item.hot.includes(tag)
-        }
+            return item.genere.includes(tag);
+        };
 
-        return dati.lista_serie.filter(cercaTag)
+        return dati.lista_serie.filter(cercaTag);
     },
 
     tutti(){
@@ -125,7 +125,7 @@ var Firefly = {
 
 var Brek = {
     nome : "Breaking Bad",
-    genere: ["Drammatico", "Thriller"],
+    genere: ["Drammatico", "Thriller", "new"],
     attori: ["Bryan Cranston", "Aaron Paul"],
     stagioni: 5,
     hot: 0,

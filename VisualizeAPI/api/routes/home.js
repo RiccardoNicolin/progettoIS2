@@ -5,8 +5,8 @@ const db = require('../../../DB.js');
 router.get('/', (req, res) =>{
     //get req for home page
 
-        let serieshot = db.lista_serie.cercaSeHot(1);
-        let seriesnew = db.lista_serie.cercaSeNew(1);
+        let serieshot = db.lista_serie.cercaPerTag("hot");
+        let seriesnew = db.lista_serie.cercaPerTag("new");
         res.status(200).json({
             serieshot,
             seriesnew

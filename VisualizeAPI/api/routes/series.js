@@ -22,9 +22,13 @@ router.get('/:nome', (req, res, next) =>{
     });
 });
 
+router.post('/:nome', (req, res) => {
+    //post comments forse voti
+});
+
 router.patch('/:nome', (req, res, next) =>{
     const id = req.params.nome;
-    //edit series
+    //edit series forse voti
     
     
 });
