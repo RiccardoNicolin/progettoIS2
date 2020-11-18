@@ -22,18 +22,58 @@ const lista_utenti = {
         return dati.lista_utenti;
     }
 };
-
+// bisogna fixare il push delle serie also
 const lista_serie = {
     insert(serie){
-        dati.lista_serie.push(serie);
+        dati.lista_serie.push({
+            nome: serie.nome,
+            genere : serie.genere,
+            attori : serie.attori,
+            stagioni : serie.stagioni,
+            hot: serie.hot,
+            news: serie.news,
+            locandina: serie.locandina
+        });
         return;
     },
+
     cercaPerNome(nome){
-        return dati.lista_serie.find(x => x.nome = nome);
+        return dati.lista_serie.find(x => x.nome == nome);
     },
+
+    cercaSeHot(hot) {
+        return dati.lista_serie.filter(obj => obj.hot == hot);
+      },
+
+    cercaSeNew(news) {
+        return dati.lista_serie.filter(obj => obj.news == news);
+      },
+
+
+    eliminatag(array, tag){
+    var pos= array.indexOf(tag);
+    array.slice(pos,pos+1);
+},
+
+  cercaPerGenere(genere){
+        return dati.lista_serie.filter(series =>{
+            return series.genere == genere;
+        });
+},
+    
+    cercaPerTag(tag) //assolutamente da testare
+    {
+        function cercaTag(item)
+        {
+            return item.genere.includes(tag);
+        };
+
+        return dati.lista_serie.filter(cercaTag);
+    },
+
     tutti(){
         return dati.lista_serie;
-    }
+    },
 };
 
 const seguite = {
@@ -64,28 +104,39 @@ utente2 segue firefly e brek
 
 var utente1 = {
     username: "Admin",
-    password: "Password",
+    password: bcrypt.hash("Password", 10),
     email : "admin@mail.com"
 }
 
 var utente2 = {
     username: "Beppe",
+<<<<<<< HEAD
     password: "canto",
     email : "beppe@mail.com"
+=======
+    password: bcrypt.hash("canto", 10),
+    mail : "beppe@mail.com"
+>>>>>>> Visualize_V1
 }
 
 var Firefly = {
     nome: "Firefly",
-    genere : ["SCI_FI", "Avventura"],
+    genere : ["SCI_FI", "Avventura", "hot"],
     attori : ["Nathan Fillion"],
-    Stagioni : 1
+    stagioni : 1,
+    hot: 1,
+    news: 0,
+    locandina: "https://upload.wikimedia.org/wikipedia/it/thumb/a/af/Fireflyopeninglogo.JPG/260px-Fireflyopeninglogo.JPG"
 }
 
 var Brek = {
     nome : "Breaking Bad",
-    genere: ["Drammatico", "Thriller"],
+    genere: ["Drammatico", "Thriller", "new"],
     attori: ["Bryan Cranston", "Aaron Paul"],
-    Stagioni: 5
+    stagioni: 5,
+    hot: 0,
+    news: 1,
+    locandina: "https://upload.wikimedia.org/wikipedia/it/b/b8/Breaking_Bad_Pilot_logo.png"
 }
 
 lista_utenti.insert(utente1);
