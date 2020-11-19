@@ -27,7 +27,7 @@ const lista_serie = {
 
         serie.totale=0;
         serie.numerovoti=0;
-
+        serie.commenti = [];
         serie.voto= function(){
             return serie.totale/serie.numerovoti;
         }
@@ -40,6 +40,9 @@ const lista_serie = {
             hot: serie.hot,
             news: serie.news,
             locandina: serie.locandina,
+            totale: serie.totale,
+            numerovoti: serie.numerovoti,
+            commenti: serie.commenti
         });
         return;
     },
@@ -60,6 +63,11 @@ const lista_serie = {
     eliminatag(array, tag){
     var pos= array.indexOf(tag);
     array.slice(pos,pos+1);
+},
+
+    postaCommento(id, commentocompleto){
+    let serie = this.cercaPerNome(id);
+    serie.commenti.push(commentocompleto);
 },
 
     modificaCategoria(id, target, modifica){
@@ -147,7 +155,7 @@ var Brek = {
     stagioni: 5,
     hot: 0,
     news: 1,
-    locandina: "https://upload.wikimedia.org/wikipedia/it/b/b8/Breaking_Bad_Pilot_logo.png"
+    locandina: "https://upload.wikimedia.org/wikipedia/it/b/b8/Breaking_Bad_Pilot_logo.png",
 }
 
 lista_utenti.insert(utente1);
