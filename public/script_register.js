@@ -1,5 +1,3 @@
-const { features } = require("process");
-
 function registraUtente(){
     var user = document.getElementById("Username").value;
     console.log(user);

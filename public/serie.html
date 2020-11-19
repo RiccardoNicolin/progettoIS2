@@ -12,6 +12,20 @@
     <p id ="genere">GENERE: </p>
     <p id = "attori">ATTORI: </p>
     <p id= "stagioni">STAGIONI: </p>
+    <br><br>
+    <h3>COMMENTI:</h3>
+    <button type="button" onclick="NewComment()">NEW COMMENT</button>
+    <div id="New_Comment">
+        <span>Author:</span>
+        <input type="text" id="comment_author"/>
+        <br>
+        <span>Comment:</span>
+        <input type="text" id="comment_text"/>
+        <button type="button" onclick="CreateComment()">CONFIRM</button>
+        <span id="Message"></span>
+    </div>
+    <br><br>
+    <div id="comments"></div>
     <script src="script_serie.js"></script>
 </body>
 </html>
