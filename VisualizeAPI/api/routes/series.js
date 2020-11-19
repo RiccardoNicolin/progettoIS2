@@ -40,22 +40,29 @@ router.post('/:nome', (req, res) => {
 router.patch('/:nome', (req, res, next) =>{
     let id = req.params.nome; //la serie
     if(req.params.vote === "undefined"){
-
+        console.log("didn't see vote");
         if(req.params.target === "undefined" | req.params.change === "undefined"){
-            res.status(500).json({message: "Missing Parameters"});
+            res.status(500).json({message: 'Missing Parameters'});
         }
         else {
-            db.lista_serie.modificaCategoria(id, target, change);
-            res.status(204).json({message: "Category successfuly updated"});
+            db.lista_serie.modificaCategoria(id, req.params.target, req.params.change);
+            res.status(204).json({message: 'Category successfuly updated'});
         }
     }
     else{
-        db.lista_serie.modificaVoto(id, vote);
-        res.status(204).json({message: "Vote successfully updated"});
+        console.log("did see vote");
+        db.lista_serie.modificaVoto(id, req.params.vote);
+        console.log("did something in the function");
+        res.status(204).json({message: 'Vote successfully updated'});
     }
     //edit series forse voti
     
     
+});
+
+router.get('/:nome/voto', (req, res) =>{
+    let id = req.params.nome;
+    res.status(200).json(db.lista_serie.mostravoto(id));
 });
 
 module.exports = router;

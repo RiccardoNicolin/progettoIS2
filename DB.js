@@ -28,9 +28,9 @@ const lista_serie = {
         serie.totale=0;
         serie.numerovoti=0;
         serie.commenti = [];
-        serie.voto= function(){
+        displayvoto = function(){
             return serie.totale/serie.numerovoti;
-        }
+        };
 
         dati.lista_serie.push({
             nome: serie.nome,
@@ -42,7 +42,8 @@ const lista_serie = {
             locandina: serie.locandina,
             totale: serie.totale,
             numerovoti: serie.numerovoti,
-            commenti: serie.commenti
+            commenti: serie.commenti,
+            voto: displayvoto
         });
         return;
     },
@@ -100,6 +101,10 @@ const lista_serie = {
     tutti(){
         return dati.lista_serie;
     },
+
+    mostravoto(id){
+        return dati.lista_serie.id.voto;
+    }
 };
 
 const seguite = {
