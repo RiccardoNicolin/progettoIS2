@@ -24,6 +24,14 @@ const lista_utenti = {
 // bisogna fixare il push delle serie also
 const lista_serie = {
     insert(serie){
+
+        serie.totale=0;
+        serie.numerovoti=0;
+
+        serie.voto= function(){
+            return serie.totale/serie.numerovoti;
+        }
+
         dati.lista_serie.push({
             nome: serie.nome,
             genere : serie.genere,
@@ -31,7 +39,7 @@ const lista_serie = {
             stagioni : serie.stagioni,
             hot: serie.hot,
             news: serie.news,
-            locandina: serie.locandina
+            locandina: serie.locandina,
         });
         return;
     },
@@ -42,11 +50,11 @@ const lista_serie = {
 
     cercaSeHot(hot) {
         return dati.lista_serie.filter(obj => obj.hot == hot);
-      },
+    },
 
     cercaSeNew(news) {
         return dati.lista_serie.filter(obj => obj.news == news);
-      },
+    },
 
 
     eliminatag(array, tag){
@@ -61,9 +69,8 @@ const lista_serie = {
 
     modificaVoto(id, vote){
         let serie = this.cercaPerNome(id);
-        serie.voto = serie.voto + vote;
+        serie.totale = serie.totale + vote;
         serie.numerovoti = serie.numerovoti + 1;
-        //qui nel senso di fare un database con lo score totale dei voti, numero dei voti, e una proprietà funzione che fa il primo fratto il secondo e restituisce il voto quando chiamata
     },
 
   cercaPerGenere(genere){
