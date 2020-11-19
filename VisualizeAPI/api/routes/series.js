@@ -24,21 +24,21 @@ router.get('/:nome', (req, res, next) =>{
 
 router.post('/:nome', (req, res) => {
     //post comments forse voti
-    let id = req.params.nome;
-    let poster = req.params.poster;
-    let comment = req.params.comment;
+    let id = req.params.nome; //la serie 
+    let poster = req.params.poster; //chi ha postato il commento
+    let comment = req.params.comment; //il testo del commento
     if(poster === "undefined" | comment === "undefined"){
         res.status(500).json({message: "Missing parameters"});
     }
     else {
         let fullcomment = [{poster: poster, comment: comment}];
-        db.lista_serie.
-        res.status(201).json({message: "Comment Stored"})
+        db.lista_serie.postaCommento(id, fullcomment);
+        res.status(201).json({message: "Comment Stored"});
     }
 });
 
 router.patch('/:nome', (req, res, next) =>{
-    let id = req.params.nome;
+    let id = req.params.nome; //la serie
     if(req.params.vote === "undefined"){
 
         if(req.params.target === "undefined" | req.params.change === "undefined"){
