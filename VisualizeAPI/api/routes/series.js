@@ -25,8 +25,8 @@ router.get('/:nome', (req, res, next) =>{
 router.post('/:nome', (req, res) => {
     //post comments forse voti
     let id = req.params.nome; //la serie 
-    let poster = req.params.poster; //chi ha postato il commento
-    let comment = req.params.comment; //il testo del commento
+    let poster = req.body.poster; //chi ha postato il commento
+    let comment = req.body.comment; //il testo del commento
     if(poster === undefined | comment === undefined){
         res.status(500).json({message: "Missing parameters"});
     }
@@ -37,23 +37,24 @@ router.post('/:nome', (req, res) => {
     }
 });
 
-router.patch('/:nome', (req, res, next) =>{
+router.patch('/:nome', (req, res, next) =>{ //json message ROTTO TODO
     let id = req.params.nome; //la serie
     console.log(id);
-    if(req.params.vote === undefined){
+    if(req.body.vote === undefined){
         console.log("didn't see vote");
-        if(req.params.target === undefined | req.params.change === undefined){
-            res.status(500).json({message: 'Missing Parameters'});
+        if(req.body.target === undefined | req.body.change === undefined){
+            console.log("sono entrato into 500");
+            res.status(500).json({message: 'Missing data parameters'});
         }
         else {
-            db.lista_serie.modificaCategoria(id, req.params.target, req.params.change);
+            db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
             res.status(204).json({message: 'Category successfuly updated'});
         }
     }
     else{
         console.log("did see vote");
-        console.log(req.params.vote);
-        db.lista_serie.modificaVoto(id, req.params.vote);
+        console.log(req.body.vote);
+        db.lista_serie.modificaVoto(id, req.body.vote);
         console.log("did something in the function");
         res.status(200).json({message: 'Vote successfully updated'});
     }

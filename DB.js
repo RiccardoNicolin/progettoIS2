@@ -28,7 +28,7 @@ const lista_serie = {
         serie.totale=0;
         serie.numerovoti=0;
         serie.commenti = [];
-        displayvoto = function(){
+        displayvoto = function(){ //Big fucking punto di domanda da testare TODO
             return serie.totale/serie.numerovoti;
         };
 
