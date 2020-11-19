@@ -42,7 +42,8 @@ const lista_serie = {
             locandina: serie.locandina,
             totale: serie.totale,
             numerovoti: serie.numerovoti,
-            commenti: serie.commenti
+            commenti: serie.commenti,
+            voto: serie.voto
         });
         return;
     },
