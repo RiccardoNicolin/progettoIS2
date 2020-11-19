@@ -54,6 +54,18 @@ const lista_serie = {
     array.slice(pos,pos+1);
 },
 
+    modificaCategoria(id, target, modifica){
+   let serie = this.cercaPerNome(id);
+   serie.target = modifica;
+},
+
+    modificaVoto(id, vote){
+        let serie = this.cercaPerNome(id);
+        serie.voto = serie.voto + vote;
+        serie.numerovoti = serie.numerovoti + 1;
+        //qui nel senso di fare un database con lo score totale dei voti, numero dei voti, e una proprietà funzione che fa il primo fratto il secondo e restituisce il voto quando chiamata
+    },
+
   cercaPerGenere(genere){
         return dati.lista_serie.filter(series =>{
             return series.genere == genere;

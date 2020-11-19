@@ -24,10 +24,35 @@ router.get('/:nome', (req, res, next) =>{
 
 router.post('/:nome', (req, res) => {
     //post comments forse voti
+    let id = req.params.nome;
+    let poster = req.params.poster;
+    let comment = req.params.comment;
+    if(poster === "undefined" | comment === "undefined"){
+        res.status(500).json({message: "Missing parameters"});
+    }
+    else {
+        let fullcomment = [{poster: poster, comment: comment}];
+        db.lista_serie.
+        res.status(201).json({message: "Comment Stored"})
+    }
 });
 
 router.patch('/:nome', (req, res, next) =>{
-    const id = req.params.nome;
+    let id = req.params.nome;
+    if(req.params.vote === "undefined"){
+
+        if(req.params.target === "undefined" | req.params.change === "undefined"){
+            res.status(500).json({message: "Missing Parameters"});
+        }
+        else {
+            db.lista_serie.modificaCategoria(id, target, change);
+            res.status(204).json({message: "Category successfuly updated"});
+        }
+    }
+    else{
+        db.lista_serie.modificaVoto(id, vote);
+        res.status(204).json({message: "Vote successfully updated"});
+    }
     //edit series forse voti
     
     
