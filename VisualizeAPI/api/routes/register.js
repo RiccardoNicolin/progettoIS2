@@ -10,7 +10,7 @@ console.log(req.body.email);
 console.log(req.body.username);
 console.log(req.body.password);
 // Check if user submitted all fields
-if (typeof (req.body.email) == "undefined" | (req.body.username) == "undefined" | typeof (req.body.password) == "undefined"){
+if (typeof (req.body.email) == undefined | (req.body.username) == undefined | typeof (req.body.password) == undefined){
   res.status(500).send("Username, Email and Password are mandatory")
 }
 else {

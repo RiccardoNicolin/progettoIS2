@@ -27,7 +27,7 @@ router.post('/:nome', (req, res) => {
     let id = req.params.nome; //la serie 
     let poster = req.params.poster; //chi ha postato il commento
     let comment = req.params.comment; //il testo del commento
-    if(poster === "undefined" | comment === "undefined"){
+    if(poster === undefined | comment === undefined){
         res.status(500).json({message: "Missing parameters"});
     }
     else {
@@ -39,9 +39,10 @@ router.post('/:nome', (req, res) => {
 
 router.patch('/:nome', (req, res, next) =>{
     let id = req.params.nome; //la serie
-    if(req.params.vote === "undefined"){
+    console.log(id);
+    if(req.params.vote === undefined){
         console.log("didn't see vote");
-        if(req.params.target === "undefined" | req.params.change === "undefined"){
+        if(req.params.target === undefined | req.params.change === undefined){
             res.status(500).json({message: 'Missing Parameters'});
         }
         else {
@@ -51,9 +52,10 @@ router.patch('/:nome', (req, res, next) =>{
     }
     else{
         console.log("did see vote");
+        console.log(req.params.vote);
         db.lista_serie.modificaVoto(id, req.params.vote);
         console.log("did something in the function");
-        res.status(204).json({message: 'Vote successfully updated'});
+        res.status(200).json({message: 'Vote successfully updated'});
     }
     //edit series forse voti
     

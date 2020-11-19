@@ -78,8 +78,13 @@ const lista_serie = {
 
     modificaVoto(id, vote){
         let serie = this.cercaPerNome(id);
-        serie.totale = serie.totale + vote;
+        console.log(serie);
+        storage = serie.totale;
+        storage = storage + vote;
+        serie.totale = storage;
+        console.log(serie.totale);
         serie.numerovoti = serie.numerovoti + 1;
+        console.log(serie.numerovoti);
     },
 
   cercaPerGenere(genere){
