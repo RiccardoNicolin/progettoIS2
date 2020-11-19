@@ -43,7 +43,7 @@ const lista_serie = {
             totale: serie.totale,
             numerovoti: serie.numerovoti,
             commenti: serie.commenti,
-            voto: displayvoto
+            voto: serie.voto
         });
         return;
     },
