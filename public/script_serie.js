@@ -11,7 +11,7 @@ function DispalyComment(comments){
     document.getElementById("comments").innerHTML = "";
     comments.map(element => document.getElementById("comments").innerHTML += '<span>Autore:'+element.poster+'</span><br><span>'+element.comment+'</span><hr>');
 }
-function settaserie(all){
+function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
     var title = getParameterByName('name');
     fetch('./series/'+title)
     .then((res) => res.json())
@@ -25,6 +25,7 @@ function settaserie(all){
             document.getElementById("stagioni").innerHTML += s.toString();
             document.getElementById("New_Comment").style.display = "none";
         }
+        document.getElementById("vote_total").innerHTML ="Score: "+ json.serie.voto;
         DispalyComment(json.serie.commenti);
     });
 }
@@ -55,4 +56,13 @@ function CreateComment(){
     }
 }
 
+function AddVote(points){
+    const title = getParameterByName('name');
+    fetch('../series/'+title, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify( {nome:title, vote: points} )
+    })
+    .then(res => settaserie(0));
+}
 settaserie(1);

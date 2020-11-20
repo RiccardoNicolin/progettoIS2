@@ -8,10 +8,20 @@
     <h1 id= "titolo"></h1>
     <br>
     <br>
-    <div id = "locandina"></div>
-    <p id ="genere">GENERE: </p>
-    <p id = "attori">ATTORI: </p>
-    <p id= "stagioni">STAGIONI: </p>
+    <div id = "locandina" style="float: left;"></div>
+    <div id="info">
+        <p id ="genere">GENERE: </p>
+        <p id = "attori">ATTORI: </p>
+        <p id= "stagioni">STAGIONI: </p>
+        <p id = "vote_total">Score:</p>
+        <br>
+        <span>Cast a vote:   </span>
+        <button type="button" onclick="AddVote(1)">1</button>
+        <button type="button" onclick="AddVote(2)">2</button>
+        <button type="button" onclick="AddVote(3)">3</button>
+        <button type="button" onclick="AddVote(4)">4</button>
+        <button type="button" onclick="AddVote(5)">5</button>
+    </div>
     <br><br>
     <h3>COMMENTI:</h3>
     <button type="button" id="open_form" onclick="NewComment()">NEW COMMENT</button>
