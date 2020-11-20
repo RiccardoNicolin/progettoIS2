@@ -54,12 +54,3 @@ function CreateComment(){
 }
 
 settaserie(1);
-
-
-/*da far cambiare a LEO :
-    series.js riga 22 add  commenti: serie.commenti (la risposta deve contenere anche i commenti, altrimnti io non posso leggerli)
-    series.js riga 35 TOGLIERE LE [ ], altrimenti mi incasino con i riferimenti --> così com'è ai crea un arrey contentente degli array contenente le info sul commento
-    col cambio un array contente ad ogni entry le info su un commento
-    aggiungere il comento 
-
-*/
