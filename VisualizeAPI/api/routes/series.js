@@ -12,14 +12,7 @@ router.get('/:nome', (req, res, next) =>{
     //get series
     let serie = db.lista_serie.cercaPerNome(id);
     console.log(serie);
-    res.status(200).json({
-        self: '/series/' + serie.nome,
-        nome : serie.nome,
-        genere: serie.genere,
-        attori: serie.attori,
-        stagioni: serie.stagioni,
-        locandina: serie.locandina
-    });
+    res.status(200).json({serie});
 });
 
 router.post('/:nome', (req, res) => {
@@ -31,7 +24,7 @@ router.post('/:nome', (req, res) => {
         res.status(500).json({message: "Missing parameters"});
     }
     else {
-        let fullcomment = [{poster: poster, comment: comment}];
+        let fullcomment = {poster: poster, comment: comment};
         db.lista_serie.postaCommento(id, fullcomment);
         res.status(201).json({message: "Comment Stored"});
     }
