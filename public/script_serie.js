@@ -17,20 +17,21 @@ function settaserie(all){
     .then((res) => res.json())
     .then (json => {
         if (all === 1){
-            document.getElementById("titolo").innerHTML += json.nome;
-            document.getElementById("attori").innerHTML += json.attori;
-            document.getElementById("genere").innerHTML += json.genere;
-            document.getElementById("locandina").innerHTML = '<img src='+json.locandina+' style="width:200px;height:200px;">';
-            var s = json.stagioni;
+            document.getElementById("titolo").innerHTML += json.serie.nome;
+            document.getElementById("attori").innerHTML += json.serie.attori;
+            document.getElementById("genere").innerHTML += json.serie.genere;
+            document.getElementById("locandina").innerHTML = '<img src='+json.serie.locandina+' style="width:200px;height:200px;">';
+            var s = json.serie.stagioni;
             document.getElementById("stagioni").innerHTML += s.toString();
             document.getElementById("New_Comment").style.display = "none";
         }
-        DispalyComment(json.commenti);
+        DispalyComment(json.serie.commenti);
     });
 }
 
 function NewComment(){
     document.getElementById("New_Comment").style.display = "block";
+    document.getElementById("open_form").style.display = "none";
 }
 
 function CreateComment(){
@@ -48,6 +49,7 @@ function CreateComment(){
         })
         .then(res => {
             document.getElementById("New_Comment").style.display = "none";
+            document.getElementById("open_form").style.display = "block";
            settaserie(0);
         });
     }
