@@ -28,10 +28,7 @@ const lista_serie = {
         serie.totale=0;
         serie.numerovoti=0;
         serie.commenti = [];
-        displayvoto = function(){ //Big fucking punto di domanda da testare TODO
-            return serie.totale/serie.numerovoti;
-        };
-
+        serie.voto = 0;
         dati.lista_serie.push({
             nome: serie.nome,
             genere : serie.genere,
@@ -43,7 +40,7 @@ const lista_serie = {
             totale: serie.totale,
             numerovoti: serie.numerovoti,
             commenti: serie.commenti,
-            voto: displayvoto
+            voto:serie.voto
         });
         return;
     },
@@ -85,6 +82,7 @@ const lista_serie = {
         console.log(serie.totale);
         serie.numerovoti = serie.numerovoti + 1;
         console.log(serie.numerovoti);
+        serie.voto = (serie.totale / serie.numerovoti).toFixed(2);
     },
 
   cercaPerGenere(genere){

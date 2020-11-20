@@ -9,7 +9,7 @@ function getParameterByName(name, url = window.location.href) {
 
 function DispalyComment(comments){
     document.getElementById("comments").innerHTML = "";
-    comments.map(element => document.getElementById("comments").innerHTML += '<span>Autore:'+element.poster+'</span><br><span>'+element.comment+'</span><hr>');
+    comments.map(element => document.getElementById("comments").innerHTML += '<span>Autore:'+element.poster+'</span><hr class="aut-comm"><span>'+element.comment+'</span><hr class="next">');
 }
 function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
     var title = getParameterByName('name');
@@ -17,10 +17,11 @@ function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, 
     .then((res) => res.json())
     .then (json => {
         if (all === 1){
+            document.getElementsByTagName("title").innerHTML = title;
             document.getElementById("titolo").innerHTML += json.serie.nome;
             document.getElementById("attori").innerHTML += json.serie.attori;
             document.getElementById("genere").innerHTML += json.serie.genere;
-            document.getElementById("locandina").innerHTML = '<img src='+json.serie.locandina+' style="width:200px;height:200px;">';
+            document.getElementById("locandina").innerHTML = '<img src='+json.serie.locandina+' id="poster">';
             var s = json.serie.stagioni;
             document.getElementById("stagioni").innerHTML += s.toString();
             document.getElementById("New_Comment").style.display = "none";

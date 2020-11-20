@@ -2,40 +2,51 @@
 <html>
 
 <head>
-   
+    <link rel="stylesheet" href="serie_style.css">
+    <title>Titolo</title>
 </head>
 <body>
     <h1 id= "titolo"></h1>
     <br>
     <br>
-    <div id = "locandina" style="float: left;"></div>
-    <div id="info">
-        <p id ="genere">GENERE: </p>
-        <p id = "attori">ATTORI: </p>
-        <p id= "stagioni">STAGIONI: </p>
-        <p id = "vote_total">Score:</p>
-        <br>
-        <span>Cast a vote:   </span>
-        <button type="button" onclick="AddVote(1)">1</button>
-        <button type="button" onclick="AddVote(2)">2</button>
-        <button type="button" onclick="AddVote(3)">3</button>
-        <button type="button" onclick="AddVote(4)">4</button>
-        <button type="button" onclick="AddVote(5)">5</button>
-    </div>
-    <br><br>
-    <h3>COMMENTI:</h3>
-    <button type="button" id="open_form" onclick="NewComment()">NEW COMMENT</button>
-    <div id="New_Comment">
-        <span>Author:</span>
-        <input type="text" id="comment_author"/>
-        <br>
-        <span>Comment:</span>
-        <input type="text" id="comment_text"/>
-        <button type="button" onclick="CreateComment()">CONFIRM</button>
-        <span id="Message"></span>
-    </div>
-    <br><br>
-    <div id="comments"></div>
+        <div id="info_sec">
+            <div id = "locandina"></div>
+            <div id="info">
+                <p id ="genere">GENERE: </p>
+                <p id = "attori">ATTORI: </p>
+                <p id= "stagioni">STAGIONI: </p>
+                <p id = "vote_total">Score:</p>
+                <br>
+                <span>Cast a vote:   </span>
+                <button type="button" onclick="AddVote(1)">1</button>
+                <button type="button" onclick="AddVote(2)">2</button>
+                <button type="button" onclick="AddVote(3)">3</button>
+                <button type="button" onclick="AddVote(4)">4</button>
+                <button type="button" onclick="AddVote(5)">5</button>
+            </div>
+        </div>
+        <br><br>
+        <h3>COMMENTI:</h3>
+        <button type="button" id="open_form" onclick="NewComment()">NEW COMMENT</button>
+        <div id="New_Comment">
+            <div id="tag">
+                <p>Author:</p>
+                <p>Comment:</p>
+            </div> 
+            <div id="input">
+                <br>
+                <input type="text" id="comment_author"/>
+                <br>
+                <br>
+                <input type="text" id="comment_text"/>
+                <br>
+            </div>
+            <br>
+            <button type="button" onclick="CreateComment()">CONFIRM</button>
+            <span id="Message"></span>
+        </div>
+        <br><br>
+        <div id="comments"></div>
     <script src="script_serie.js"></script>
 </body>
 </html>

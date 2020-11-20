@@ -5,10 +5,8 @@ body {
 
 #Etichette{
     width:49%;
-    text-align: right;
-    float: left;
+    text-align: center;
     line-height: 2;
-
 }
 
 #nomi{
