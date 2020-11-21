@@ -34,8 +34,6 @@ const lista_serie = {
             genere : serie.genere,
             attori : serie.attori,
             stagioni : serie.stagioni,
-            hot: serie.hot,
-            news: serie.news,
             locandina: serie.locandina,
             totale: serie.totale,
             numerovoti: serie.numerovoti,
@@ -48,15 +46,6 @@ const lista_serie = {
     cercaPerNome(nome){
         return dati.lista_serie.find(x => x.nome == nome);
     },
-
-    cercaSeHot(hot) {
-        return dati.lista_serie.filter(obj => obj.hot == hot);
-    },
-
-    cercaSeNew(news) {
-        return dati.lista_serie.filter(obj => obj.news == news);
-    },
-
 
     eliminatag(array, tag){
     var pos= array.indexOf(tag);
