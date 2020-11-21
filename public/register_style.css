@@ -5,6 +5,7 @@ body {
 
 #Etichette{
     width:49%;
+    float: left;
     text-align: center;
     line-height: 2;
 }
@@ -15,6 +16,7 @@ body {
     margin-right: 0;
     text-align: center;
 }
+
 #pass_form{
     width:49%;
     text-align: left;
