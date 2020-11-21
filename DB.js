@@ -70,14 +70,16 @@ const lista_serie = {
 
     modificaCategoria(id, target, modifica){
    let serie = this.cercaPerNome(id);
-   serie.target = modifica;
+   console.log(serie);
+   serie[target] = modifica;
+   console.log(serie);
 },
 
     modificaVoto(id, vote){
         let serie = this.cercaPerNome(id);
         console.log(serie);
         storage = serie.totale;
-        storage = storage + vote;
+        storage = +storage + +vote;
         serie.totale = storage;
         console.log(serie.totale);
         serie.numerovoti = serie.numerovoti + 1;

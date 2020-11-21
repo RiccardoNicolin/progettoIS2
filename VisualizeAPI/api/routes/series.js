@@ -40,22 +40,27 @@ router.patch('/:nome', (req, res, next) =>{ //json message ROTTO TODO
             res.status(500).json({message: 'Missing data parameters'});
         }
         else {
+            //modifica categoria, funziona testato per mandare attori o generi bisogna mandare più chiamate change con change[0],change[1]... change[x]
+            console.log("sono entrato in modifica");
             db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
-            res.status(204).json({message: 'Category successfuly updated'});
+            console.log("sono uscito dalla modifica");
+            res.status(200).json({message: 'Category successfuly updated'});
         }
     }
     else{
+        //modifica voto, testato funziona
         console.log("did see vote");
         console.log(req.body.vote);
         db.lista_serie.modificaVoto(id, req.body.vote);
         console.log("did something in the function");
         res.status(200).json({message: 'Vote successfully updated'});
     }
-    //edit series forse voti
+    
     
     
 });
 
+//not utilized testing
 router.get('/:nome/voto', (req, res) =>{
     let id = req.params.nome;
     res.status(200).json(db.lista_serie.mostravoto(id));
