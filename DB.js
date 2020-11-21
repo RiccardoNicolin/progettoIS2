@@ -8,14 +8,14 @@ const dati = {
 
 const lista_utenti = {
     insert (utente){
-        dati.lista_utenti.push({nome: utente.nome, email: utente.email, password: utente.password});
+        dati.lista_utenti.push({nome: utente.username, email: utente.email, password: utente.password});
         return;
     },
     cercaPerMail(email){
         return dati.lista_utenti.find(x => x.email == email);
     },
     cercaPerNome(nome){
-        return dati.lista_utenti.find(x => x.nome == nome);
+        return dati.lista_utenti.find(x => x.username == nome);
     },
     tutti(){
         return dati.lista_utenti;
@@ -138,14 +138,14 @@ utente2 segue firefly e brek
 
 var utente1 = {
     username: "Admin",
-    password: bcrypt.hash("Password", 10),
+    password: "QQQ",
     email : "admin@mail.com"
 }
 
 var utente2 = {
     username: "Beppe",
     password: bcrypt.hash("canto", 10),
-    mail : "beppe@mail.com"
+    email : "beppe@mail.com"
 }
 
 var Firefly = {

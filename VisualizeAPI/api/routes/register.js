@@ -27,7 +27,7 @@ else {
         return res.status(500).send("Error during password hashing");
       }
       else {
-        let user = {nome: req.body.username, email: req.body.email, password: hashedpass};
+        let user = {username: req.body.username, email: req.body.email, password: hashedpass};
         db.lista_utenti.insert(user);
          res.status(201).location("/user/" + req.body.username).send("User creation successful!");
       }
