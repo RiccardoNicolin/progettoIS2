@@ -2,14 +2,30 @@
   "devDependencies": {
     "jest": "^26.6.3"
   },
-
   "scripts": {
     "start": "node api.js",
     "test": "jest"
   },
-  
   "jest": {
     "verbose": true,
     "collectCoverage": true
+  },
+  "name": "progettois2",
+  "description": "",
+  "version": "1.0.0",
+  "main": "DB.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RiccardoNicolin/progettoIS2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RiccardoNicolin/progettoIS2/issues"
+  },
+  "homepage": "https://github.com/RiccardoNicolin/progettoIS2#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "express": "^4.17.1"
   }
 }

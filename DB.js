@@ -61,19 +61,19 @@ const lista_serie = {
     eliminatag(array, tag){
     var pos= array.indexOf(tag);
     array.slice(pos,pos+1);
-},
+    },
 
     postaCommento(id, commentocompleto){
     let serie = this.cercaPerNome(id);
     serie.commenti.push(commentocompleto);
-},
+    },
 
     modificaCategoria(id, target, modifica){
    let serie = this.cercaPerNome(id);
    console.log(serie);
    serie[target] = modifica;
    console.log(serie);
-},
+    },
 
     modificaVoto(id, vote){
         let serie = this.cercaPerNome(id);
@@ -87,11 +87,11 @@ const lista_serie = {
         serie.voto = (serie.totale / serie.numerovoti).toFixed(2);
     },
 
-  cercaPerGenere(genere){
+    cercaPerGenere(genere){
         return dati.lista_serie.filter(series =>{
             return series.genere == genere;
         });
-},
+    },
     
     cercaPerTag(tag) //assolutamente da testare
     {
