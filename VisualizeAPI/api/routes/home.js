@@ -18,18 +18,7 @@ router.get('/userlist', (req, res) => {
     res.send(db.lista_utenti.tutti());
 });
 
-router.post('/', (req, res) =>{
-    //post req for home page, esempio postare manualmente hot in frontpage
-    if (typeof (req.body.nome) !== undefined & (req.body.genere) !== undefined & typeof (req.body.attori) !== undefined & typeof (req.body.Stagioni) !== undefined){
-        //DEVO TESTARE CHE TUTTI I CAMPI SIANO INSERITI (ECCETTO VOTO E COMMENTI)
-        db.lista_serie.insert(req.body);
-        res.status(201).json({message: 'Series added'});
-    }
-    else{
-        res.status(500).json({error: "Not all fields present"})
-    }
-    
-});
+
 
 
 module.exports = router;

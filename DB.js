@@ -34,8 +34,6 @@ const lista_serie = {
             genere : serie.genere,
             attori : serie.attori,
             stagioni : serie.stagioni,
-            hot: serie.hot,
-            news: serie.news,
             locandina: serie.locandina,
             totale: serie.totale,
             numerovoti: serie.numerovoti,
@@ -49,13 +47,6 @@ const lista_serie = {
         return dati.lista_serie.find(x => x.nome == nome);
     },
 
-    cercaSeHot(hot) {
-        return dati.lista_serie.filter(obj => obj.hot == hot);
-    },
-
-    cercaSeNew(news) {
-        return dati.lista_serie.filter(obj => obj.news == news);
-    },
 
 
     eliminatag(array, tag){
@@ -153,8 +144,6 @@ var Firefly = {
     genere : ["SCI_FI", "Avventura", "hot"],
     attori : ["Nathan Fillion"],
     stagioni : 1,
-    hot: 1,
-    news: 0,
     locandina: "https://upload.wikimedia.org/wikipedia/it/thumb/a/af/Fireflyopeninglogo.JPG/260px-Fireflyopeninglogo.JPG"
 }
 
@@ -163,8 +152,6 @@ var Brek = {
     genere: ["Drammatico", "Thriller", "new"],
     attori: ["Bryan Cranston", "Aaron Paul"],
     stagioni: 5,
-    hot: 0,
-    news: 1,
     locandina: "https://upload.wikimedia.org/wikipedia/it/b/b8/Breaking_Bad_Pilot_logo.png",
 }
 
