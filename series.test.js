@@ -41,7 +41,15 @@ describe("test sui contenuti series/nome", () => {
             .get(server+"/Firefly")
             .set('Accept', 'application/json');
         expect(response.type).toBe("application/json");
-        expect({
+
+        let testBody={
+            nome: response.body.serie.nome,
+            genere: response.body.serie.genere,
+            attori: response.body.serie.attori,
+            stagioni: response.body.serie.stagioni,
+            locandina: response.body.serie.locandina
+        }
+        expect(testBody).toStrictEqual({
             nome: "Firefly",
             genere : ["SCI_FI", "Avventura", "hot"],
             attori : ["Nathan Fillion"],
