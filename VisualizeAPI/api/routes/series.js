@@ -4,7 +4,7 @@ const db = require('../../../DB.js');
 
 router.get('/' , (req, res, next) =>{
     // ritorna tutte le serie
-    res.send(db.lista_serie.tutti());
+    res.status(200).json(db.lista_serie.tutti());
 });
 
 router.post('/', (req, res) =>{
@@ -56,19 +56,13 @@ router.patch('/:nome', (req, res, next) =>{
         }
     }
     else{
-        //modifica voto, testato funziona
+        //modifica voto
         db.lista_serie.modificaVoto(id, req.body.vote);
         res.status(200).json({message: 'Vote successfully updated'});
     }
     
     
     
-});
-
-//not utilized testing
-router.get('/:nome/voto', (req, res) =>{
-    let id = req.params.nome;
-    res.status(200).json(db.lista_serie.mostravoto(id));
 });
 
 module.exports = router;

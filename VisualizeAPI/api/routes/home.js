@@ -16,7 +16,7 @@ router.get('/', (req, res) =>{
 
 router.get('/userlist', (req, res) => { 
     //userlist shown
-    res.send(db.lista_utenti.tutti());
+    res.status(200).json(db.lista_utenti.tutti());
 });
 
 
