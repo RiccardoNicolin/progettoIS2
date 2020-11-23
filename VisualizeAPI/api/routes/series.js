@@ -32,7 +32,7 @@ router.post('/:nome', (req, res) => {
     let id = req.params.nome; //la serie 
     let poster = req.body.poster; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
-    if(poster === undefined | comment === undefined){
+    if(!poster | !comment){
         res.status(500).json({message: "Missing parameters"});
     }
     else {
