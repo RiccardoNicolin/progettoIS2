@@ -1,8 +1,8 @@
 const request = require("supertest");
-const app = require("./VisualizeAPI/app");
+const app = require("../VisualizeAPI/app.js");
 const server="/series/";
 
-describe("Test dei codici series/ ", () => {
+describe("Test on codes in series/ ", () => {
     test("It should response the GET method affirmatively", async () => {
       const response = await request(app)
             .get(server);
@@ -34,11 +34,11 @@ describe("Test dei codici series/ ", () => {
     });
 });
 
-describe("test sui contenuti series/nome", () => {
+describe("test on content series/name", () => {
 
     test("It should response the GET method affirmatively and return the item", async () => {
         const response = await request(app)
-            .get(server+"/Firefly")
+            .get(server+"Firefly")
             .set('Accept', 'application/json');
         expect(response.type).toBe("application/json");
 
@@ -60,7 +60,7 @@ describe("test sui contenuti series/nome", () => {
 
     test("It should response the POST method affirmatively", async () => {
         const response = await request(app)
-            .post(server+"/Firefly")
+            .post(server+"Firefly")
             .send({
                 nome: "Firefly",
                 poster: "Gianfrantonio",
@@ -71,7 +71,7 @@ describe("test sui contenuti series/nome", () => {
 
     test("It should response the POST method negatively", async () => {
         const response = await request(app)
-            .post(server+"/Firefly")
+            .post(server+"Firefly")
             .send({
                 nome: "",
                 poster: "",
@@ -82,7 +82,7 @@ describe("test sui contenuti series/nome", () => {
 
     test("It should response the PATCH method affirmatively for changing votes", async () => {
         const response = await request(app)
-            .patch(server+"/Firefly")
+            .patch(server+"Firefly")
             .send({
                 vote: 8
             });
@@ -91,12 +91,22 @@ describe("test sui contenuti series/nome", () => {
 
     test("It should response the PATCH method affirmatively for changing tag", async () => {
         const response = await request(app)
-            .patch(server+"/Firefly")
+            .patch(server+"Firefly")
             .send({
                 target: "stagioni",
                 change: "2"
             });
         expect(response.statusCode).toBe(200);
+    });
+
+    test("It should response the PATCH method negatively", async () => {
+        const response = await request(app)
+            .patch(server+"Firefly")
+            .send({
+                target: "",
+                change: "6"
+            });
+        expect(response.statusCode).toBe(500);
     });
 });
 
