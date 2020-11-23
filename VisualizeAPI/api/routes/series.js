@@ -21,16 +21,16 @@ router.post('/', (req, res) =>{
     
 });
 
-router.get('/:nome', (req, res, next) =>{
-    const id = req.params.nome;
+router.get('/:name', (req, res, next) =>{
+    const id = req.params.name;
     //get series info specifying by username
     let serie = db.lista_serie.cercaPerNome(id);
     res.status(200).json({serie});
 });
 
-router.post('/:nome', (req, res) => {
+router.post('/:name', (req, res) => {
     //post comments
-    let id = req.params.nome; //la serie 
+    let id = req.params.name; //la serie 
     let poster = req.body.poster; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
     if(!poster || !comment){
@@ -43,9 +43,9 @@ router.post('/:nome', (req, res) => {
     }
 });
 
-router.patch('/:nome', (req, res, next) =>{ 
+router.patch('/:name', (req, res, next) =>{ 
     //Either register a new series vote or patch something about the series
-    let id = req.params.nome; //the series nome
+    let id = req.params.name; //the series nome
     if(!req.body.vote){
         if(!req.body.target || !req.body.change){
             res.status(500).json({message: 'Missing data parameters'});
