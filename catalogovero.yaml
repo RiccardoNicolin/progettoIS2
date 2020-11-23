@@ -88,7 +88,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Serie'
-  /serie/{name}:
+  /series/{name}:
     get:
       description: 'get a particular serie'
       parameters:
