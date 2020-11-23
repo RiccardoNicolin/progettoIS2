@@ -11,8 +11,9 @@ function registraUtente(){
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify( { username: user, email: mail, password:pass } )
         } )
-        .then((res) => {
-            document.getElementById("Message").innerHTML = res.statusText;
+        .then (res => res.json())
+        .then(json => {
+            document.getElementById("Message").innerHTML = json.message;
             return;
         })
         .catch( error => console.error(error) );
