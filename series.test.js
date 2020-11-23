@@ -69,6 +69,17 @@ describe("test sui contenuti series/nome", () => {
         expect(response.statusCode).toBe(201);
     });
 
+    test("It should response the POST method negatively", async () => {
+        const response = await request(app)
+            .post(server+"/Firefly")
+            .send({
+                nome: "",
+                poster: "",
+                comment: "a me me piace nutella"
+            });
+        expect(response.statusCode).toBe(500);
+    });
+
     test("It should response the PATCH method affirmatively for changing votes", async () => {
         const response = await request(app)
             .patch(server+"/Firefly")
