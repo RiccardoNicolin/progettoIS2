@@ -4,7 +4,7 @@ const db = require('../../../DB.js');
 
 router.get('/' , (req, res, next) =>{
     // ritorna tutte le serie
-    res.send(db.lista_serie.tutti());
+    res.status(200).json(db.lista_serie.tutti());
 });
 
 router.post('/', (req, res) =>{
