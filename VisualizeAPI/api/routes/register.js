@@ -6,19 +6,14 @@ var bcrypt = require('bcrypt');
 
 // User signup
 router.post('/', (req, res, next) =>{
-console.log(req.body.email);
-console.log(req.body.username);
-console.log(req.body.password);
 // Check if user submitted all fields
 if (typeof (req.body.email) == undefined | (req.body.username) == undefined | typeof (req.body.password) == undefined){
   res.status(500).send("Username, Email and Password are mandatory")
 }
 else {
-
+  //checks if user email/name is already taken
   var foundemail = db.lista_utenti.cercaPerMail(req.body.email);
   var foundusername = db.lista_utenti.cercaPerNome(req.body.username);
-  console.log(typeof (foundemail));
-  console.log(typeof (foundusername));
   //if it doesn't exist then create new user
   if (typeof (foundemail) == 'undefined' && typeof (foundusername) == 'undefined'){
     //hashing the password, salting it 10fold and checking if hash was successfull

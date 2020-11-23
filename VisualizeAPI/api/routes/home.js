@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../../../DB.js');
 
 router.get('/', (req, res) =>{
-    //get req for home page
+    //get req for home page, visualizes hot and new series for unsubscribed user
 
         let serieshot = db.lista_serie.cercaPerTag("hot");
         let seriesnew = db.lista_serie.cercaPerTag("new");
@@ -15,6 +15,7 @@ router.get('/', (req, res) =>{
 });
 
 router.get('/userlist', (req, res) => { 
+    //userlist shown
     res.send(db.lista_utenti.tutti());
 });
 

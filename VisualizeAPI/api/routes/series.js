@@ -3,14 +3,14 @@ const router = express.Router();
 const db = require('../../../DB.js');
 
 router.get('/' , (req, res, next) =>{
-    // ritorna tutte le serie please
+    // ritorna tutte le serie
     res.send(db.lista_serie.tutti());
 });
 
 router.post('/', (req, res) =>{
     //post req for home page, esempio postare manualmente hot in frontpage
     if (typeof (req.body.nome) !== undefined & (req.body.genere) !== undefined & typeof (req.body.attori) !== undefined & typeof (req.body.Stagioni) !== undefined){
-        //DEVO TESTARE CHE TUTTI I CAMPI SIANO INSERITI (ECCETTO VOTO E COMMENTI)
+        //checks if basic series data is present
         db.lista_serie.insert(req.body);
         res.status(201).json({message: 'Series added'});
     }
@@ -22,14 +22,13 @@ router.post('/', (req, res) =>{
 
 router.get('/:nome', (req, res, next) =>{
     const id = req.params.nome;
-    //get series
+    //get series info specifying by username
     let serie = db.lista_serie.cercaPerNome(id);
-    console.log(serie);
     res.status(200).json({serie});
 });
 
 router.post('/:nome', (req, res) => {
-    //post comments forse voti
+    //post comments
     let id = req.params.nome; //la serie 
     let poster = req.body.poster; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
@@ -43,29 +42,22 @@ router.post('/:nome', (req, res) => {
     }
 });
 
-router.patch('/:nome', (req, res, next) =>{ //json message ROTTO TODO
-    let id = req.params.nome; //la serie
-    console.log(id);
+router.patch('/:nome', (req, res, next) =>{ 
+    //Either register a new series vote or patch something about the series
+    let id = req.params.nome; //the series nome
     if(req.body.vote === undefined){
-        console.log("didn't see vote");
         if(req.body.target === undefined | req.body.change === undefined){
-            console.log("sono entrato into 500");
             res.status(500).json({message: 'Missing data parameters'});
         }
         else {
             //modifica categoria, funziona testato per mandare attori o generi bisogna mandare più chiamate change con change[0],change[1]... change[x]
-            console.log("sono entrato in modifica");
             db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
-            console.log("sono uscito dalla modifica");
             res.status(200).json({message: 'Category successfuly updated'});
         }
     }
     else{
         //modifica voto, testato funziona
-        console.log("did see vote");
-        console.log(req.body.vote);
         db.lista_serie.modificaVoto(id, req.body.vote);
-        console.log("did something in the function");
         res.status(200).json({message: 'Vote successfully updated'});
     }
     
