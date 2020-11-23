@@ -36,7 +36,18 @@ describe("Test dei codici series/", () => {
 
 describe("test sui contenuti series/", () => {
 
-    
+    test("It should response the GET method affirmatively and return the item", async () => {
+        const response = await request(app)
+            .get(server+"/Firefly");
+        expect(response.type).toBe("application/json");
+        /*expect(response.body).toContain({
+            nome: "Firefly",
+            genere : ["SCI_FI", "Avventura", "hot"],
+            attori : ["Nathan Fillion"],
+            stagioni : 1,
+            locandina: "https://upload.wikimedia.org/wikipedia/it/thumb/a/af/Fireflyopeninglogo.JPG/260px-Fireflyopeninglogo.JPG"
+        });*/
+    });
 
 });
 
