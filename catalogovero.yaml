@@ -6,12 +6,12 @@ info:
   license:
     name: MIT
 servers:
-  - url: http://assignments-api.herokuapp.com.com/api/v1
+  - url: https://secret-retreat-87773.herokuapp.com/
     description: Heroku
-  - url: http://localhost:3000/api/v1
+  - url: http://localhost:3000/
     description: Localhost
 paths:
-  /users:
+  /signup:
     post:
       description: >-
         Creates a new user in the system.
@@ -23,10 +23,21 @@ paths:
               $ref: '#/components/schemas/User'
       responses:
         '201':
-          description: 'User created. Link in the Location header'
-          #potremmo metterci l'header alla prossima locazione, ci penso dopo
+          description: 'User created'
+          #potremmo metterci l'header alla prossima locazione
+  /home:
     get:
-      description: 'get all the users'
+      description: home page
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Home'
+  /home/userlist:
+    get:
+      description: get all users
       responses:
         '200':
           description: OK
@@ -36,42 +47,22 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
-
-  /users/{email}:
-    get:
-      description: >-
-        Gets information about a specific user, identified by an email
-      summary: Get a user
-      parameters:
-        - name: email
-          in: path
-          schema:
-            type: string
-          required: true
-          description: 'email of the requested user'
-      responses:
-        '200':
-          description: 'The user corresponding to the input email'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-  /shows:
+  /series:
     post:
       description: >-
-        Creates a new show in the system.
-      summary: Create a new show
+        Creates a new serie in the system.
+      summary: Create a new serie
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Show'
+              $ref: '#/components/schemas/Serie'
       responses:
         '201':
-          description: 'show created. Link in the Location header'
-          #potremmo metterci l'header alla prossima locazione, ci penso dopo
+          description: 'serie created.'
+          #potremmo metterci l'header alla prossima locazione
     get:
-      description: 'get all the shows'
+      description: 'get all the series'
       parameters:
         - in: query
           name: year
@@ -96,143 +87,62 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Show'
-  /shows/{title}:
+                  $ref: '#/components/schemas/Serie'
+  /serie/{name}:
     get:
-      description: 'get a particular show'
+      description: 'get a particular serie'
       parameters:
-        - name: title
+        - name: name
           in: path
           schema:
             type: string
           required: true
-          description: 'title of the requested show'
+          description: 'name of the requested show'
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref= '#/components/schemas/Show'
-    patch:
-      description: 'get a particular show'
+                $ref= '#/components/schemas/Serie'
+    post:
+      description: 'post a comment'
       parameters:
-        - name: title
+        - name: name
           in: path
           schema:
             type: string
           required: true
-          description: 'title of the requested show'
+          description: 'name of the serie you want to comment'
       requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Show'
-      responses:
-        '200':
-          description: 'show updated. Link in the Location header'
-          #potremmo metterci l'header alla prossima locazione, ci penso dopo
-  /shows/{title}/episode:
-    post:
-      description: >-
-        Creates a new episode in the system.
-      summary: Create a new episode
-      parameters:
-      - name: title
-        in: path
-        schema:
-          type: string
-        required: true
-        description: 'title of the requested show'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Episode'
+          content:
+            application/json:
+              schema:
+                $ref= '#/components/schemas/Comments'
       responses:
         '201':
-          description: 'episode created. Link in the Location header'
-          #potremmo metterci l'header alla prossima locazione, ci penso dopo
-    get:
-      description: 'get all the episode of a show'
-      parameters:
-        - name: title
-          in: path
-          schema:
-            type: string
-          required: true
-          description: 'title of the requested show'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Episode'
-  /shows/{title}/episode/{name}:
-    get:
-      description: 'get a particular episode'
-      parameters:
-        - name: title
-          in: path
-          schema:
-            type: string
-          required: true
-          description: 'title of the requested show'
-        - name: name
-          in: path
-          schema:
-            type: string
-          required: true
-          description: 'name of the requested episode'
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref= '#/components/schemas/Episode'
+          description: 'comments created.'
+          #potremmo metterci l'header alla prossima locazione
     patch:
-      description: 'update a particular episode'
+      description: 'update a particular show'
       parameters:
-        - name: title
-          in: path
-          schema:
-            type: string
-          required: true
-          description: 'title of the requested show'
         - name: name
           in: path
           schema:
             type: string
           required: true
-          description: 'name of the requested episode'
+          description: 'name of the requested show'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Episode'
+              $ref: '#/components/schemas/Serie'
       responses:
         '200':
-          description: 'Episode updated. Link in the Location header'
-          #potremmo metterci l'header alla prossima locazione, ci penso dopo
-      
+          description: 'serie updated'
+          #potremmo metterci l'header alla prossima locazione
 components:
   schemas:
-    Followed:
-      type: object
-      required:
-        - show
-        - episode
-      properties:
-        show:
-          type: string
-          description: 'link to the show the user is following'
-        episode:
-          type: string
-          description: 'link to the episode the user is at'  
     User:
       type: object
       required:
@@ -249,102 +159,56 @@ components:
         password:
           type: string
           description: 'Hashed password of the user'
-        favourites:
-          type: array
-          items: 
-            type: string
-          description: 'favourite series of the user'
-        completed:
-          type: array
-          items: 
-            type: string
-          description: 'series completed by the user'
-        watching:
-          type: array
-          items:
-            $ref = '#/components/schemas/Followed'
-          description: 'series the user is following and episodes the user is at'
-    Show:
+    Serie:
       type: object
       required:
-        - title
+        - name
       properties:
-        title:
+        name:
           type: string
-          description: 'title of the show'
-        year:
-          type: string
-          minLength: 4
-          description: 'year the show came out'
+          description: 'name of the show'
         poster:
           type: string
           format: byte
           description: 'poster of the show'
-        tags:
+        genre:
           type: array
           items: 
             type: string
-          description: 'tag della serie'
-        episodes:
-          type: array
-          items:
-            $ref: '#/components/schemas/Episode'
-          description: 'episodi della serie'
+          description: 'genere e tag della serie'
         score:
           type: integer
           description: 'score della serie'
-    Actor:
+        actors:
+          type: array
+          items:
+            type: string
+          description: 'actors of the serie'
+    Home:
       type: object
       required:
-        - name
-        - surname
-        - birth
+        - serieshot
+        - seriesnew
       properties:
-        name:
-          type: string
-          description: 'name of the actor'
-        surname:
-          type: string
-          description: 'surname of the actor'
-        birth:
-          type: string
-          format: date
-          description: 'date of birth of the actor'
-        photo:
-          type: string
-          format: byte
-          description: 'photo of the actor'
-    Starring:
+        serieshot:
+          type: array
+          items:
+            $ref: '#/components/schemas/Serie'
+          description: 'hot series'
+        seriesnew:
+          type: array
+          items:
+            $ref: '#/components/schemas/Serie'
+          description: 'new series'
+    Comments:
       type: object
       required:
-      - actor
-      - serie
+        - poster
+        - comment
       properties:
-        actor:
+        poster:
           type: string
-          description: 'link to the actor profile'
-        show:
+          description: 'name of the poster of the comment'
+        comment:
           type: string
-          description: 'link to the show page'
-    Episode:
-      type: object
-      required:
-        - name
-      properties:
-        name:
-          type: string
-          description: 'name of the episode Stagione+numeroep'
-        summary:
-          type: string
-          description: 'summary of the episode'
-        score:
-          type: integer
-          description: 'score of the episode'
-        prec:
-          type: string
-          description: 'link to the precedent episode if exist'
-        succ:
-          type: string
-          description: 'link to the successive episode if exist'
-    
-    
+          description: 'the body of the comment'
