@@ -47,8 +47,6 @@ const lista_serie = {
         return dati.lista_serie.find(x => x.nome == nome);
     },
 
-
-
     eliminatag(array, tag){
     var pos= array.indexOf(tag);
     array.slice(pos,pos+1);
