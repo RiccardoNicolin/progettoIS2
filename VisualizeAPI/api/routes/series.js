@@ -9,7 +9,7 @@ router.get('/' , (req, res, next) =>{
 
 router.post('/', (req, res) =>{
     //post req for home page, esempio postare manualmente hot in frontpage
-    if (req.body.nome & req.body.genere & req.body.attori & req.body.Stagioni){
+    if (req.body.nome & req.body.genere & req.body.attori & req.body.stagioni){
         //checks if basic series data is present
         db.lista_serie.insert(req.body);
         res.status(201).json({message: 'Series added'});
