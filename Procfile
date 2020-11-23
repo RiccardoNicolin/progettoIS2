@@ -1,1 +1,1 @@
-web: node .\VisualizeAPI\server.js
+web: node /VisualizeAPI/server.js
