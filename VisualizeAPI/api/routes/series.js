@@ -9,13 +9,18 @@ router.get('/' , (req, res, next) =>{
 
 router.post('/', (req, res) =>{
     //post req for home page, esempio postare manualmente hot in frontpage
-    if (req.body.nome & req.body.genere & req.body.attori & req.body.stagioni){
+    if (!req.body.nome || !req.body.genere || !req.body.attori || !req.body.stagioni){
+        console.log(req.body.nome);
+        console.log(req.body.genere);
+        console.log(req.body.attori);
+        console.log(req.body.stagioni);
+        res.status(500).json({error: "Not all fields present"});
+    }
+    else{
+        
         //checks if basic series data is present
         db.lista_serie.insert(req.body);
         res.status(201).json({message: 'Series added'});
-    }
-    else{
-        res.status(500).json({error: "Not all fields present"});
     }
     
 });
@@ -32,7 +37,7 @@ router.post('/:nome', (req, res) => {
     let id = req.params.nome; //la serie 
     let poster = req.body.poster; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
-    if(!poster | !comment){
+    if(!poster || !comment){
         res.status(500).json({message: "Missing parameters"});
     }
     else {
@@ -46,7 +51,7 @@ router.patch('/:nome', (req, res, next) =>{
     //Either register a new series vote or patch something about the series
     let id = req.params.nome; //the series nome
     if(!req.body.vote){
-        if(!req.body.target | !req.body.change){
+        if(!req.body.target || !req.body.change){
             res.status(500).json({message: 'Missing data parameters'});
         }
         else {
