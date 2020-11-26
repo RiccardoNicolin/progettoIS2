@@ -23,25 +23,24 @@ var user = require('./user');
 
 //inizializza userlist
 
-var utente2 = {
-    username: "Beppe",
-    password: "canto",
-    email : "beppe@mail.com"
-}
-
-//utente2.password = bcrypt.hash(utente2.password, 10);
-
-user.deleteMany().then( () => {
-    new user({
-        username: "Admin",
+var utente1 = {
+    username: "Admin",
         email: "admin@admin",
         password: "admin"
-    }).save();
-    new user({
-        username: "Beppe",
-        email: "beppe@mail.com",
-        password: "BeppeVince"
-    }).save();
+}
+
+var utente2 = {
+    username: "Beppe",
+    email : "beppe@mail.com",
+    password: "canto",
+}
+
+bcrypt.hash(utente2.password,10, (err, pass) => utente2.password = pass);
+bcrypt.hash(utente1.password,10, (err, pass) => utente1.password = pass);
+
+
+user.deleteMany().then( () => {
+    new user(utente1).save();
     new user(utente2).save();
 
 });
