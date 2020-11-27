@@ -9,10 +9,12 @@ app.use('/', express.static('public'));
 const homeRoutes = require('./api/routes/home');
 const seriesRoutes = require('./api/routes/series');
 const signupRoutes = require('./api/routes/register');
+const loginRoutes = require('./api/routes/login');
 
 app.use('/home', homeRoutes);
 app.use('/series', seriesRoutes);
 app.use('/signup', signupRoutes);
+app.use('/login', loginRoutes);
 
 /* Default 404 handler */
 app.use((req, res) => {
