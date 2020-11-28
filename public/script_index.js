@@ -4,10 +4,10 @@ function creaLinks (){
    .then (res => res.json())
    .then (json => {
        for (var i = 0; i < json.serieshot.length; i++){
-            document.getElementById("link_serie_hot").innerHTML+= '<a href="./serie.html?name='+json.serieshot[i].nome+'">'+json.serieshot[i].nome+'</a><br>';
+            document.getElementById("link_serie_hot").innerHTML+= '<a href="./serie.html?name='+json.serieshot[i].name+'">'+json.serieshot[i].name+'</a><br>';
        }
        for (var i = 0; i < json.seriesnew.length; i++){
-            document.getElementById("link_serie_new").innerHTML+='<a href="./serie.html?name='+json.seriesnew[i].nome+'">'+json.seriesnew[i].nome+'</a><br>';
+            document.getElementById("link_serie_new").innerHTML+='<a href="./serie.html?name='+json.seriesnew[i].name+'">'+json.seriesnew[i].name+'</a><br>';
         }
     });
 }

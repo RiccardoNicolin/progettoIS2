@@ -1,12 +1,16 @@
 const express = require('express');
+const user = require('../../../DB/user');
 const router = express.Router();
-const db = require('../../../DB.js');
+//const db = require('../../../DB.js');
+const serie = require('../../../DB/serie');
 
-router.get('/', (req, res) =>{
+
+
+router.get('/', async (req, res) =>{
     //get req for home page, visualizes hot and new series for unsubscribed user
 
-        let serieshot = db.lista_serie.cercaPerTag("hot");
-        let seriesnew = db.lista_serie.cercaPerTag("new");
+        let serieshot = await serie.find({tag: "hot"});  //seleziona tutte le serie dove uno degli elementi del campo tag è quello specificato
+        let seriesnew = await serie.find({tag: "new"});
         res.status(200).json({
             serieshot,
             seriesnew
@@ -14,9 +18,10 @@ router.get('/', (req, res) =>{
    
 });
 
-router.get('/userlist', (req, res) => { 
+router.get('/userlist', async (req, res) => { 
+    let userlist = await user.find();
     //userlist shown
-    res.status(200).json(db.lista_utenti.tutti());
+    res.status(200).json(userlist);
 });
 
 

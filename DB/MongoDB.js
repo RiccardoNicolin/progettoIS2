@@ -5,18 +5,6 @@ const dotenv = require('dotenv');
 dotenv.config();
 var bcrypt = require('bcrypt');
 
-
-
-/*da mettere in app.js
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config();
-
-mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
-
-const user = require('../DB/MongoDB.js');
-*/
-
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 
 var user = require('./user');
@@ -29,13 +17,12 @@ var utente1 = {
         email: "admin@admin",
         password: "admin"
 }
-
 var utente2 = {
     username: "Beppe",
     email : "beppe@mail.com",
     password: "canto",
 }
-
+//hashing password
 bcrypt.hash(utente2.password,10, (err, pass) => utente2.password = pass);
 bcrypt.hash(utente1.password,10, (err, pass) => utente1.password = pass);
 
@@ -43,7 +30,6 @@ bcrypt.hash(utente1.password,10, (err, pass) => utente1.password = pass);
 user.deleteMany().then( () => {
     new user(utente1).save();
     new user(utente2).save();
-
 });
 
 //inizializza serie
@@ -76,7 +62,6 @@ var Brek = {
 serie.deleteMany().then( () => {
     new serie(Firefly).save();
     new serie(Brek).save();
-
 });
 
 console.log("DB Inizialized");
