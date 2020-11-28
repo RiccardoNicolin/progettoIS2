@@ -20,9 +20,8 @@ export function find(propertyName, value)
 export function addUser(body, hashedpass, cb)
 {
     let newuser = {username: body.username, email: body.email, password: hashedpass};
-    new user(newuser).save().then(  () => {
-        cb();
-        }
+    new user(newuser).save().then(
+        cb()
     );
 }
 
