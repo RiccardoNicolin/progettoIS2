@@ -16,7 +16,7 @@ router.post('/', async (req, res) =>{
     else{
         
         //checks if basic series data is present
-        let newSerie = {
+        /*let newSerie = {
         name: req.body.nome,
         poster: req.body.poster,
         genre: req.body.genere,
@@ -27,7 +27,8 @@ router.post('/', async (req, res) =>{
         seasons: req.body.stagioni,
         comments: []
         }
-        new serie(newSerie).save();
+        new serie(newSerie).save();*/
+        serie.addSerie(req.body);
         res.status(201).json({message: 'Series added'});
     }
     
@@ -50,7 +51,7 @@ router.post('/:name', (req, res) => {
     }
     else {
         let fullcomment = {poster: poster, comment: comment};
-       serie.updateOne(
+         serie.updateOne(
            {name: id}, //seleziono la serie con nome == id (ovvero quella che mi serve)
            {$push:  //insersco in fondo all'array
                 {comments: //nome del campo array
@@ -86,15 +87,15 @@ router.patch('/:name', async (req, res, next) =>{
     }
     else{
         //modifica voto
-       let target = await serie.findOne({name: id});
+       /*let target = await serie.findOne({name: id});
        //il secondo oggetto rappresenta quello che vine ritornato, in questo caso il primo valore del campo score
        //se _id: 0 non viene inserito, _id iene ritornato di default
        let old_num =target.numberOfvotes;
        let old_score = target.score;
        let new_num = old_num+1;
         let new_score = ((old_score * old_num)+req.body.vote) / new_num;
-        serie.updateOne({name: id},{score: new_score, numberOfvotes:new_num}).then();
-        //db.lista_serie.modificaVoto(id, req.body.vote);
+        serie.updateOne({name: id},{score: new_score, numberOfvotes:new_num}).then();*/
+        serie.modificaVoto(id, req.body.vote);
         res.status(200).json({message: 'Vote successfully updated'});
     }
     
