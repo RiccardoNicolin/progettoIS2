@@ -7,4 +7,27 @@ var User_schema = mongoose.Schema({
 
 });
 
-module.exports =  mongoose.model('user',User_schema);
+const user =  mongoose.model('user',User_schema);
+
+export function find(propertyName, value)
+{
+    let data = await serie.findOne({
+        [propertyName] : value
+    });
+    return data;
+}
+
+export function addUser(body, hashedpass, cb)
+{
+    let newuser = {username: body.username, email: body.email, password: hashedpass};
+    new user(newuser).save().then(  () => {
+        cb();
+        }
+    );
+}
+
+export function  getAll()
+{
+    let allUsers = await user.find();
+    return allUsers;
+}

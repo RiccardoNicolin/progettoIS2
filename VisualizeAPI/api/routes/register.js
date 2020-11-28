@@ -12,8 +12,8 @@ if (!req.body.email || !req.body.username || !req.body.password){
 }
 else {
   //checks if user email/name is already taken
-  var foundemail =  await user.findOne({email: req.body.email});
-  var foundusername = await user.findOne({username: req.body.username});
+  var foundemail =  user.find('email', req.body.email)
+  var foundusername = user.find('username' ,req.body.username);
   //if it doesn't exist then create new user
   if (!foundemail && !foundusername){
     //hashing the password, salting it 10fold and checking if hash was successfull
@@ -22,9 +22,13 @@ else {
         return res.status(500).json({message: "Error during password hashing"});
       }
       else {
-        let newuser = {username: req.body.username, email: req.body.email, password: hashedpass};
-        new user(newuser).save();
-         res.status(201).location("/user/" + req.body.username).json({message:"User creation successful!"});
+        /*let newuser = {username: req.body.username, email: req.body.email, password: hashedpass};
+        new user(newuser).save();*/
+        //non sono sicuro si faccia così
+        user.addUser(req.body,hashedpass,  () => {
+          res.status(201).location("/user/" + req.body.username).json({message:"User creation successful!"});
+        });
+         
       }
     });
   }

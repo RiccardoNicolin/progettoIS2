@@ -4,8 +4,8 @@ const serie = require('../../../DB/serie.js');
 
 router.get('/' , async (req, res, next) =>{
     // ritorna tutte le serie
-    let allSerie = await serie.find();
-    res.status(200).json(allSerie);
+    //let allSerie = await serie.find();
+    res.status(200).json(serie.getAll());
 });
 
 router.post('/', async (req, res) =>{
@@ -37,8 +37,12 @@ router.post('/', async (req, res) =>{
 router.get('/:name', async (req, res, next) =>{
     const id = req.params.name;
     //get series info specifying by username
-    let selected = await serie.findOne({name: id});
-    res.status(200).json(selected);
+    let selected = serie.get(id);
+    if(selected)
+    {
+        res.status(200).json(selected);
+    }
+    
 });
 
 router.post('/:name', (req, res) => {
@@ -50,7 +54,7 @@ router.post('/:name', (req, res) => {
         res.status(500).json({message: "Missing parameters"});
     }
     else {
-        let fullcomment = {poster: poster, comment: comment};
+        /*let fullcomment = {poster: poster, comment: comment};
          serie.updateOne(
            {name: id}, //seleziono la serie con nome == id (ovvero quella che mi serve)
            {$push:  //insersco in fondo all'array
@@ -58,7 +62,8 @@ router.post('/:name', (req, res) => {
                     {poster: poster,comment: comment} //oggetto che viene inserito
                 }
             }
-    ).then();
+    ).then();*/
+        serie.addComment(id, poster, comment);
         res.status(201).json({message: "Comment Stored"});
     }
 });
@@ -81,6 +86,8 @@ router.patch('/:name', async (req, res, next) =>{
            /* old code
             db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
             */
+            serie.modify(id, req.body.taget, req.body.change);
+
             res.status(200).json({message: 'Category successfuly updated'});
 
         }

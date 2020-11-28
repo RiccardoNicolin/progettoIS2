@@ -44,10 +44,51 @@ export function addSerie(body)
         seasons: body.stagioni,
         comments: []
         }
-        new serie(newSerie).save();
+        await new serie(newSerie).save();
 }
 
 export function  getAll()
 {
-    
+    let allSerie = await serie.find();
+    return allSerie;
+}
+
+export function get(name)
+{
+    let data= await serie.findOne({name: id});
+    return data;
+}
+
+export function addComment(id, poster, comment)
+{
+    let fullcomment = {poster: poster, comment: comment};
+         serie.updateOne(
+           {name: id}, //seleziono la serie con nome == id (ovvero quella che mi serve)
+           {$push:  //insersco in fondo all'array
+                {comments: //nome del campo array
+                    {poster: poster,comment: comment} //oggetto che viene inserito
+                }
+            }
+    ).then();
+}
+
+export function find(propertyName, value)
+{
+    let data = await serie.findOne({
+        [propertyName] : value
+    });
+    return data;
+}
+
+export function modify(id, target, newvalue)
+{
+    await serie.updateOne({name: id},{ [taget] : newvalue});
+}
+
+export function findMore(propertyName, value)
+{
+    let data = await serie.find({
+        [propertyName] : value
+    });
+    return data;
 }
