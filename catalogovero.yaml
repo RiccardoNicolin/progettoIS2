@@ -177,13 +177,19 @@ components:
             type: string
           description: 'genere e tag della serie'
         score:
-          type: integer
+          type: float
           description: 'score della serie'
+        numberOfvotes :
+          type: integer
+          description: 'number of votes'
         actors:
           type: array
           items:
             type: string
           description: 'actors of the serie'
+        seasons:
+          type: integer
+          description: 'number of seasons of the series'
     Home:
       type: object
       required:
