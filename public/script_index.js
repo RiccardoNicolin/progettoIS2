@@ -12,16 +12,18 @@ function creaLinks (){
     });
 }
 
-function Search(){
+
+
+ function Search(){
     const query = document.getElementById("search_bar").value;
     fetch('./series/')
     .then(res => res.json())
     .then(json => {
-        const res = json.find(element => element.nome== query);
+        const res = json.find(element => element.name== query);
         if (res === undefined){
             document.getElementById("result").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
         }else{
-            document.getElementById("result").innerHTML='RESULT: <a href="./serie.html?name='+res.nome+'">'+res.nome+'</a>';
+            document.getElementById("result").innerHTML='RESULT: <a href="./serie.html?name='+res.name+'">'+res.name+'</a>';
         }
     });
 }
