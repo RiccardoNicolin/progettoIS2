@@ -14,10 +14,11 @@ describe("Test on codes in series/ ", () => {
             .post(server)
             .send({
                 nome : "Black Lightning",
-                genere: ["Supereroi", "Azione", "hot"],
+                genere: ["Supereroi", "Azione"],
+                tag: ["hot"],
                 attori: ["Cress Williams", "China Anne McClain"],
                 stagioni: 3,
-                locandina: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png/260px-Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png",
+                poster: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png/260px-Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png",
             })
             .set('Accept', 'application/json');
         expect(response.statusCode).toBe(201);

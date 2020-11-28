@@ -38,8 +38,8 @@ var Firefly = {
     poster: "https://upload.wikimedia.org/wikipedia/it/thumb/a/af/Fireflyopeninglogo.JPG/260px-Fireflyopeninglogo.JPG",
     genre : ["SCI_FI", "Avventura"],
     tag : ["hot", "completed"],
-    score: 0,
-    numberOfvotes: 0,
+    score: 0.0,
+    numberOfvotes: 0.0,
     actors : ["Nathan Fillion"],
     seasons: 1,
     comments: []
@@ -51,8 +51,8 @@ var Brek = {
     poster: "https://upload.wikimedia.org/wikipedia/it/b/b8/Breaking_Bad_Pilot_logo.png",
     genre : ["Drammatico", "Thriller"],
     tag : ["new", "completed"],
-    score: 0,
-    numberOfvotes: 0,
+    score: 0.0,
+    numberOfvotes: 0.0,
     actors : ["Bryan Cranston", "Aaron Paul"],
     seasons: 5,
     comments: []
@@ -65,15 +65,3 @@ serie.deleteMany().then( () => {
 });
 
 console.log("DB Inizialized");
-
-/*
-per far funzionare una ricerca
-
-router.get('/userlist', async (req, res) => { 
-   let prova = await user.findOne({username: /^bepp/});
-    res.status(200).json({
-        prova
-    });
-});
-
-*/
