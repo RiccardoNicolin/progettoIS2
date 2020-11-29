@@ -1,8 +1,15 @@
 const request = require("supertest");
 const app = require("../VisualizeAPI/app.js");
 const server="/series/";
+const serie = require("../DB/serie.js")
+const inizializer = require("../DB/MongoDB.js");
 
 describe("Test on codes in series/ ", () => {
+
+    beforeAll(() => {
+        inizializer.inizializeDB();
+    });
+
     test("It should response the GET method affirmatively", async () => {
       const response = await request(app)
             .get(server);
@@ -13,11 +20,11 @@ describe("Test on codes in series/ ", () => {
         const response = await request(app)
             .post(server)
             .send({
-                nome : "Black Lightning",
-                genere: ["Supereroi", "Azione"],
+                name : "Black Lightning",
+                genre: ["Supereroi", "Azione"],
                 tag: ["hot"],
-                attori: ["Cress Williams", "China Anne McClain"],
-                stagioni: 3,
+                actors: ["Cress Williams", "China Anne McClain"],
+                seasons: 3,
                 poster: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png/260px-Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png",
             })
             .set('Accept', 'application/json');
@@ -28,7 +35,7 @@ describe("Test on codes in series/ ", () => {
         const response = await request(app)
             .post(server)
             .send({
-                nome : "",
+                name : "",
             })
             .set('Accept', 'application/json');
         expect(response.statusCode).toBe(500);
@@ -37,6 +44,10 @@ describe("Test on codes in series/ ", () => {
 
 describe("test on content series/name", () => {
 
+    beforeAll(() => {
+        inizializer.inizializeDB();
+    });
+
     test("It should response the GET method affirmatively and return the item", async () => {
         const response = await request(app)
             .get(server+"Firefly")
@@ -44,26 +55,22 @@ describe("test on content series/name", () => {
         expect(response.type).toBe("application/json");
 
         let testBody={
-            nome: response.body.serie.nome,
-            genere: response.body.serie.genere,
-            attori: response.body.serie.attori,
-            stagioni: response.body.serie.stagioni,
-            locandina: response.body.serie.locandina
+            name: response.body.serie.nome,
+            genre: response.body.serie.genere,
+            actors: response.body.serie.attori,
+            seasons: response.body.serie.stagioni,
+            poster: response.body.serie.locandina
         }
-        expect(testBody).toStrictEqual({
-            nome: "Firefly",
-            genere : ["SCI_FI", "Avventura", "hot"],
-            attori : ["Nathan Fillion"],
-            stagioni : 1,
-            locandina: "https://upload.wikimedia.org/wikipedia/it/thumb/a/af/Fireflyopeninglogo.JPG/260px-Fireflyopeninglogo.JPG"
-        });
+        expect(testBody).toStrictEqual(
+            serie.get("Firefly")
+        );
     });
 
     test("It should response the POST method affirmatively", async () => {
         const response = await request(app)
             .post(server+"Firefly")
             .send({
-                nome: "Firefly",
+                name: "Firefly",
                 poster: "Gianfrantonio",
                 comment: "a me me piace nutella"
             });
@@ -74,7 +81,7 @@ describe("test on content series/name", () => {
         const response = await request(app)
             .post(server+"Firefly")
             .send({
-                nome: "",
+                name: "",
                 poster: "",
                 comment: "a me me piace nutella"
             });
@@ -85,7 +92,7 @@ describe("test on content series/name", () => {
         const response = await request(app)
             .patch(server+"Firefly")
             .send({
-                vote: 8
+                score: 8
             });
         expect(response.statusCode).toBe(200);
     });
@@ -94,7 +101,7 @@ describe("test on content series/name", () => {
         const response = await request(app)
             .patch(server+"Firefly")
             .send({
-                target: "stagioni",
+                target: "seasons",
                 change: "2"
             });
         expect(response.statusCode).toBe(200);

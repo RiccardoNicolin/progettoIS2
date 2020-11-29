@@ -27,6 +27,8 @@ export function addUser(body, hashedpass, cb)
 
 export function  getAll()
 {
-    let allUsers = await user.find();
-    return allUsers;
+    let allUsers =  user.find().then( () => {
+        return allUsers;
+    });
+    
 }

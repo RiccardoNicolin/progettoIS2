@@ -44,19 +44,23 @@ export function addSerie(body)
         seasons: body.stagioni,
         comments: []
         }
-        await new serie(newSerie).save();
+        new serie(newSerie).save();
 }
 
 export function  getAll()
 {
-    let allSerie = await serie.find();
-    return allSerie;
+    let allSerie = await serie.find()
+    .then( () => {
+        return allSerie;
+    });
 }
 
 export function get(name)
 {
-    let data= await serie.findOne({name: id});
-    return data;
+    let data= serie.findOne({name: id})
+    .then( () => {
+        return data;
+    });
 }
 
 export function addComment(id, poster, comment)
@@ -74,21 +78,25 @@ export function addComment(id, poster, comment)
 
 export function find(propertyName, value)
 {
-    let data = await serie.findOne({
+    let data = serie.findOne({
         [propertyName] : value
-    });
-    return data;
+    })
+    .then( () => {
+        return data;
+    });    
 }
 
 export function modify(id, target, newvalue)
 {
-    await serie.updateOne({name: id},{ [taget] : newvalue});
+    serie.updateOne({name: id},{ [taget] : newvalue});
 }
 
 export function findMore(propertyName, value)
 {
-    let data = await serie.find({
+    let data = serie.find({
         [propertyName] : value
-    });
-    return data;
+    })
+    .then( () =>{
+        return data;
+    });  
 }

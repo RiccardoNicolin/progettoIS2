@@ -10,7 +10,7 @@ router.get('/' , async (req, res, next) =>{
 
 router.post('/', async (req, res) =>{
     //post req for home page, esempio postare manualmente hot in frontpage
-    if (!req.body.nome || !req.body.genere || !req.body.attori || !req.body.stagioni || !req.body.poster || !req.body.tag){
+    if (!req.body.nome || !req.body.genre || !req.body.actors || !req.body.seasons || !req.body.poster || !req.body.tag){
         res.status(500).json({error: "Not all fields present"});
     }
     else{
@@ -102,12 +102,10 @@ router.patch('/:name', async (req, res, next) =>{
        let new_num = old_num+1;
         let new_score = ((old_score * old_num)+req.body.vote) / new_num;
         serie.updateOne({name: id},{score: new_score, numberOfvotes:new_num}).then();*/
-        serie.modificaVoto(id, req.body.vote);
+        serie.modificaVoto(id, req.body.score);
         res.status(200).json({message: 'Vote successfully updated'});
     }
-    
-    
-    
+     
 });
 
 module.exports = router;

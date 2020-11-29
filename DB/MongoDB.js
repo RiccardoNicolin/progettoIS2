@@ -65,3 +65,18 @@ serie.deleteMany().then( () => {
 });
 
 console.log("DB Inizialized");
+
+export function inizializeDB()
+{
+    user.deleteMany().then( () => {
+        new user(utente1).save();
+        new user(utente2).save();
+    });
+
+    serie.deleteMany().then( () => {
+        new serie(Firefly).save();
+        new serie(Brek).save();
+    });
+
+    console.log("DB Inizialized");
+}
