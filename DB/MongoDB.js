@@ -27,9 +27,9 @@ bcrypt.hash(utente2.password,10, (err, pass) => utente2.password = pass);
 bcrypt.hash(utente1.password,10, (err, pass) => utente1.password = pass);
 
 //populate collection users
-user.deleteMany().then( () => {
-    new user(utente1).save();
-    new user(utente2).save();
+user.user.deleteMany().then( () => {
+    new user.user(utente1).save();
+    new user.user(utente2).save();
 });
 
 //inizializza serie
@@ -59,24 +59,28 @@ var Brek = {
 }
 
 //populate collection series
-serie.deleteMany().then( () => {
-    new serie(Firefly).save();
-    new serie(Brek).save();
+serie.serie.deleteMany().then( () => {
+    new serie.serie(Firefly).save();
+    new serie.serie(Brek).save();
 });
 
 console.log("DB Inizialized");
 
-export function inizializeDB()
+function inizializeDB()
 {
-    user.deleteMany().then( () => {
-        new user(utente1).save();
-        new user(utente2).save();
+    user.user.deleteMany().then( () => {
+        new user.user(utente1).save();
+        new user.user(utente2).save();
     });
 
-    serie.deleteMany().then( () => {
-        new serie(Firefly).save();
-        new serie(Brek).save();
+    serie.serie.deleteMany().then( () => {
+        new serie.serie(Firefly).save();
+        new serie.serie(Brek).save();
     });
 
     console.log("DB Inizialized");
 }
+
+
+
+module.exports.inizializeDB = inizializeDB;

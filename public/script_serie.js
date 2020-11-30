@@ -69,7 +69,7 @@ function AddVote(points){
     fetch('../series/'+title, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify( {nome:title, vote: points} )
+        body: JSON.stringify( {nome:title, score: points} )
     })
     .then(res => settaserie(0));
 }
