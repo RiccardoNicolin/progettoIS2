@@ -19,7 +19,7 @@ var serie_schema = mongoose.Schema({
 
 const serie = mongoose.model('serie',serie_schema);
 
-export function modificaVoto(nome, voto)
+export async function modificaVoto(nome, voto)
 {
     let target = await serie.findOne({name: id});
     //il secondo oggetto rappresenta quello che vine ritornato, in questo caso il primo valore del campo score
@@ -28,10 +28,10 @@ export function modificaVoto(nome, voto)
     let old_score = target.score;
     let new_num = old_num+1;
     let new_score = ((old_score * old_num)+req.body.vote) / new_num;
-    serie.updateOne({name: id},{score: new_score, numberOfvotes:new_num}).then();
+    await serie.updateOne({name: id},{score: new_score, numberOfvotes:new_num}).then();
 }
 
-export function addSerie(body)
+export async function addSerie(body)
 {
     let newSerie = {
         name: body.nome,
@@ -44,59 +44,51 @@ export function addSerie(body)
         seasons: body.stagioni,
         comments: []
         }
-        new serie(newSerie).save();
+        await new serie(newSerie).save();
 }
 
-export function  getAll()
+export async function  getAll()
 {
-    let allSerie = await serie.find()
-    .then( () => {
-        return allSerie;
-    });
+    let allSerie = await serie.find();
+    return allSerie;
 }
 
-export function get(name)
+export async function get(name)
 {
-    let data= serie.findOne({name: id})
-    .then( () => {
-        return data;
-    });
+    let data= await serie.findOne({name: id})
+    return data;
 }
 
-export function addComment(id, poster, comment)
+export async function addComment(id, poster, comment)
 {
     let fullcomment = {poster: poster, comment: comment};
-         serie.updateOne(
+        await serie.updateOne(
            {name: id}, //seleziono la serie con nome == id (ovvero quella che mi serve)
            {$push:  //insersco in fondo all'array
                 {comments: //nome del campo array
                     {poster: poster,comment: comment} //oggetto che viene inserito
                 }
             }
-    ).then();
+        ).then();
 }
 
-export function find(propertyName, value)
+export async function find(propertyName, value)
 {
-    let data = serie.findOne({
+    let data = await serie.findOne({
         [propertyName] : value
-    })
-    .then( () => {
-        return data;
-    });    
+    });
+    return data;    
 }
 
-export function modify(id, target, newvalue)
+export async function modify(id, target, newvalue)
 {
-    serie.updateOne({name: id},{ [taget] : newvalue});
+    await serie.updateOne({name: id},{ [taget] : newvalue});
 }
 
-export function findMore(propertyName, value)
+export async function findMore(propertyName, value)
 {
-    let data = serie.find({
+    let data = await serie.find({
         [propertyName] : value
-    })
-    .then( () =>{
-        return data;
-    });  
+    });
+    return data;  
 }

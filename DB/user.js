@@ -9,7 +9,7 @@ var User_schema = mongoose.Schema({
 
 const user =  mongoose.model('user',User_schema);
 
-export function find(propertyName, value)
+export async function find(propertyName, value)
 {
     let data = await serie.findOne({
         [propertyName] : value
@@ -25,10 +25,9 @@ export function addUser(body, hashedpass, cb)
     );
 }
 
-export function  getAll()
+export async function  getAll()
 {
-    let allUsers =  user.find().then( () => {
-        return allUsers;
-    });
+    let allUsers =  await user.find();
+    return allUsers;
     
 }
