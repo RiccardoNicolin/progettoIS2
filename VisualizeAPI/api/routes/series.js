@@ -39,7 +39,7 @@ router.get('/:name', (req, res, next) =>{
 router.post('/:name', checkAuth, (req, res) => {
     //post comments
     let id = req.params.name; //la serie 
-    let poster = req.body.poster; //chi ha postato il commento
+    let poster = req.body.verifydec.username; //chi ha postato il commento (guarda dal login)
     let comment = req.body.comment; //il testo del commento
     if(!poster || !comment){
         res.status(500).json({message: "Missing parameters"});
