@@ -7,21 +7,22 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 router.post('/', (req, res) =>{
+    //check if the user exists
     let user= db.lista_utenti.cercaPerNome(req.body.username);
-    console.log(user);
-    if (user.username.length >= 1){
+    if (user){    
+        //checking if the password is correct
         bcrypt.compare(req.body.password, user.password, (err, result) => {
             if (err){
                 res.status(401).json({
-                    message: "Authentication unsuccessful, retry using other data 1"
+                    message: "Authentication unsuccessful, retry using other data"
                 });
             }
-
+            //if the password is correct create a jwt token and send it back
             if (result){
                 const token = jwt.sign({
                     email: user.email,
                     username: user.username,
-
+                    admin: admin
                 }, process.env.JWT_KEY, {
                     expiresIn: "1h"
                 } )
@@ -30,16 +31,17 @@ router.post('/', (req, res) =>{
                     token: token
                 });
             }
-
+            //failing password check
             res.status(401).json({
-                message: "Authentication unsuccessful, retry using other data 2",
+                message: "Authentication unsuccessful, retry using other data",
             });
         });
 
     }
     else {
+        //fail for non existing user
         res.status(401).json({
-            message: "Authentication unsuccessful, retry using other data 3"
+            message: "Authentication unsuccessful, retry using other data"
         });
     }
 });
