@@ -1,5 +1,27 @@
 
+function setUser(){
+    let user = sessionStorage.getItem("token");
+    if (user != "000"){
+        document.getElementById("user").innerHTML = user;
+        document.getElementById("login").style.display = "none";
+        document.getElementById("logout").style.display = "block";
+    }else{
+        document.getElementById("logout").style.display = "none";
+    }
+}
+
+function Logout(){
+    sessionStorage.setItem("token", "000");
+    document.getElementById("login").style.display = "block";
+    document.getElementById("user").innerHTML = "";
+    document.getElementById("logout").style.display = "none";
+}
+
 function creaLinks (){
+    if (!sessionStorage.token){
+        sessionStorage.setItem("token", "000");
+    }
+    setUser();
    fetch('./home')
    .then (res => res.json())
    .then (json => {
