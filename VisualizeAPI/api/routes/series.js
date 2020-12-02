@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const serie = require('../../../DB/serie.js');
 const checkAuth = require('../middleware/checkauth');
+const jwt = require("jsonwebtoken");
 
 router.get('/' , async (req, res, next) =>{
     // ritorna tutte le serie
@@ -10,15 +11,16 @@ router.get('/' , async (req, res, next) =>{
     try {
         //trying to look for token, if token is present and is valid also search the users bookmarked/in vision series
         const token = req.headers.authorization.split(" ")[1];
-        const verifydec = jwt.verify(token, process.env.JWT_KEY);
-        req.verifydec = verifydec;
+        const check = jwt.verify(token, process.env.JWT_KEY);
 
     } catch (error){
     res.status(200).json({
         allseries: allseries,
-        verifydec: undefined
+        verifydec: ""
     });
     }
+    let token = req.headers.authorization.split(" ")[1];
+    let verifydec = jwt.verify(token, process.env.JWT_KEY);
     res.status(200).json({
         allseries: allseries,
         verifydec: verifydec
@@ -53,21 +55,22 @@ router.get('/:name', async (req, res, next) =>{
     try {
         //trying to look for token, if token is present and is valid also search the users bookmarked/in vision series
         const token = req.headers.authorization.split(" ")[1];
-        const verifydec = jwt.verify(token, process.env.JWT_KEY);
-        req.verifydec = verifydec;
+        const check = jwt.verify(token, process.env.JWT_KEY);
 
     } catch (error){
         if(selected)
     {
         res.status(200).json({
             selected: selected,
-            verifydec: undefined
+            verifydec: ""
         });
     }
     }
 
     if(selected)
     {
+        let token = req.headers.authorization.split(" ")[1];
+        let verifydec = jwt.verify(token, process.env.JWT_KEY);
         res.status(200).json({
             selected: selected,
             verifydec: verifydec
