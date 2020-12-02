@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const serie = require('../../../DB/serie.js');
+const checkAuth = require('../middleware/checkauth');
 
 router.get('/' , async (req, res, next) =>{
     // ritorna tutte le serie
@@ -8,8 +9,9 @@ router.get('/' , async (req, res, next) =>{
     res.status(200).json(await serie.getAll());
 });
 
-router.post('/', async (req, res) =>{
+router.post('/', checkAuth, async (req, res) =>{
     //post req for home page, esempio postare manualmente hot in frontpage
+    if (req.body.verifydec.admin){
     if (!req.body.nome || !req.body.genre || !req.body.actors || !req.body.seasons || !req.body.poster || !req.body.tag){
         res.status(500).json({error: "Not all fields present"});
     }
@@ -19,7 +21,12 @@ router.post('/', async (req, res) =>{
         await serie.addSerie(req.body);
         res.status(201).json({message: 'Series added'});
     }
-    
+}
+else{
+    res.status(401).json({
+        message: "Lacking administration privileges to do this action"
+    });
+}
 });
 
 router.get('/:name', async (req, res, next) =>{
@@ -33,7 +40,7 @@ router.get('/:name', async (req, res, next) =>{
     
 });
 
-router.post('/:name', async (req, res) => {
+router.post('/:name', checkAuth, async (req, res) => {
     //post comments
     let id = req.params.name; //la serie 
     let poster = req.body.poster; //chi ha postato il commento
@@ -48,10 +55,11 @@ router.post('/:name', async (req, res) => {
     }
 });
 
-router.patch('/:name', async (req, res, next) =>{ 
+router.patch('/:name', checkAuth, async (req, res, next) =>{ 
     //Either register a new series vote or patch something about the series
     let id = req.params.name; //the series nome
     if(!req.body.score){
+        if (req.body.verifydec.admin){
         if(!req.body.target || !req.body.change){
             res.status(500).json({message: 'Missing data parameters'});
         }
@@ -71,6 +79,14 @@ router.patch('/:name', async (req, res, next) =>{
             res.status(200).json({message: 'Category successfuly updated'});
 
         }
+     }
+     
+     else{
+        res.status(401).json({
+            message: "Lacking administration privileges to do this action"
+        })
+    }
+
     }
     else{
         //modifica voto
