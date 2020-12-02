@@ -1,6 +1,6 @@
 
 function setUser(){
-    let user = sessionStorage.getItem("token");
+    let user = localStorage.getItem("token");
     if (user != "000"){
         document.getElementById("user").innerHTML = user;
         document.getElementById("login").style.display = "none";
@@ -11,18 +11,25 @@ function setUser(){
 }
 
 function Logout(){
-    sessionStorage.setItem("token", "000");
+    localStorage.setItem("token", "000");
     document.getElementById("login").style.display = "block";
     document.getElementById("user").innerHTML = "";
     document.getElementById("logout").style.display = "none";
 }
 
 function creaLinks (){
-    if (!sessionStorage.token){
-        sessionStorage.setItem("token", "000");
+    if (!localStorage.token){
+        localStorage.setItem("token", "000");
     }
     setUser();
-   fetch('./home')
+   fetch('./home',
+   {
+       method: 'GET',
+       headers: {
+           Authorization: 'Bearer '+localStorage.getItem("token")
+       }
+   }
+   )
    .then (res => res.json())
    .then (json => {
        for (var i = 0; i < json.serieshot.length; i++){
