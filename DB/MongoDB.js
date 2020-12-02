@@ -15,12 +15,14 @@ var serie = require('./serie');
 var utente1 = {
     username: "Admin",
         email: "admin@admin",
-        password: "admin"
+        password: "admin",
+        admin: 1
 }
 var utente2 = {
     username: "Beppe",
     email : "beppe@mail.com",
     password: "canto",
+    admin: 0
 }
 //hashing password
 bcrypt.hash(utente2.password,10, (err, pass) => utente2.password = pass);
