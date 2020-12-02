@@ -66,19 +66,17 @@ serie.serie.deleteMany().then( () => {
 
 console.log("DB Inizialized");
 
-function inizializeDB()
+async function inizializeDB()
 {
-    user.user.deleteMany().then( () => {
+    await user.user.deleteMany().then( () => {
         new user.user(utente1).save();
         new user.user(utente2).save();
     });
 
-    serie.serie.deleteMany().then( () => {
+    await serie.serie.deleteMany().then( () => {
         new serie.serie(Firefly).save();
         new serie.serie(Brek).save();
     });
-
-    console.log("DB Inizialized");
 }
 
 

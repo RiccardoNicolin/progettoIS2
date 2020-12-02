@@ -3,6 +3,7 @@ const app = express();
 //const db = require('../DB.js');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const morgan = require("morgan");
 dotenv.config();
 
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true})
@@ -10,6 +11,7 @@ mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology:
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/', express.static('public'));
+app.use(morgan('dev'));
 
 const homeRoutes = require('./api/routes/home');
 const seriesRoutes = require('./api/routes/series');

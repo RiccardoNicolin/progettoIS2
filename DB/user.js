@@ -11,7 +11,7 @@ const user =  mongoose.model('user',User_schema);
 
 async function find(propertyName, value)
 {
-    let data = await serie.findOne({
+    let data = await user.findOne({
         [propertyName] : value
     });
     return data;
