@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 var bcrypt = require('bcrypt');
 
-mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(process.env.DB_URL_TEST, {useNewUrlParser: true, useUnifiedTopology: true});
 
 var user = require('./user');
 var serie = require('./serie');
