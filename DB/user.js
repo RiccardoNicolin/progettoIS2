@@ -3,7 +3,8 @@ var mongoose = require('mongoose');
 var User_schema = mongoose.Schema({
     username: String,
     email: String,
-    password: String
+    password: String,
+    admin: Number
 
 });
 
@@ -19,7 +20,7 @@ async function find(propertyName, value)
 
 function addUser(body, hashedpass, cb)
 {
-    let newuser = {username: body.username, email: body.email, password: hashedpass};
+    let newuser = {username: body.username, email: body.email, password: hashedpass, admin: 0};
     new user(newuser).save().then(
         cb()
     );
