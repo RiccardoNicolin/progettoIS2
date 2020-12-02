@@ -10,8 +10,8 @@ router.get('/', async (req, res) =>{
     try {
         //trying to look for token, if token is present and is valid also search the users bookmarked/in vision series
         const token = req.headers.authorization.split(" ")[1];
-        const verifydec = jwt.verify(token, process.env.JWT_KEY);
-        req.verifydec = verifydec;
+        const check = jwt.verify(token, process.env.JWT_KEY);
+       // req.verifydec = verifydec;
 
     } catch (error){
         //if error businness as usual it's not logged in
@@ -26,10 +26,12 @@ router.get('/', async (req, res) =>{
             //TODO when merged put series bookmarked/in vision
             let serieshot = await serie.findMore('tag', "hot") //seleziona tutte le serie dove uno degli elementi del campo tag è quello specificato
             let seriesnew = await serie.findMore('tag', "new");
+            let token = req.headers.authorization.split(" ")[1];
+            let verifydec = jwt.verify(token, process.env.JWT_KEY);
             res.status(200).json({
                 serieshot,
                 seriesnew,
-                verifydec: verifydec //pass decoded token
+                verifydec: verifydec//pass decoded token
                 });
 
 });
