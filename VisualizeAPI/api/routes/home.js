@@ -20,7 +20,7 @@ router.get('/', async (req, res) =>{
             res.status(200).json({
                 serieshot,
                 seriesnew,
-                verifydec: undefined //pass invalid decoded token
+                verifydec: "" //pass invalid decoded token
                 });
         }
             //TODO when merged put series bookmarked/in vision
