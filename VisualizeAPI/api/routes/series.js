@@ -6,7 +6,23 @@ const checkAuth = require('../middleware/checkauth');
 router.get('/' , async (req, res, next) =>{
     // ritorna tutte le serie
     //let allSerie = await serie.find();
-    res.status(200).json(await serie.getAll());
+    let allseries = await serie.getAll();
+    try {
+        //trying to look for token, if token is present and is valid also search the users bookmarked/in vision series
+        const token = req.headers.authorization.split(" ")[1];
+        const verifydec = jwt.verify(token, process.env.JWT_KEY);
+        req.verifydec = verifydec;
+
+    } catch (error){
+    res.status(200).json({
+        allseries: allseries,
+        verifydec: undefined
+    });
+    }
+    res.status(200).json({
+        allseries: allseries,
+        verifydec: verifydec
+    })
 });
 
 router.post('/', checkAuth, async (req, res) =>{
@@ -33,9 +49,29 @@ router.get('/:name', async (req, res, next) =>{
     const id = req.params.name;
     //get series info specifying by username
     let selected = await serie.get(id);
+
+    try {
+        //trying to look for token, if token is present and is valid also search the users bookmarked/in vision series
+        const token = req.headers.authorization.split(" ")[1];
+        const verifydec = jwt.verify(token, process.env.JWT_KEY);
+        req.verifydec = verifydec;
+
+    } catch (error){
+        if(selected)
+    {
+        res.status(200).json({
+            selected: selected,
+            verifydec: undefined
+        });
+    }
+    }
+
     if(selected)
     {
-        res.status(200).json(selected);
+        res.status(200).json({
+            selected: selected,
+            verifydec: verifydec
+        });
     }
     
 });
@@ -43,7 +79,7 @@ router.get('/:name', async (req, res, next) =>{
 router.post('/:name', checkAuth, async (req, res) => {
     //post comments
     let id = req.params.name; //la serie 
-    let poster = req.body.poster; //chi ha postato il commento
+    let poster = req.body.verifydec.username; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
     if(!poster || !comment){
         res.status(500).json({message: "Missing parameters"});
@@ -80,7 +116,7 @@ router.patch('/:name', checkAuth, async (req, res, next) =>{
 
         }
      }
-     
+
      else{
         res.status(401).json({
             message: "Lacking administration privileges to do this action"

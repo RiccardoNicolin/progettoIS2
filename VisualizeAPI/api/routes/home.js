@@ -12,7 +12,6 @@ router.get('/', async (req, res) =>{
         const token = req.headers.authorization.split(" ")[1];
         const verifydec = jwt.verify(token, process.env.JWT_KEY);
         req.verifydec = verifydec;
-        next();
 
     } catch (error){
         //if error businness as usual it's not logged in
@@ -33,13 +32,6 @@ router.get('/', async (req, res) =>{
                 verifydec: verifydec //pass decoded token
                 });
 
-        let serieshot = await serie.findMore('tag', "hot") //seleziona tutte le serie dove uno degli elementi del campo tag è quello specificato
-        let seriesnew = await serie.findMore('tag', "new");
-        res.status(200).json({
-            serieshot,
-            seriesnew
-            });
-   
 });
 
 router.get('/userlist', async (req, res) => { 
