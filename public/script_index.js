@@ -1,6 +1,5 @@
 
-function setUser(){
-    let user = localStorage.getItem("token");
+function setUser(user){
     if (user != "000"){
         document.getElementById("user").innerHTML = user;
         document.getElementById("login").style.display = "none";
@@ -11,7 +10,7 @@ function setUser(){
 }
 
 function Logout(){
-    localStorage.setItem("token", "000");
+    localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
     document.getElementById("login").style.display = "block";
     document.getElementById("user").innerHTML = "";
     document.getElementById("logout").style.display = "none";
@@ -19,9 +18,9 @@ function Logout(){
 
 function creaLinks (){
     if (!localStorage.token){
-        localStorage.setItem("token", "000");
+        localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
     }
-    setUser();
+   
    fetch('./home',
    {
        method: 'GET',
@@ -32,6 +31,7 @@ function creaLinks (){
    )
    .then (res => res.json())
    .then (json => {
+    setUser(json.verifydec.username);
        for (var i = 0; i < json.serieshot.length; i++){
             document.getElementById("link_serie_hot").innerHTML+= '<a href="./serie.html?name='+json.serieshot[i].name+'">'+json.serieshot[i].name+'</a><br>';
        }
