@@ -1,6 +1,4 @@
-/**
- * @jest-environment node
- */
+
 
 const request = require("supertest");
 const app = require("../VisualizeAPI/app.js");

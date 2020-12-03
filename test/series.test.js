@@ -59,11 +59,11 @@ describe("test on content series/name", () => {
         expect(response.type).toBe("application/json");
 
         let testBody={
-            name: response.body.serie.nome,
-            genre: response.body.serie.genere,
-            actors: response.body.serie.attori,
-            seasons: response.body.serie.stagioni,
-            poster: response.body.serie.locandina
+            name: response.body.serie.name,
+            genre: response.body.serie.genre,
+            actors: response.body.serie.actors,
+            seasons: response.body.serie.seasons,
+            poster: response.body.serie.poster
         }
         expect(testBody).toStrictEqual(
             serie.get("Firefly")

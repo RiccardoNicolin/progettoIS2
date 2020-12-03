@@ -1,17 +1,10 @@
-/**
- * @jest-environment node
- */
 
 const request = require("supertest");
 const app = require("../VisualizeAPI/app.js");
 const server="/signup/";
 const inizializer = require("../DB/MongoDB.js");
 
-describe("test on codes in signup/", ()=> {
-
-    beforeAll(() => {
-        inizializer.inizializeDB();
-    });
+describe("test on codes in signup/", async ()=> {
 
     test("It should response the POST method affirmatively", async() =>{
         const response = await request(app)
