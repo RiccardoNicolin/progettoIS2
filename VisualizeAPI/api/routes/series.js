@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const serie = require('../../../DB/serie.js');
+const userdb = require('../../../DB/user.js');
 const checkAuth = require('../middleware/checkauth');
 const jwt = require("jsonwebtoken");
 
@@ -138,8 +139,17 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
     }
     else {
         //modifica voto
-        await serie.modificaVoto(id, req.body.score);
-        res.status(200).json({ message: 'Vote successfully updated' });
+        let user = await userdb.checkIfVote(id);
+        if (user !== null) {
+            // user.votes. //TODO FINISH
+            await user.modi
+        }
+        else {
+            await user.addVote(id, req.body.score, req.verifydec.username);
+            await serie.modifyVote(id, req.body.score);
+            res.status(200).json({ message: 'Vote successfully updated' });
+        }
+
     }
 
 });
