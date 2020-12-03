@@ -106,7 +106,7 @@ router.post('/:name', checkAuth, async (req, res) => {
 
 router.patch('/:name', checkAuth, async (req, res, next) => {
     //Either register a new series vote or patch something about the series
-    let id = req.params.name; //the series nome
+    let id = req.params.name; //the series nome ['Firefly']
     if (!req.body.score) {
         if (req.body.verifydec.admin) {
             if (!req.body.target || !req.body.change) {
@@ -142,10 +142,11 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
         let user = await userdb.checkIfVote(id);
         if (user !== null) {
             // user.votes. //TODO FINISH
-            await user.modi
+           // await user.modi
+           res.status(200).json({message: "placement for now"});
         }
         else {
-            await user.addVote(id, req.body.score, req.verifydec.username);
+            await userdb.addVote(id, req.body.score, req.verifydec.username);
             await serie.modifyVote(id, req.body.score);
             res.status(200).json({ message: 'Vote successfully updated' });
         }

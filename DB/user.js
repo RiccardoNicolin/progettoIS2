@@ -45,9 +45,9 @@ async function addVote(serie, vote, username)
 
 //TODO modifica vote
 async function checkIfVote(serieName)
-{
+{ //TODO non vede se ho già votato investiga
     let data = await user.findOne({
-        votes : {serie : [serieName]}
+        votes : {serie : serieName}
     });
     console.log(data);
     return data;  
