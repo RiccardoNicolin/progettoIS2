@@ -92,7 +92,7 @@ router.post('/:name', checkAuth, async (req, res) => {
     let id = req.params.name; //la serie 
     let token = req.headers.authorization.split(" ")[1];
     let verifydec = jwt.verify(token, process.env.JWT_KEY);
-    let poster = verifydec; //chi ha postato il commento
+    let poster = verifydec.username; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
     if (!poster || !comment) {
         res.status(500).json({ message: "Missing parameters" });

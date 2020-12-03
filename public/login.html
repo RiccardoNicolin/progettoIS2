@@ -3,22 +3,30 @@
 
 <head>
     <title>LOGIN</title>
-
+    <link rel="stylesheet" href="login_style.css">
 </head>
 
 <body>
     <script src="./script_login.js"></script>
     <h1>LOGIN</h1>
-    <p>INSERT YOUR USERNAME AND PASSWORD TO ENTER</p>
-    <span>Username:</span>
+    <p>Insert Username and password to login</p>
+    <div id = "Etichette">
+        <div id = "nomi">
+        <span>Username:</span>
+        <br>
+        <span>Password</span>
+    </div>
+    </div>
+    <div id ="pass_form">
     <input type="text" id="User"/>
     <br>
-    <span>Password</span>
     <input type="password" id="password"/>
     <br>
     <button type="button" onclick="Login()">Login</button>
+    </div>
     <br>
     <p id = "message"></p>
+
 </body>
 
 </html>
