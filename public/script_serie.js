@@ -14,27 +14,56 @@ function DispalyComment(comments){
     comments.map(element => document.getElementById("comments").innerHTML += '<span>Autore:'+element.poster+'</span><hr class="aut-comm"><span>'+element.comment+'</span><hr class="next">');
 }
 
-async function fetchserie(title){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
-    let response = await fetch('./series/'+title);
+function setUser(user){
+    let token = localStorage.getItem("token");
+    if (token != "000"){
+        document.getElementById("user").innerHTML = user;
+        document.getElementById("login").style.display = "none";
+        document.getElementById("logout").style.display = "block";
+    }else{
+        document.getElementById("logout").style.display = "none";
+    }
+}
+
+function Logout(){
+    localStorage.setItem("token", "000");
+    document.getElementById("login").style.display = "block";
+    document.getElementById("user").innerHTML = "";
+    document.getElementById("logout").style.display = "none";
+}
+
+async function fetchserie(title){
+    let response = await fetch('./series/'+title, {
+        method:'GET',
+        headers: {
+            Authorization: 'Bearer '+localStorage.getItem("token")
+        }
+    });
     let data = await response.json();
     return data;
 }
-    function settaserie(all){
+    function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
         const title = getParameterByName('name');
-        fetchserie(title)
-        .then (data => {
+        fetch ('./series/'+title, {
+            method:'GET',
+            headers: {
+                Authorization: 'Bearer '+localStorage.getItem("token")
+            }
+        })
+        .then (res => res.json())
+        .then (json => {
             if (all === 1){
-                document.getElementsByTagName("title").innerHTML = data.name;
-                document.getElementById("titolo").innerHTML += data.name;
-                document.getElementById("attori").innerHTML += data.actors;
-                document.getElementById("genere").innerHTML += data.genre;
-                document.getElementById("locandina").innerHTML = '<img src='+data.poster+' id="poster">';
-                var s = data.seasons;
+                document.getElementById("titolo").innerHTML += json.selected.name;
+                document.getElementById("attori").innerHTML += json.selected.actors;
+                document.getElementById("genere").innerHTML += json.selected.genre;
+                document.getElementById("locandina").innerHTML = '<img src='+json.selected.poster+' id="poster">';
+                var s = json.selected.seasons;
                 document.getElementById("stagioni").innerHTML += s.toString();
                 document.getElementById("New_Comment").style.display = "none";
             }
-            document.getElementById("vote_total").innerHTML ="Score: "+ data.score;
-            DispalyComment(data.comments);
+            setUser(json.verifydec.username);
+            document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
+            DispalyComment(json.selected.comments);
         })
     }
 
@@ -53,7 +82,9 @@ function CreateComment(){
         document.getElementById("Message").innerHTML = "";
         fetch('../series/'+title, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json',
+                        Authorization:'Bearer '+localStorage.getItem("token")
+                    },
             body: JSON.stringify( {poster: author, comment: text} )
         })
         .then(res => {
@@ -68,7 +99,9 @@ function AddVote(points){
     const title = getParameterByName('name');
     fetch('../series/'+title, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json',
+                    Authorization:'Bearer '+localStorage.getItem("token")
+                },
         body: JSON.stringify( {nome:title, score: points} )
     })
     .then(res => settaserie(0));

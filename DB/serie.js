@@ -24,12 +24,10 @@ async function modificaVoto(name, score)
     let target = await serie.findOne({name: name});
     //il secondo oggetto rappresenta quello che vine ritornato, in questo caso il primo valore del campo score
     //se _id: 0 non viene inserito, _id iene ritornato di default
-    console.log(target);
     let old_num =target.numberOfvotes;
     let old_score = target.score;
     let new_num = +old_num+1;
     let new_score = ((old_score * old_num)+ score) / new_num;
-    console.log(new_score+" "+old_num+" "+old_score+" "+new_num+" "+score);
     await serie.updateOne({name: name},{score: new_score, numberOfvotes:new_num}).then();
 }
 
