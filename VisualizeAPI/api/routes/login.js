@@ -26,7 +26,7 @@ router.post('/', async (req, res) =>{
                     username: user.username,
                     admin: user.admin
                 }, process.env.JWT_KEY, {
-                    expiresIn: "1h"
+                    expiresIn: "1s"
                 } )
                 return res.status(200).json({
                     message: "Authentication successful",
