@@ -1,11 +1,16 @@
 var mongoose = require('mongoose');
 
+var schema_votes = mongoose.Schema({
+    serie: String,
+    vote: Number
+});
+
 var User_schema = mongoose.Schema({
     username: String,
     email: String,
     password: String,
-    admin: Number
-
+    admin: Number,
+    votes: [schema_votes]
 });
 
 const user =  mongoose.model('user',User_schema);
@@ -25,6 +30,20 @@ function addUser(body, hashedpass, cb)
         cb()
     );
 }
+
+async function addVote(serie, vote, username)
+{ 
+        await user.updateOne(
+           {username: username}, //seleziono la serie con nome == id (ovvero quella che mi serve)
+           {$push:  //insersco in fondo all'array
+                {votes: //nome del campo array
+                    {serie: serie,vote: vote} //oggetto che viene inserito
+                }
+            }
+        ).then();
+}
+
+//TODO modifica vote
 
 async function  getAll()
 {
