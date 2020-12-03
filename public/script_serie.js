@@ -20,8 +20,13 @@ function setUser(user){
         document.getElementById("user").innerHTML = user;
         document.getElementById("login").style.display = "none";
         document.getElementById("logout").style.display = "block";
+        document.getElementById("NotLog").style.display = "none";
+        document.getElementById("open_form").style.display = "block";
     }else{
         document.getElementById("logout").style.display = "none";
+        document.getElementById("NotLog").style.display = "block";
+        document.getElementById("open_form").style.display = "none";
+        document.getElementById("New_Comment").style.display = "none";
     }
 }
 
@@ -30,6 +35,7 @@ function Logout(){
     document.getElementById("login").style.display = "block";
     document.getElementById("user").innerHTML = "";
     document.getElementById("logout").style.display = "none";
+    settaserie(0);
 }
 
 async function fetchserie(title){
@@ -73,10 +79,9 @@ function NewComment(){
 }
 
 function CreateComment(){
-    const author = document.getElementById("comment_author").value;
     const text = document.getElementById("comment_text").value;
     const title = getParameterByName('name');
-    if (author.length === 0 || text.length===0){
+    if (text.length===0){
         document.getElementById("Message").innerHTML = "  One or more input left blank, please compile all fields";
     }else{
         document.getElementById("Message").innerHTML = "";
@@ -85,7 +90,7 @@ function CreateComment(){
             headers: { 'Content-Type': 'application/json',
                         Authorization:'Bearer '+localStorage.getItem("token")
                     },
-            body: JSON.stringify( {poster: author, comment: text} )
+            body: JSON.stringify( {comment: text} )
         })
         .then(res => {
             document.getElementById("New_Comment").style.display = "none";
