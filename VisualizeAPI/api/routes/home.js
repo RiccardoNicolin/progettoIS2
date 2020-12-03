@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
         //trying to look for token, if token is present and is valid also search the users bookmarked/in vision series
             let token = req.headers.authorization.split(" ")[1];
             const verifydec = jwt.verify(token, process.env.JWT_KEY);
-            let serieshot = await serie.findMore('tag', "hot") //seleziona tutte le serie dove uno degli elementi del campo tag è quello specificato
+            let serieshot = await serie.findMore('tag', "hot"); //seleziona tutte le serie dove uno degli elementi del campo tag è quello specificato
             let seriesnew = await serie.findMore('tag', "new");
             res.status(200).json({
                 serieshot,
@@ -23,7 +23,6 @@ router.get('/', async (req, res) => {
             });
         }
     catch (error) {
-        console.log("Error");
         //if error businness as usual it's not logged in
         let serieshot = await serie.findMore('tag', "hot") //seleziona tutte le serie dove uno degli elementi del campo tag è quello specificato
         let seriesnew = await serie.findMore('tag', "new");

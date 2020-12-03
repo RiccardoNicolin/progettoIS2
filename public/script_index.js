@@ -1,21 +1,28 @@
-
-function setUser(user){
-    let token = localStorage.getItem("token");
-    if (token != "000"){
-        document.getElementById("user").innerHTML = user;
-        document.getElementById("login").style.display = "none";
-        document.getElementById("logout").style.display = "block";
-    }else{
-        document.getElementById("logout").style.display = "none";
-    }
-}
-
 function Logout(){
     localStorage.setItem("token", "000");
     document.getElementById("login").style.display = "block";
     document.getElementById("user").innerHTML = "";
     document.getElementById("logout").style.display = "none";
 }
+
+
+
+function setUser(user){
+    if (user === undefined){
+        Logout();
+    }
+    let token = localStorage.getItem("token");
+    if (token != "000"){
+        document.getElementById("user").innerHTML = user;
+        document.getElementById("login").style.display = "none";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("cast_vote").style.display = "none";
+    }else{
+        document.getElementById("logout").style.display = "none";
+        document.getElementById("cast_vote").style.display = "block";
+    }
+}
+
 
 function creaLinks (){
     if (!localStorage.token){
@@ -30,7 +37,8 @@ function creaLinks (){
        }
    }
    )
-   .then (res => res.json())
+   .then (res => res.json()
+       )
    .then (json => {
     setUser(json.verifydec.username);
        for (var i = 0; i < json.serieshot.length; i++){
