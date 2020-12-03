@@ -44,6 +44,25 @@ async function addVote(serie, vote, username)
 }
 
 //TODO modifica vote
+async function checkIfVote(serieName)
+{
+    let data = await user.findOne({
+        votes : {serie : [serieName]}
+    });
+    console.log(data);
+    return data;  
+}
+
+async function updateVote(username, target, newvalue)
+{
+    await user.updateOne(
+        {
+          username: username,
+          votes:{serie: target}
+        },
+        { $set: { "votes.$.vote" : newvalue} }
+     )
+}
 
 async function  getAll()
 {
@@ -52,7 +71,11 @@ async function  getAll()
     
 }
 
+
 module.exports.find = find;
 module.exports.addUser = addUser;
 module.exports.getAll = getAll;
 module.exports.user = user;
+module.exports.addVote = addVote;
+module.exports.checkIfVote = checkIfVote;
+module.exports.updateVote = updateVote;

@@ -19,7 +19,7 @@ var serie_schema = mongoose.Schema({
 
 const serie = mongoose.model('serie',serie_schema);
 
-async function modificaVoto(name, score)
+async function modifyVote(name, score)
 {
     let target = await serie.findOne({name: name});
     //il secondo oggetto rappresenta quello che vine ritornato, in questo caso il primo valore del campo score
@@ -99,5 +99,5 @@ module.exports.addComment = addComment;
 module.exports.get = get;
 module.exports.getAll = getAll;
 module.exports.addSerie = addSerie;
-module.exports.modificaVoto = modificaVoto;
+module.exports.modifyVote = modifyVote;
 module.exports.serie = serie;
