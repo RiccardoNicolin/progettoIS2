@@ -1,6 +1,7 @@
 
 function setUser(user){
-    if (user != "000"){
+    let token = localStorage.getItem("token");
+    if (token != "000"){
         document.getElementById("user").innerHTML = user;
         document.getElementById("login").style.display = "none";
         document.getElementById("logout").style.display = "block";
@@ -10,7 +11,7 @@ function setUser(user){
 }
 
 function Logout(){
-    localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
+    localStorage.setItem("token", "000");
     document.getElementById("login").style.display = "block";
     document.getElementById("user").innerHTML = "";
     document.getElementById("logout").style.display = "none";
@@ -18,7 +19,7 @@ function Logout(){
 
 function creaLinks (){
     if (!localStorage.token){
-        localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9");
+        localStorage.setItem("token", "000");
     }
    
    fetch('./home',

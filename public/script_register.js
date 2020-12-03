@@ -8,7 +8,9 @@ function registraUtente(){
     }else{
         fetch('../signup', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json',
+                        Authorization: 'Bearer '+localStorage.getItem("token")
+        },
             body: JSON.stringify( { username: user, email: mail, password:pass } )
         } )
         .then (res => res.json())
