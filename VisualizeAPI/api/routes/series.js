@@ -90,9 +90,9 @@ router.get('/:name', async (req, res, next) => {
 router.post('/:name', checkAuth, async (req, res) => {
     //post comments
     let id = req.params.name; //la serie 
-    let token = req.headers.authorization.split(" ")[1];
-    let verifydec = jwt.verify(token, process.env.JWT_KEY);
-    let poster = verifydec.username; //chi ha postato il commento
+    //let token = req.headers.authorization.split(" ")[1];
+    //let verifydec = jwt.verify(token, process.env.JWT_KEY);
+    let poster = req.body.verifydec.username; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
     if (!poster || !comment) {
         res.status(500).json({ message: "Missing parameters" });
@@ -109,8 +109,10 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
     let id = req.params.name; //the series nome ['Firefly']
     if (!req.body.score) {
         if (req.body.verifydec.admin) {
-            if (!req.body.target || !req.body.change) {
-                res.status(500).json({ message: 'Missing data parameters' });
+            if (!req.body.change) {res.status(500).json({ message: 'Missing change parameters' });}
+            else if (!req.body.target)
+             {
+                res.status(500).json({ message: 'Missing target parameters' });
             }
             else { //DA SISTEMARE!!!!!!!!
 
@@ -123,8 +125,7 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
                 /* old code
                  db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
                  */
-                await serie.modify(id, req.body.taget, req.body.change);
-
+                await serie.modify(id, req.body.target, req.body.change);
                 res.status(200).json({ message: 'Category successfuly updated' });
 
             }

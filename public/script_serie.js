@@ -73,6 +73,14 @@ async function fetchserie(title){
                 document.getElementById("New_Comment").style.display = "none";
             }
             setUser(json.verifydec.username);
+            if (json.verifydec.admin == 1){
+                document.getElementById("mod").style.display = "block";
+                document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
+            }
+            else{
+                document.getElementById("mod").style.display = "none";
+                document.getElementById("mod").innerHTML = '';
+            }
             document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
             DispalyComment(json.selected.comments);
         })
@@ -112,7 +120,7 @@ function AddVote(points){
         headers: { 'Content-Type': 'application/json',
                     Authorization:'Bearer '+localStorage.getItem("token")
                 },
-        body: JSON.stringify( {nome:title, score: points} )
+        body: JSON.stringify( {score: points} )
     })
     .then(res => settaserie(0));
 }

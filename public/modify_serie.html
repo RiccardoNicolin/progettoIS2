@@ -1,0 +1,57 @@
+<!DOCTYPE html> 
+
+<html>
+    <head>
+        <title>Modify Serie</title>
+    </head>
+
+    <body>
+        <script src="./script_modify.js"></script>
+        <table>
+            <tr>
+                <th>FIELD</th>
+                <th>ACTUAL</th>
+                <th>NEW</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>Title</td>
+                <td id="actual_title"></td>
+                <td>
+                    <input type="text" id="new_title" />
+                </td>
+                <td>
+                    <button type="button" onclick="Modify_Title()";>SUBMIT</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Title</td>
+                <td id="actual_poster"></td>
+                <td>
+                    <input type="text" id="new_poster" />
+                </td>
+                <td>
+                    <button type="button" onclick="Modify_Poster()";>SUBMIT</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Seasons</td>
+                <td id="actual_seasons"></td>
+                <td>
+                    <input type="number" id="new_seasons" />
+                </td>
+                <td>
+                    <button type="button" onclick="Modify_Seasons()";>SUBMIT</button>
+                </td>
+            </tr>
+        </table>
+
+        <!--    
+            TO_DO: All array field (except comment)
+            genre: [String],
+            tag: [String],
+            actors: [String],
+        -->
+    </body>
+
+</html>

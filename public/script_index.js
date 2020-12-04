@@ -16,10 +16,8 @@ function setUser(user){
         document.getElementById("user").innerHTML = user;
         document.getElementById("login").style.display = "none";
         document.getElementById("logout").style.display = "block";
-        document.getElementById("cast_vote").style.display = "none";
     }else{
         document.getElementById("logout").style.display = "none";
-        document.getElementById("cast_vote").style.display = "block";
     }
 }
 
@@ -54,10 +52,15 @@ function creaLinks (){
 
  function Search(){
     const query = document.getElementById("search_bar").value;
-    fetch('./series/')
+    fetch('./series/',{
+        method:'GET',
+        headers: {
+            Authorization: 'Bearer '+localStorage.getItem("token")
+        }
+    })
     .then(res => res.json())
     .then(json => {
-        const res = json.find(element => element.name== query);
+        const res = json.find(element => element.name == query);
         if (res === undefined){
             document.getElementById("result").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
         }else{
