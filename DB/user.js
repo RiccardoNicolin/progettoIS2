@@ -1,74 +1,100 @@
 var mongoose = require('mongoose');
 
-var schema_votes = mongoose.Schema({
+var votes_schema = mongoose.Schema({
     serie: String,
     vote: Number
-});
+}, { _id: false });
 
 var User_schema = mongoose.Schema({
     username: String,
     email: String,
     password: String,
     admin: Number,
-    votes: [schema_votes]
+    votes: [votes_schema]
 });
 
-const user =  mongoose.model('user',User_schema);
+const user = mongoose.model('user', User_schema);
 
-async function find(propertyName, value)
-{
+async function find(propertyName, value) {
     let data = await user.findOne({
-        [propertyName] : value
+        [propertyName]: value
     });
     return data;
 }
 
-function addUser(body, hashedpass, cb)
-{
-    let newuser = {username: body.username, email: body.email, password: hashedpass, admin: 0};
+function addUser(body, hashedpass, cb) {
+    let newuser = { username: body.username, email: body.email, password: hashedpass, admin: 0 };
     new user(newuser).save().then(
         cb()
     );
 }
 
-async function addVote(serie, vote, username)
-{ 
-        await user.updateOne(
-           {username: username}, //seleziono la serie con nome == id (ovvero quella che mi serve)
-           {$push:  //insersco in fondo all'array
-                {votes: //nome del campo array
-                    {serie: serie,vote: vote} //oggetto che viene inserito
-                }
-            }
-        ).then();
-}
-
-//TODO modifica vote
-async function checkIfVote(serieName)
-{ //TODO non vede se ho già votato investiga
-    let data = await user.findOne({
-        votes : {serie : serieName}
-    });
-    console.log(data);
-    return data;  
-}
-
-async function updateVote(username, target, newvalue)
-{
+async function addVote(serie, vote, username) {
     await user.updateOne(
+        { username: username }, //seleziono la serie con nome == id (ovvero quella che mi serve)
         {
-          username: username,
-          votes:{serie: target}
-        },
-        { $set: { "votes.$.vote" : newvalue} }
-     )
+            $push:  //insersco in fondo all'array
+            {
+                votes: //nome del campo array
+                    { serie: serie, vote: vote } //oggetto che viene inserito
+            }
+        }
+    ).then();
 }
 
-async function  getAll()
-{
-    let allUsers =  await user.find();
-    return allUsers;
+
+async function checkIfVote(serieName, username) { 
     
+    let userfound = await user.findOne({
+        username: username
+    });
+    console.log(userfound.votes);
+
+    if (userfound.votes.length == 0) {
+        console.log("recognized length 0")
+        return undefined;
+    }
+    else {
+        let data = userfound.votes.find(x => x.serie === serieName).vote;
+        console.log("This should be equal to found user " + data);
+        return data;
+    }
+
+}
+//TODO check if modifica vote funziona
+async function updateVote(username, target, newvalue) {
+    //await serie.updateOne({name: name},{ [target] : newvalue});
+    console.log("this should be the new vote submitted " +newvalue);
+
+    let userfound = await user.findOne({
+        username: username
+    });
+    console.log(userfound);
+
+/* if there is a way to re-upload the user here is nicely changed
+   let index = userfound.votes.findIndex((x) => x.serie === target);
+    console.log(index);
+    userfound.votes[index] = {
+    serie: target,
+    vote: newvalue
+};*/
+
+//TODO doesn't work here for some reason
+await user.updateOne(
+    {
+      username: username,
+      votes:{serie: target}
+    },
+    { $set: { "votes.$.vote" : newvalue} }
+ )
+
+
+}
+
+async function getAll() {
+    let allUsers = await user.find();
+    return allUsers;
+
 }
 
 
@@ -79,3 +105,5 @@ module.exports.user = user;
 module.exports.addVote = addVote;
 module.exports.checkIfVote = checkIfVote;
 module.exports.updateVote = updateVote;
+
+//TODO investiga perchè si aggiunge un campo __v allo user, priorità bassa

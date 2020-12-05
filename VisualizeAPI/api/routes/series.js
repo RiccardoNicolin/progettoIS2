@@ -13,9 +13,8 @@ router.get('/', async (req, res, next) => {
         try {
             //trying to look for token, if there is respond with decoded
             let allseries = await serie.getAll();
-            const token = req.headers.authorization.split(" ")[1];
-            const check = jwt.verify(token, process.env.JWT_KEY);
             let token = req.headers.authorization.split(" ")[1];
+            const check = jwt.verify(token, process.env.JWT_KEY);
             let verifydec = jwt.verify(token, process.env.JWT_KEY);
             res.status(200).json({
                 allseries: allseries,
@@ -158,14 +157,22 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
     }
     else {
         //modifica voto
-        let user = await userdb.checkIfVote(id);
-        if (user !== null) {
+        let user = await userdb.checkIfVote(id, req.body.verifydec.username);
+        if (user !== undefined) {
             // user.votes. //TODO FINISH
             // await user.modi
+            console.log("this should be the vote" +user);
+            console.log("am I ending in undefined true?");
+            await userdb.updateVote(req.body.verifydec.username, id, req.body.score);
+            await serie.
             res.status(200).json({ message: "placement for now" });
         }
         else {
-            await userdb.addVote(id, req.body.score, req.verifydec.username);
+            console.log("this is found user " + user);
+            console.log("this is username " + req.body.verifydec.username);
+            let test = await userdb.find("username", "Admin");
+            console.log("this is data about the user " + test);
+            await userdb.addVote(id, req.body.score, req.body.verifydec.username);
             await serie.modifyVote(id, req.body.score);
             res.status(200).json({ message: 'Vote successfully updated' });
         }
@@ -173,5 +180,5 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
     }
 
 });
-//TODO FAI LA STESSA COSA DI TRY CATCH DELLA HOME NELLE DUE TRY CATCH DELLE SERIE
+
 module.exports = router;
