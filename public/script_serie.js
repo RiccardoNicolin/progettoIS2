@@ -52,13 +52,13 @@ function setUser(user){
         document.getElementById("logout").style.display = "block";
         document.getElementById("NotLog").style.display = "none";
         document.getElementById("open_form").style.display = "block";
-        ocument.getElementById("register").style.display = "none";
+        document.getElementById("register").style.display = "none";
     }else{
         document.getElementById("logout").style.display = "none";
         document.getElementById("NotLog").style.display = "block";
         document.getElementById("open_form").style.display = "none";
         document.getElementById("New_Comment").style.display = "none";
-        ocument.getElementById("register").style.display = "block";
+        document.getElementById("register").style.display = "block";
     }
 }
 
