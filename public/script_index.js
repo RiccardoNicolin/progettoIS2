@@ -3,6 +3,7 @@ function Logout(){
     document.getElementById("login").style.display = "block";
     document.getElementById("user").innerHTML = "";
     document.getElementById("logout").style.display = "none";
+    document.getElementById("register").style.display = "block";
 }
 
 
@@ -16,8 +17,11 @@ function setUser(user){
         document.getElementById("user").innerHTML = user;
         document.getElementById("login").style.display = "none";
         document.getElementById("logout").style.display = "block";
+        document.getElementById("register").style.display = "none";
     }else{
         document.getElementById("logout").style.display = "none";
+        document.getElementById("login").style.display = "block";
+        document.getElementById("register").style.display = "block";
     }
 }
 
@@ -60,7 +64,7 @@ function creaLinks (){
     })
     .then(res => res.json())
     .then(json => {
-        const res = json.find(element => element.name == query);
+        const res = json.allseries.find(element => element.name == query);
         if (res === undefined){
             document.getElementById("result").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
         }else{

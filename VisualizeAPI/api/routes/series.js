@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 
 router.get('/', async (req, res, next) => {
     // ritorna tutte le serie
-    //let allSerie = await serie.find();
+    //let allSerie = await serie.find()
     const token = req.headers.authorization.split(" ")[1];
     if (token != "000") {
         try {
@@ -36,8 +36,12 @@ router.get('/', async (req, res, next) => {
             verifydec: ""
         });
     }
-
-
+   /* let token = req.headers.authorization.split(" ")[1];
+    let verifydec = jwt.verify(token, process.env.JWT_KEY);
+    res.status(200).json({
+        allseries: allseries,
+        verifydec: verifydec
+    })*/
 });
 
 router.post('/', checkAuth, async (req, res) => {
