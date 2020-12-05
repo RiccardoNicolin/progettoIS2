@@ -14,7 +14,18 @@ function DispalyComment(comments){
     comments.map(element => document.getElementById("comments").innerHTML += '<span>Autore:'+element.poster+'</span><hr class="aut-comm"><span>'+element.comment+'</span><hr class="next">');
 }
 
+function Logout(){
+    localStorage.setItem("token", "000");
+    document.getElementById("login").style.display = "block";
+    document.getElementById("user").innerHTML = "";
+    document.getElementById("logout").style.display = "none";
+    settaserie(0);
+}
+
 function setUser(user){
+    if (user === undefined){
+        Logout();
+    }
     let token = localStorage.getItem("token");
     if (token != "000"){
         document.getElementById("user").innerHTML = user;
@@ -30,13 +41,7 @@ function setUser(user){
     }
 }
 
-function Logout(){
-    localStorage.setItem("token", "000");
-    document.getElementById("login").style.display = "block";
-    document.getElementById("user").innerHTML = "";
-    document.getElementById("logout").style.display = "none";
-    settaserie(0);
-}
+
 
 async function fetchserie(title){
     let response = await fetch('./series/'+title, {
@@ -68,6 +73,14 @@ async function fetchserie(title){
                 document.getElementById("New_Comment").style.display = "none";
             }
             setUser(json.verifydec.username);
+            if (json.verifydec.admin == 1){
+                document.getElementById("mod").style.display = "block";
+                document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
+            }
+            else{
+                document.getElementById("mod").style.display = "none";
+                document.getElementById("mod").innerHTML = '';
+            }
             document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
             DispalyComment(json.selected.comments);
         })
@@ -107,7 +120,7 @@ function AddVote(points){
         headers: { 'Content-Type': 'application/json',
                     Authorization:'Bearer '+localStorage.getItem("token")
                 },
-        body: JSON.stringify( {nome:title, score: points} )
+        body: JSON.stringify( {score: points} )
     })
     .then(res => settaserie(0));
 }

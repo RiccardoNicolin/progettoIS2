@@ -1,6 +1,5 @@
 function registraUtente(){
     var user = document.getElementById("Username").value;
-    console.log(user);
     var mail = document.getElementById("Email").value;
     var pass = document.getElementById("Password").value;
     if (user.length == 0 || mail.length==0 || pass.length==0){

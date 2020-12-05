@@ -6,7 +6,7 @@ module.exports = (req, res, next ) => {
         try {
             //checking if the token is valid            
                 const verifydec = jwt.verify(token, process.env.JWT_KEY);
-                req.verifydec = verifydec;
+                req.body.verifydec = verifydec;
                 next();
             
             

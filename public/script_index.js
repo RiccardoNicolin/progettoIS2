@@ -1,5 +1,16 @@
+function Logout(){
+    localStorage.setItem("token", "000");
+    document.getElementById("login").style.display = "block";
+    document.getElementById("user").innerHTML = "";
+    document.getElementById("logout").style.display = "none";
+}
+
+
 
 function setUser(user){
+    if (user === undefined){
+        Logout();
+    }
     let token = localStorage.getItem("token");
     if (token != "000"){
         document.getElementById("user").innerHTML = user;
@@ -10,12 +21,6 @@ function setUser(user){
     }
 }
 
-function Logout(){
-    localStorage.setItem("token", "000");
-    document.getElementById("login").style.display = "block";
-    document.getElementById("user").innerHTML = "";
-    document.getElementById("logout").style.display = "none";
-}
 
 function creaLinks (){
     if (!localStorage.token){
@@ -30,7 +35,8 @@ function creaLinks (){
        }
    }
    )
-   .then (res => res.json())
+   .then (res => res.json()
+       )
    .then (json => {
     setUser(json.verifydec.username);
        for (var i = 0; i < json.serieshot.length; i++){
@@ -46,10 +52,15 @@ function creaLinks (){
 
  function Search(){
     const query = document.getElementById("search_bar").value;
-    fetch('./series/')
+    fetch('./series/',{
+        method:'GET',
+        headers: {
+            Authorization: 'Bearer '+localStorage.getItem("token")
+        }
+    })
     .then(res => res.json())
     .then(json => {
-        const res = json.find(element => element.name== query);
+        const res = json.find(element => element.name == query);
         if (res === undefined){
             document.getElementById("result").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
         }else{
