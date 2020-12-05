@@ -48,15 +48,12 @@ async function checkIfVote(serieName, username) {
     let userfound = await user.findOne({
         username: username
     });
-    console.log(userfound.votes);
 
     if (userfound.votes.length == 0) {
-        console.log("recognized length 0")
         return undefined;
     }
     else {
         let data = userfound.votes.find(x => x.serie === serieName).vote;
-        console.log("This should be equal to found user " + data);
         return data;
     }
 
@@ -64,12 +61,8 @@ async function checkIfVote(serieName, username) {
 //TODO check if modifica vote funziona
 async function updateVote(username, target, newvalue) {
     //await serie.updateOne({name: name},{ [target] : newvalue});
-    console.log("this should be the new vote submitted " +newvalue);
 
-    let userfound = await user.findOne({
-        username: username
-    });
-    console.log(userfound);
+    
 
 /* if there is a way to re-upload the user here is nicely changed
    let index = userfound.votes.findIndex((x) => x.serie === target);
@@ -79,16 +72,13 @@ async function updateVote(username, target, newvalue) {
     vote: newvalue
 };*/
 
-//TODO doesn't work here for some reason
 await user.updateOne(
     {
       username: username,
-      votes:{serie: target}
+      "votes.serie": target
     },
     { $set: { "votes.$.vote" : newvalue} }
  )
-
-
 }
 
 async function getAll() {

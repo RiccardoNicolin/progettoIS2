@@ -161,20 +161,16 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
     }
     else {
         //modifica voto
-        let user = await userdb.checkIfVote(id, req.body.verifydec.username);
-        if (user !== undefined) {
+        let oldvote = await userdb.checkIfVote(id, req.body.verifydec.username);
+        if (oldvote !== undefined) {
             // user.votes. //TODO FINISH
             // await user.modi
-            console.log("this should be the vote" +user);
-            console.log("am I ending in undefined true?");
             await userdb.updateVote(req.body.verifydec.username, id, req.body.score);
+            await serie.userChangedVote(id, oldvote, req.body.score);
             res.status(200).json({ message: "placement for now" });
         }
         else {
-            console.log("this is found user " + user);
-            console.log("this is username " + req.body.verifydec.username);
             let test = await userdb.find("username", "Admin");
-            console.log("this is data about the user " + test);
             await userdb.addVote(id, req.body.score, req.body.verifydec.username);
             await serie.modifyVote(id, req.body.score);
             res.status(200).json({ message: 'Vote successfully updated' });

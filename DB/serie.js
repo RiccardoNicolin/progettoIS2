@@ -31,6 +31,18 @@ async function modifyVote(name, score)
     await serie.updateOne({name: name},{score: new_score, numberOfvotes:new_num}).then();
 }
 
+async function userChangedVote(name, olds, news)
+{
+    let target = await serie.findOne({name: name});
+    //il secondo oggetto rappresenta quello che vine ritornato, in questo caso il primo valore del campo score
+    //se _id: 0 non viene inserito, _id iene ritornato di default
+    let num = target.numberOfvotes
+    let tot =  num * target.score;
+    let newtot = tot - olds + news
+    let new_score = newtot / num;
+    await serie.updateOne({name: name},{score: new_score, numberOfvotes: num}).then();
+}
+
 async function addSerie(body)
 {
     let newSerie = {
@@ -100,4 +112,5 @@ module.exports.get = get;
 module.exports.getAll = getAll;
 module.exports.addSerie = addSerie;
 module.exports.modifyVote = modifyVote;
+module.exports.userChangedVote = userChangedVote;
 module.exports.serie = serie;
