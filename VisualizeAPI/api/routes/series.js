@@ -7,23 +7,31 @@ const jwt = require("jsonwebtoken");
 
 router.get('/', async (req, res, next) => {
     // ritorna tutte le serie
-    //let allSerie = await serie.find();
-    let allseries = await serie.getAll();
-    try {
-        //trying to look for token, if there is respond with decoded
-        const token = req.headers.authorization.split(" ")[1];
-        if (token != "000") {
+    //let allSerie = await serie.find()
+    const token = req.headers.authorization.split(" ")[1];
+    if (token != "000") {
+        try {
+            //trying to look for token, if there is respond with decoded
+            let allseries = await serie.getAll();
+            //const token = req.headers.authorization.split(" ")[1];
             const check = jwt.verify(token, process.env.JWT_KEY);
+            //let token = req.headers.authorization.split(" ")[1];
+            let verifydec = jwt.verify(token, process.env.JWT_KEY);
             res.status(200).json({
                 allseries: allseries,
                 verifydec: verifydec
             })
-        }
-        else {
-            throw "Missing Token";
-        }
 
-    } catch (error) {
+        } catch (error) {
+            let allseries = await serie.getAll();
+            res.status(200).json({
+                allseries: allseries,
+                verifydec: ""
+            });
+        }
+    }
+    else {
+        let allseries = await serie.getAll();
         res.status(200).json({
             allseries: allseries,
             verifydec: ""
@@ -60,18 +68,35 @@ router.post('/', checkAuth, async (req, res) => {
 router.get('/:name', async (req, res, next) => {
     const id = req.params.name;
     //get series info specifying by username
-    let selected = await serie.get(id);
 
-    try {
-        //trying to look for token, if there is respond with decoded, also TODO check if vote was casted
-        const token = req.headers.authorization.split(" ")[1];
-        if (token != "000") {
+    const token = req.headers.authorization.split(" ")[1];
+    if (token != "000") {
+        try {
+            //trying to look for token, if there is respond with decoded, also TODO check if vote was casted
+            const token = req.headers.authorization.split(" ")[1];
             const check = jwt.verify(token, process.env.JWT_KEY);
+            let selected = await serie.get(id);
+            if (selected) {
+                let token = req.headers.authorization.split(" ")[1];
+                let verifydec = jwt.verify(token, process.env.JWT_KEY);
+                res.status(200).json({
+                    selected: selected,
+                    verifydec: verifydec
+                });
+            }
+
+        } catch (error) {
+            let selected = await serie.get(id);
+            if (selected) {
+                res.status(200).json({
+                    selected: selected,
+                    verifydec: ""
+                });
+            }
         }
-        else {
-            throw "Missing Token";
-        }
-    } catch (error) {
+    }
+    else {
+        let selected = await serie.get(id);
         if (selected) {
             res.status(200).json({
                 selected: selected,
@@ -80,14 +105,7 @@ router.get('/:name', async (req, res, next) => {
         }
     }
 
-    if (selected) {
-        let token = req.headers.authorization.split(" ")[1];
-        let verifydec = jwt.verify(token, process.env.JWT_KEY);
-        res.status(200).json({
-            selected: selected,
-            verifydec: verifydec
-        });
-    }
+
 
 });
 
@@ -147,8 +165,8 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
         let user = await userdb.checkIfVote(id);
         if (user !== null) {
             // user.votes. //TODO FINISH
-           // await user.modi
-           res.status(200).json({message: "placement for now"});
+            // await user.modi
+            res.status(200).json({ message: "placement for now" });
         }
         else {
             await userdb.addVote(id, req.body.score, req.verifydec.username);
@@ -159,5 +177,5 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
     }
 
 });
-
+//TODO FAI LA STESSA COSA DI TRY CATCH DELLA HOME NELLE DUE TRY CATCH DELLE SERIE
 module.exports = router;
