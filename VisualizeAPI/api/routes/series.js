@@ -168,7 +168,6 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
             console.log("this should be the vote" +user);
             console.log("am I ending in undefined true?");
             await userdb.updateVote(req.body.verifydec.username, id, req.body.score);
-            await serie.
             res.status(200).json({ message: "placement for now" });
         }
         else {
