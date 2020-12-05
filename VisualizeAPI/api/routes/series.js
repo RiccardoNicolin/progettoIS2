@@ -10,7 +10,7 @@ router.get('/' , async (req, res, next) =>{
 
 router.post('/', async (req, res) =>{
     //post req for home page, esempio postare manualmente hot in frontpage
-    if (!req.body.nome || !req.body.genre || !req.body.actors || !req.body.seasons || !req.body.poster || !req.body.tag){
+    if (!req.body.name || !req.body.genre || !req.body.actors || !req.body.seasons || !req.body.poster || !req.body.tag){
         res.status(500).json({error: "Not all fields present"});
     }
     else{
@@ -22,13 +22,17 @@ router.post('/', async (req, res) =>{
     
 });
 
-router.get('/:name', async (req, res, next) =>{
+router.get('/:name', async (req, res) =>{
     const id = req.params.name;
     //get series info specifying by username
     let selected = await serie.get(id);
     if(selected)
     {
         res.status(200).json(selected);
+    }
+    else
+    {
+        res.status(404).json({message: "Serie not found"});
     }
     
 });

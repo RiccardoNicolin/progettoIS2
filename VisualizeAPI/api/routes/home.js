@@ -8,12 +8,17 @@ const serie = require('../../../DB/serie');
 router.get('/', async (req, res) =>{
     //get req for home page, visualizes hot and new series for unsubscribed user
 
-        let serieshot = await serie.findMore('tag', "hot") //seleziona tutte le serie dove uno degli elementi del campo tag è quello specificato
+        let serieshot = await serie.findMore('tag', "hot"); //seleziona tutte le serie dove uno degli elementi del campo tag è quello specificato
         let seriesnew = await serie.findMore('tag', "new");
-        res.status(200).json({
-            serieshot,
-            seriesnew
-            });
+        
+        let completo = {
+            serieshot: serieshot,
+            seriesnew: seriesnew
+        };
+
+        res.status(200).json(completo);
+
+        
    
 });
 

@@ -4,9 +4,7 @@ var mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 var bcrypt = require('bcrypt');
-
 mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
-
 var user = require('./user');
 var serie = require('./serie');
 
@@ -63,8 +61,6 @@ serie.serie.deleteMany().then( () => {
     new serie.serie(Firefly).save();
     new serie.serie(Brek).save();
 });
-
-console.log("DB Inizialized");
 
 async function inizializeDB()
 {

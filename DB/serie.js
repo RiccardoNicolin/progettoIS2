@@ -34,14 +34,14 @@ async function modificaVoto(name, score)
 async function addSerie(body)
 {
     let newSerie = {
-        name: body.nome,
+        name: body.name,
         poster: body.poster,
-        genre: body.genere,
+        genre: body.genre,
         tag: body.tag,
         score: 0.0,
         numberOfvotes: 0,
-        actors: body.attori,
-        seasons: body.stagioni,
+        actors: body.actors,
+        seasons: body.seasons,
         comments: []
         }
         await new serie(newSerie).save();
@@ -55,7 +55,7 @@ async function  getAll()
 
 async function get(name)
 {
-    let data= await serie.findOne({name: name})
+    let data= await serie.findOne({name: name});
     return data;
 }
 
