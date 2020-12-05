@@ -48,12 +48,15 @@ async function checkIfVote(serieName, username) {
     let userfound = await user.findOne({
         username: username
     });
-
     if (userfound.votes.length == 0) {
-        return undefined;
+        return 0;
     }
     else {
-        let data = userfound.votes.find(x => x.serie === serieName).vote;
+        let data = userfound.votes.find(x => x.serie === serieName);
+        if (data !== undefined){
+            data = data.vote;
+        }
+        else {data = 0;}
         return data;
     }
 

@@ -53,27 +53,19 @@ function setUser(user){
         document.getElementById("NotLog").style.display = "none";
         document.getElementById("open_form").style.display = "block";
         document.getElementById("register").style.display = "none";
+        document.getElementById("cast_vote").style.display = "block";
     }else{
         document.getElementById("logout").style.display = "none";
         document.getElementById("NotLog").style.display = "block";
         document.getElementById("open_form").style.display = "none";
         document.getElementById("New_Comment").style.display = "none";
         document.getElementById("register").style.display = "block";
+        document.getElementById("cast_vote").style.display = "none";
     }
 }
 
 
 
-async function fetchserie(title){
-    let response = await fetch('./series/'+title, {
-        method:'GET',
-        headers: {
-            Authorization: 'Bearer '+localStorage.getItem("token")
-        }
-    });
-    let data = await response.json();
-    return data;
-}
     function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
         const title = getParameterByName('name');
         fetch ('./series/'+title, {
@@ -94,6 +86,8 @@ async function fetchserie(title){
                 document.getElementById("New_Comment").style.display = "none";
             }
             setUser(json.verifydec.username);
+
+           
             if (json.verifydec.admin == 1){
                 document.getElementById("mod").style.display = "block";
                 document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
@@ -101,6 +95,14 @@ async function fetchserie(title){
             else{
                 document.getElementById("mod").style.display = "none";
                 document.getElementById("mod").innerHTML = '';
+            }
+            let v = json.verifydec.voted;
+            for (var i=1; i<=5; i++){
+                if (i==v){
+                    document.getElementById("vote"+i).style.backgroundColor = "yellow";
+                }else {
+                    document.getElementById("vote"+i).style.backgroundColor = "white";
+                }
             }
             document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
             DispalyComment(json.selected.comments);

@@ -78,11 +78,22 @@ router.get('/:name', async (req, res, next) => {
             if (selected) {
                 let token = req.headers.authorization.split(" ")[1];
                 let verifydec = jwt.verify(token, process.env.JWT_KEY);
+                let v = await userdb.checkIfVote(id, verifydec.username);
+                verifydec.voted = v;
                 res.status(200).json({
                     selected: selected,
                     verifydec: verifydec
                 });
             }
+                else {
+                    let selected = await serie.get(id);
+                    if (selected) {
+                        res.status(200).json({
+                            selected: selected,
+                            verifydec: ""
+                        });
+                    }
+                }
 
         } catch (error) {
             let selected = await serie.get(id);
@@ -94,15 +105,7 @@ router.get('/:name', async (req, res, next) => {
             }
         }
     }
-    else {
-        let selected = await serie.get(id);
-        if (selected) {
-            res.status(200).json({
-                selected: selected,
-                verifydec: ""
-            });
-        }
-    }
+    
 
 
 
@@ -162,7 +165,7 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
     else {
         //modifica voto
         let oldvote = await userdb.checkIfVote(id, req.body.verifydec.username);
-        if (oldvote !== undefined) {
+        if (oldvote !== 0) {
             // user.votes. //TODO FINISH
             // await user.modi
             await userdb.updateVote(req.body.verifydec.username, id, req.body.score);
