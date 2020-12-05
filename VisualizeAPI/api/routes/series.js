@@ -14,6 +14,10 @@ router.get('/', async (req, res, next) => {
         const token = req.headers.authorization.split(" ")[1];
         if (token != "000") {
             const check = jwt.verify(token, process.env.JWT_KEY);
+            res.status(200).json({
+                allseries: allseries,
+                verifydec: verifydec
+            })
         }
         else {
             throw "Missing Token";
@@ -25,12 +29,12 @@ router.get('/', async (req, res, next) => {
             verifydec: ""
         });
     }
-    let token = req.headers.authorization.split(" ")[1];
+   /* let token = req.headers.authorization.split(" ")[1];
     let verifydec = jwt.verify(token, process.env.JWT_KEY);
     res.status(200).json({
         allseries: allseries,
         verifydec: verifydec
-    })
+    })*/
 });
 
 router.post('/', checkAuth, async (req, res) => {

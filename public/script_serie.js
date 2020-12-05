@@ -9,6 +9,25 @@ function getParameterByName(name, url = window.location.href) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
 
+function Search(){
+    const query = document.getElementById("search_bar").value;
+    fetch('./series/',{
+        method:'GET',
+        headers: {
+            Authorization: 'Bearer '+localStorage.getItem("token")
+        }
+    })
+    .then(res => res.json())
+    .then(json => {
+        const res = json.allseries.find(element => element.name == query);
+        if (res === undefined){
+            document.getElementById("search_message").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
+        }else{
+            document.getElementById("search_message").innerHTML='RESULT: <a href="./serie.html?name='+res.name+'">'+res.name+'</a>';
+        }
+    });
+}
+
 function DispalyComment(comments){
     document.getElementById("comments").innerHTML = "";
     comments.map(element => document.getElementById("comments").innerHTML += '<span>Autore:'+element.poster+'</span><hr class="aut-comm"><span>'+element.comment+'</span><hr class="next">');
@@ -33,11 +52,13 @@ function setUser(user){
         document.getElementById("logout").style.display = "block";
         document.getElementById("NotLog").style.display = "none";
         document.getElementById("open_form").style.display = "block";
+        ocument.getElementById("register").style.display = "none";
     }else{
         document.getElementById("logout").style.display = "none";
         document.getElementById("NotLog").style.display = "block";
         document.getElementById("open_form").style.display = "none";
         document.getElementById("New_Comment").style.display = "none";
+        ocument.getElementById("register").style.display = "block";
     }
 }
 
