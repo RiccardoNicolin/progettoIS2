@@ -44,11 +44,12 @@ function creaLinks (){
    .then (json => {
     setUser(json.verifydec.username);
        for (var i = 0; i < json.serieshot.length; i++){
-            document.getElementById("link_serie_hot").innerHTML+= '<a href="./serie.html?name='+json.serieshot[i].name+'">'+json.serieshot[i].name+'</a><br>';
+            document.getElementById("link_serie_hot").innerHTML+=
+             '<div class="single"><a href="./serie.html?name='+json.serieshot[i].name+'"><img src='+json.serieshot[i].poster+'><br><span>'+json.serieshot[i].name+'</span></a></div>';
        }
        for (var i = 0; i < json.seriesnew.length; i++){
-            document.getElementById("link_serie_new").innerHTML+='<a href="./serie.html?name='+json.seriesnew[i].name+'">'+json.seriesnew[i].name+'</a><br>';
-        }
+            document.getElementById("link_serie_new").innerHTML+='<div class="single"><a href="./serie.html?name='+json.seriesnew[i].name+'"><img src='+json.seriesnew[i].poster+'><br><span>'+json.seriesnew[i].name+'</span></a></div>';
+       }
     });
 }
 

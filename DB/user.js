@@ -10,7 +10,8 @@ var User_schema = mongoose.Schema({
     email: String,
     password: String,
     admin: Number,
-    votes: [votes_schema]
+    votes: [votes_schema],
+    subbed: [String]
 });
 
 const user = mongoose.model('user', User_schema);
@@ -23,7 +24,7 @@ async function find(propertyName, value) {
 }
 
 function addUser(body, hashedpass, cb) {
-    let newuser = { username: body.username, email: body.email, password: hashedpass, admin: 0 };
+    let newuser = { username: body.username, email: body.email, password: hashedpass, admin: 0, subbed:[] };
     new user(newuser).save().then(
         cb()
     );

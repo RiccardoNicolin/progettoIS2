@@ -14,8 +14,12 @@ function registraUtente(){
         } )
         .then (res => res.json())
         .then(json => {
+            if (json.message == "User creation successful!"){
+                window.open("../","_self")
+            }
+            else{
             document.getElementById("Message").innerHTML = json.message;
-            return;
+            }
         })
         .catch( error => console.error(error) );
     }

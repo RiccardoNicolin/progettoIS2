@@ -16,13 +16,15 @@ var utente1 = {
     username: "Admin",
         email: "admin@admin",
         password: "admin",
-        admin: 1
+        admin: 1,
+        subbed: []
 }
 var utente2 = {
     username: "Beppe",
     email : "beppe@mail.com",
     password: "canto",
-    admin: 0
+    admin: 0,
+    subbed: []
 }
 //hashing password
 bcrypt.hash(utente2.password,10, (err, pass) => utente2.password = pass);
