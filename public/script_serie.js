@@ -54,6 +54,7 @@ function setUser(user){
         document.getElementById("open_form").style.display = "block";
         document.getElementById("register").style.display = "none";
         document.getElementById("cast_vote").style.display = "block";
+        document.getElementById("subscribe").style.display = "block";
     }else{
         document.getElementById("logout").style.display = "none";
         document.getElementById("NotLog").style.display = "block";
@@ -61,9 +62,10 @@ function setUser(user){
         document.getElementById("New_Comment").style.display = "none";
         document.getElementById("register").style.display = "block";
         document.getElementById("cast_vote").style.display = "none";
+        document.getElementById("subscribe").style.display = "none";
+
     }
 }
-
 
 
     function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
@@ -108,6 +110,9 @@ function setUser(user){
              }
             document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
             DispalyComment(json.selected.comments);
+            if (json.watched != 0){
+                document.getElementById("subscribe").display = "none";
+            }
         })
     }
 
@@ -149,4 +154,27 @@ function AddVote(points){
     })
     .then(res => settaserie(0));
 }
+
+
+
+function Subscribe(){
+    const title = getParameterByName('name');
+    fetch('./series/'+title, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer '+localStorage.getItem("token")
+        },
+        body: JSON.stringify( {watchednum: 1} )
+    })
+    //.then(res => {settaserie(0);
+    .then (res => res.json())
+    .then(json => {
+        console.log(json.watchedres);
+        settaserie(0);
+    })
+}
+
 settaserie(1);
+
+

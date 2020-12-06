@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+const seriedb = require('./serie');
 
 var votes_schema = mongoose.Schema({
     serie: String,
@@ -16,7 +17,6 @@ var User_schema = mongoose.Schema({
     password: String,
     admin: Number,
     votes: [votes_schema],
-   /* subbed: [String]*/
     watching: [watching_schema]
 });
 
@@ -37,26 +37,28 @@ function addUser(body, hashedpass, cb) {
 }
 
 //returns array of all series watched by username
+
+
 async function findAllWatched(username) { 
     
     let userfound = await user.findOne({
         username: username
     });
-
     if (userfound.watching.length == 0) {
         return 0;
     }
 
     else {
-        let data = userfound.watching.seriename.map();
-        if (data == undefined){
-            data = 0;
+        let list = userfound.watching;
+        for (var i=0; i<list.length; i++){
+            list[i] = await seriedb.get(list[i].seriename);
         }
-        return data;
+        if (list == undefined){
+            list = 0;
+        }
+        return list;
     }
-
 }
-
 //returns if username is watching serieName and if so what episode they are on
 async function findIfWatched(serieName, username) { 
     

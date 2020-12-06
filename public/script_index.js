@@ -18,10 +18,12 @@ function setUser(user){
         document.getElementById("login").style.display = "none";
         document.getElementById("logout").style.display = "block";
         document.getElementById("register").style.display = "none";
+        document.getElementById("subbed").style.display = "block";
     }else{
         document.getElementById("logout").style.display = "none";
         document.getElementById("login").style.display = "block";
         document.getElementById("register").style.display = "block";
+        document.getElementById("subbed").style.display = "none";
     }
 }
 
@@ -30,7 +32,6 @@ function creaLinks (){
     if (!localStorage.token){
         localStorage.setItem("token", "000");
     }
-   
    fetch('./home',
    {
        method: 'GET',
@@ -50,6 +51,15 @@ function creaLinks (){
        for (var i = 0; i < json.seriesnew.length; i++){
             document.getElementById("link_serie_new").innerHTML+='<div class="single"><a href="./serie.html?name='+json.seriesnew[i].name+'"><img src='+json.seriesnew[i].poster+'><br><span>'+json.seriesnew[i].name+'</span></a></div>';
        }
+       //console.log(json.serieswatched);
+      if (json.serieswatched != undefined){
+        for (var i = 0; i < json.serieswatched.length; i++){
+            console.log("start sub");
+            document.getElementById("link_serie_seguite").innerHTML+=
+            '<div class="single"><a href="./serie.html?name='+json.serieswatched[i].name+'"><img src='+json.serieswatched[i].poster+'><br><span>'+json.serieswatched[i].name+'</span></a></div>';
+            }
+        }else{document.getElementById("subbed").style.display = "none";}
+
     });
 }
 

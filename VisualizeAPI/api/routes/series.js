@@ -80,7 +80,7 @@ router.get('/:name', async (req, res, next) => {
                 let verifydec = jwt.verify(token, process.env.JWT_KEY);
                 let v = await userdb.checkIfVote(id, verifydec.username);
                 verifydec.voted = v;
-                let watched = userdb.findIfWatched(id, verifydec.username);
+                let watched = await userdb.findIfWatched(id, verifydec.username);
                 res.status(200).json({
                     selected: selected,
                     verifydec: verifydec,

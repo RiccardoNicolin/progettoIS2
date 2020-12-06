@@ -9,7 +9,6 @@ router.get('/', async (req, res) => {
     //get req for home page, visualizes hot and new series for unsubscribed user
     let token = req.headers.authorization.split(" ")[1];
     if (token != "000"){
-
     try {
         //trying to look for token, if token is present and is valid also search the users bookmarked/in vision series
             let token = req.headers.authorization.split(" ")[1];
