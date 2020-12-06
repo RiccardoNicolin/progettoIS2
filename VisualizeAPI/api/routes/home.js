@@ -16,11 +16,23 @@ router.get('/', async (req, res) => {
             const verifydec = jwt.verify(token, process.env.JWT_KEY);
             let serieshot = await serie.findMore('tag', "hot"); //seleziona tutte le serie dove uno degli elementi del campo tag è quello specificato
             let seriesnew = await serie.findMore('tag', "new");
-            res.status(200).json({
-                serieshot,
-                seriesnew,
-                verifydec: verifydec//pass decoded token
-            });
+            let serieswatched = await user.findAllWatched(verifydec.username);
+            if (serieswatched == 0){
+                res.status(200).json({
+                    serieshot,
+                    seriesnew,
+                    verifydec: verifydec//pass decoded token
+                });
+            }
+            else{
+                res.status(200).json({
+                    serieshot,
+                    seriesnew,
+                    serieswatched,
+                    verifydec: verifydec//pass decoded token
+                });
+            }
+            
         }
     catch (error) {
         //if error businness as usual it's not logged in

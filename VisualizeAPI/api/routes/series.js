@@ -80,9 +80,11 @@ router.get('/:name', async (req, res, next) => {
                 let verifydec = jwt.verify(token, process.env.JWT_KEY);
                 let v = await userdb.checkIfVote(id, verifydec.username);
                 verifydec.voted = v;
+                let watched = userdb.findIfWatched(id, verifydec.username);
                 res.status(200).json({
                     selected: selected,
-                    verifydec: verifydec
+                    verifydec: verifydec,
+                    watched: watched
                 });
             }
                 else {
@@ -118,13 +120,23 @@ router.post('/:name', checkAuth, async (req, res) => {
     //let verifydec = jwt.verify(token, process.env.JWT_KEY);
     let poster = req.body.verifydec.username; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
-    if (!poster || !comment) {
+    let watchednum = req.body.watchednum;
+    if ((!poster || !comment) && (!watchednum)) {
         res.status(500).json({ message: "Missing parameters" });
     }
     else {
-
-        await serie.addComment(id, poster, comment);
-        res.status(201).json({ message: "Comment Stored" });
+        if (!watchednum){
+            //enter add comment
+            await serie.addComment(id, poster, comment);
+            res.status(201).json({ message: "Comment Stored" });
+        }
+        else{
+            watchedres = await userdb.addWatched(id, req.body.verifydec.username, watchednum);
+            res.status(201).json({
+                message: "Watched added!",
+                watchedres: watchedres //codice 0/1/2 a seconda di che operazione è avvenuta, lo mando che forse può servire
+            })
+        }
     }
 });
 
