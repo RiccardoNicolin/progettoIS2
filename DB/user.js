@@ -11,7 +11,7 @@ var User_schema = mongoose.Schema({
     password: String,
     admin: Number,
     votes: [votes_schema],
-    subbed: [String]
+   /* subbed: [String]*/
 });
 
 const user = mongoose.model('user', User_schema);
@@ -28,6 +28,26 @@ function addUser(body, hashedpass, cb) {
     new user(newuser).save().then(
         cb()
     );
+}
+
+async function findAllWatched(username) { 
+    
+    let userfound = await user.findOne({
+        username: username
+    });
+
+    if (userfound.subbed.length == 0) {
+        return 0;
+    }
+
+    else {
+        let data = userfound.subbed.serie.map();
+        if (data == undefined){
+            data = 0;
+        }
+        return data;
+    }
+
 }
 
 async function addVote(serie, vote, username) {
@@ -62,7 +82,7 @@ async function checkIfVote(serieName, username) {
     }
 
 }
-//TODO check if modifica vote funziona
+
 async function updateVote(username, target, newvalue) {
     //await serie.updateOne({name: name},{ [target] : newvalue});
 
@@ -99,5 +119,3 @@ module.exports.user = user;
 module.exports.addVote = addVote;
 module.exports.checkIfVote = checkIfVote;
 module.exports.updateVote = updateVote;
-
-//TODO investiga perchè si aggiunge un campo __v allo user, priorità bassa

@@ -166,17 +166,14 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
         //modifica voto
         let oldvote = await userdb.checkIfVote(id, req.body.verifydec.username);
         if (oldvote !== 0) {
-            // user.votes. //TODO FINISH
-            // await user.modi
             await userdb.updateVote(req.body.verifydec.username, id, req.body.score);
             await serie.userChangedVote(id, oldvote, req.body.score);
-            res.status(200).json({ message: "placement for now" });
+            res.status(200).json({ message: "Vote successfully updated" });
         }
         else {
-            let test = await userdb.find("username", "Admin");
             await userdb.addVote(id, req.body.score, req.body.verifydec.username);
             await serie.modifyVote(id, req.body.score);
-            res.status(200).json({ message: 'Vote successfully updated' });
+            res.status(200).json({ message: 'Vote successfully recorded' });
         }
 
     }
