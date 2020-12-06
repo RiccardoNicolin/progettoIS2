@@ -87,17 +87,9 @@ router.get('/:name', async (req, res, next) => {
                     watched: watched
                 });
             }
-                else {
-                    let selected = await serie.get(id);
-                    if (selected) {
-                        res.status(200).json({
-                            selected: selected,
-                            verifydec: ""
-                        });
-                    }
-                }
+               
 
-        } catch (error) {
+        }catch (error) {
             let selected = await serie.get(id);
             if (selected) {
                 res.status(200).json({
@@ -106,12 +98,16 @@ router.get('/:name', async (req, res, next) => {
                 });
             }
         }
-    }
-    
-
-
-
-});
+    }else {
+            let selected = await serie.get(id);
+            if (selected) {
+                res.status(200).json({
+                    selected: selected,
+                    verifydec: ""
+                });
+            }
+        }
+    });
 
 router.post('/:name', checkAuth, async (req, res) => {
     //post comments

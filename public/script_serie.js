@@ -96,14 +96,16 @@ function setUser(user){
                 document.getElementById("mod").style.display = "none";
                 document.getElementById("mod").innerHTML = '';
             }
+            if (localStorage.getItem("token") != "000"){
             let v = json.verifydec.voted;
-            for (var i=1; i<=5; i++){
-                if (i==v){
-                    document.getElementById("vote"+i).style.backgroundColor = "yellow";
-                }else {
-                    document.getElementById("vote"+i).style.backgroundColor = "white";
+                for (var i=1; i<=5; i++){
+                    if (i==v){
+                        document.getElementById("vote"+i).style.backgroundColor = "yellow";
+                    }else {
+                        document.getElementById("vote"+i).style.backgroundColor = "white";
+                    }
                 }
-            }
+             }
             document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
             DispalyComment(json.selected.comments);
         })
