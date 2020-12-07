@@ -55,7 +55,8 @@ async function  getAll()
 
 async function get(name)
 {
-    let data= await serie.findOne({name: name});
+    let data = await serie.findOne({name: name});
+    console.log(data);
     return data;
 }
 

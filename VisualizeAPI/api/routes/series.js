@@ -25,7 +25,9 @@ router.post('/', async (req, res) =>{
 router.get('/:name', async (req, res) =>{
     const id = req.params.name;
     //get series info specifying by username
+    console.log(id);
     let selected = await serie.get(id);
+    console.log(selected);
     if(selected)
     {
         res.status(200).json(selected);

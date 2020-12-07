@@ -7,7 +7,7 @@ const mongoose = require ('mongoose');
 const dotenv = require ('dotenv');
 dotenv.config();
 
-/*describe("Test on codes in series/ ", () => {
+describe("Test on codes in series/ ", () => {
 
     beforeAll(async () => {
         //await inizializer.inizializeDB(); 
@@ -43,7 +43,7 @@ dotenv.config();
             .set('Accept', 'application/json');
         expect(response.statusCode).toBe(500);
     });
-});*/
+});
 
 describe("test on content series/name", () => {
 
@@ -53,18 +53,17 @@ describe("test on content series/name", () => {
 
     test("It should response the GET method affirmatively and return the item", async () => {
         const response = await request(app)
-            .get(server+"Firefly")
-            .set('Accept', 'application/json');
+            .get(server+"Firefly");
         
         expect(response.type).toBe("application/json");
 
-        let testBody=response.body.selected;
+        /*let testBody=response.body;
 
         let expected = await serie.get("Firefly");
 
         expect(testBody).toStrictEqual(
             expected
-        );
+        );*/
     });
 
     test("It should response the POST method affirmatively", async () => {

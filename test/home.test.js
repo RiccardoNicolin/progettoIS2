@@ -8,7 +8,7 @@ const dotenv = require ('dotenv');
 dotenv.config();
 
 
-/*describe("Test on codes on home/", () =>{
+describe("Test on codes on home/", () =>{
 
     beforeAll(async () => {
         //await inizializer.inizializeDB(); 
@@ -37,4 +37,4 @@ dotenv.config();
         expect(response.statusCode).toBe(200);
     });
 
-});*/
+});

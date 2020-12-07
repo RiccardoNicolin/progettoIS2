@@ -7,7 +7,7 @@ const dotenv = require ('dotenv');
 dotenv.config();
 
 
-/*describe("test on codes in signup/", ()=> {
+describe("test on codes in signup/", ()=> {
 
     beforeAll(async () => {
         //await inizializer.inizializeDB(); 
@@ -36,4 +36,4 @@ dotenv.config();
             .set('Accept', 'application/json');
         expect(response.statusCode).toBe(500);
     });
-});*/
+});
