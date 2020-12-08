@@ -8,7 +8,7 @@ var votes_schema = mongoose.Schema({
 
 var watching_schema = mongoose.Schema({
     seriename: String,
-    lastwatched: Number
+    nextToWatch: Number
 })
 
 var User_schema = mongoose.Schema({
@@ -49,14 +49,19 @@ async function findAllWatched(username) {
     }
 
     else {
-        let list = userfound.watching;
-        for (var i=0; i<list.length; i++){
-            list[i] = await seriedb.get(list[i].seriename);
+        let listuser = userfound.watching;
+        let listserie = [];
+        let storageserie;
+        let storagenum;
+        for (var i=0; i<listuser.length && i<6; i++){
+            storageserie = await seriedb.get(listuser[i].seriename);
+            storagenum = listuser[i].nextToWatch;
+            listserie.push({storageserie: storageserie, storagenum: storagenum});
         }
-        if (list == undefined){
-            list = 0;
+        if (listserie == undefined){
+            listserie = 0;
         }
-        return list;
+        return listserie;
     }
 }
 //returns if username is watching serieName and if so what episode they are on
@@ -74,7 +79,7 @@ async function findIfWatched(serieName, username) {
     else {
         let data = userfound.watching.find(x => x.seriename === serieName);
         if (data !== undefined){
-            data = data.lastwatched;
+            data = data.nextToWatch;
         }
         else {data = 0; }//serie not found
         return data;//0 not found, any number found and its the episode number
@@ -96,7 +101,7 @@ async function addWatched(serieName, username, episodenum) {
                 $push:  //insersco in fondo all'array
                 {
                     watching: //nome del campo array
-                        { seriename: serieName, lastwatched: episodenum } //oggetto che viene inserito
+                        { seriename: serieName, nextToWatch: episodenum } //oggetto che viene inserito
                 }
             }
         ).then();
@@ -106,16 +111,16 @@ async function addWatched(serieName, username, episodenum) {
     else {
         let data = userfound.watching.find(x => x.seriename === serieName);
         if (data !== undefined){
-            if (data.lastwatched < episodenum){
+            if (data.nextToWatch < episodenum){
                 //modify existing
             await user.updateOne(
                 {
                   username: username,
                   "watching.seriename": serieName
                 },
-                { $set: { "watching.$.lastwatched" : episodenum} }
+                { $set: { "watching.$.nextToWatch" : episodenum} }
              )
-             return 1; //code/signal for "modified number of lastwatched"
+             return 1; //code/signal for "modified number of nextToWatch"
             }
             
             else{
@@ -130,7 +135,7 @@ async function addWatched(serieName, username, episodenum) {
                     $push:  //insersco in fondo all'array
                     {
                         watching: //nome del campo array
-                            { seriename: serieName, lastwatched: episodenum } //oggetto che viene inserito
+                            { seriename: serieName, nextToWatch: episodenum } //oggetto che viene inserito
                     }
                 }
             ).then();
