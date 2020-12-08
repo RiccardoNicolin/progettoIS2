@@ -6,9 +6,8 @@ const request = require("supertest");
 const app = require("../VisualizeAPI/app.js");
 const server="/series/";
 const serie = require("../DB/serie.js")
-const inizializer = require("../DB/MongoDB.js");
 
-describe("Test on codes in series/ ", () => {
+/*describe("Test on codes in series/ ", () => {
 
     beforeAll(() => {
         inizializer.inizializeDB();
@@ -120,5 +119,5 @@ describe("test on content series/name", () => {
             });
         expect(response.statusCode).toBe(500);
     });
-});
+});*/
 

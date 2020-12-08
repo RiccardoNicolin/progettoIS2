@@ -5,9 +5,7 @@
 const request = require("supertest");
 const app = require("../VisualizeAPI/app.js");
 const server="/signup/";
-const inizializer = require("../DB/MongoDB.js");
-
-describe("test on codes in signup/", ()=> {
+/*describe("test on codes in signup/", ()=> {
 
     beforeAll(() => {
         inizializer.inizializeDB();
@@ -36,4 +34,4 @@ describe("test on codes in signup/", ()=> {
             .set('Accept', 'application/json');
         expect(response.statusCode).toBe(500);
     });
-});
+});*/
