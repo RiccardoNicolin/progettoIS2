@@ -1,11 +1,7 @@
 const express = require('express');
 const app = express();
 //const db = require('../DB.js');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config();
 
-mongoose.connect(process.env.DB_URL_TEST, {useNewUrlParser: true, useUnifiedTopology: true})
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

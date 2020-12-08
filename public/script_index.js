@@ -56,7 +56,7 @@ function creaLinks (){
         for (var i = 0; i < json.serieswatched.length; i++){
             console.log("start sub");
             document.getElementById("link_serie_seguite").innerHTML+=
-            '<div class="single"><a href="./serie.html?name='+json.serieswatched[i].name+'"><img src='+json.serieswatched[i].poster+'><br><span>'+json.serieswatched[i].name+'</span></a></div>';
+            '<div class="single"><a href="./serie.html?name='+json.serieswatched[i].storageserie.name+'"><img src='+json.serieswatched[i].storageserie.poster+'><br><span>'+json.serieswatched[i].storageserie.name+'</span></a></div>';
             }
         }else{document.getElementById("subbed").style.display = "none";}
 
