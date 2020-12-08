@@ -11,6 +11,7 @@ dotenv.config();
 router.post('/', async (req, res) =>{
     //check if the user exists
     let user= await userdb.find("username", req.body.username);
+    console.log("Questo è l'user" + user); //test riga
     if (user){    
         //checking if the password is correct
         bcrypt.compare(req.body.password, user.password, (err, result) => {
