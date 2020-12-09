@@ -6,17 +6,27 @@ const request = require("supertest");
 const app = require("../VisualizeAPI/app.js");
 const server="/series/";
 const serie = require("../DB/serie.js")
-const inizializer = require("../DB/MongoDB.js");
+const inizializer = require("../DB/InizializeDB");
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 describe("Test on codes in series/ ", () => {
 
-    beforeAll(() => {
-        inizializer.inizializeDB();
+    beforeAll(async () => {
+
+        await mongoose.connect(process.env.DB_TEST3, {useNewUrlParser: true, useUnifiedTopology: true});
+
+        await inizializer.init();
+    });
+
+    afterAll(async () =>{
+        await mongoose.connection.close();
     });
 
     test("It should response the GET method affirmatively", async () => {
       const response = await request(app)
-            .get(server);
+            .get(server)
+            .set({Authorization: 'Bearer 000'});
         expect(response.statusCode).toBe(200);
     });
 
@@ -31,7 +41,8 @@ describe("Test on codes in series/ ", () => {
                 seasons: 3,
                 poster: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png/260px-Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png",
             })
-            .set('Accept', 'application/json');
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer 000'});
         expect(response.statusCode).toBe(201);
     });
 
@@ -41,21 +52,31 @@ describe("Test on codes in series/ ", () => {
             .send({
                 name : "",
             })
-            .set('Accept', 'application/json');
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer 000'});
         expect(response.statusCode).toBe(500);
     });
 });
 
 describe("test on content series/name", () => {
 
-    beforeAll(() => {
-        inizializer.inizializeDB();
+    beforeAll(async () => {
+
+        await mongoose.connect(process.env.DB_TEST3, {useNewUrlParser: true, useUnifiedTopology: true});
+
+        await inizializer.init();
     });
+
+    afterAll(async () =>{
+        await mongoose.connection.close();
+    });
+
 
     test("It should response the GET method affirmatively and return the item", async () => {
         const response = await request(app)
             .get(server+"Firefly")
-            .set('Accept', 'application/json');
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer 000'});
         expect(response.type).toBe("application/json");
 
         let testBody={
@@ -77,7 +98,9 @@ describe("test on content series/name", () => {
                 name: "Firefly",
                 poster: "Gianfrantonio",
                 comment: "a me me piace nutella"
-            });
+            })
+            .set({Authorization: 'Bearer 000'});
+
         expect(response.statusCode).toBe(201);
     });
 
@@ -88,7 +111,8 @@ describe("test on content series/name", () => {
                 name: "",
                 poster: "",
                 comment: "a me me piace nutella"
-            });
+            })
+            .set({Authorization: 'Bearer 000'});
         expect(response.statusCode).toBe(500);
     });
 
@@ -97,7 +121,9 @@ describe("test on content series/name", () => {
             .patch(server+"Firefly")
             .send({
                 score: 8
-            });
+            })
+            .set({Authorization: 'Bearer 000'});
+
         expect(response.statusCode).toBe(200);
     });
 
@@ -107,7 +133,9 @@ describe("test on content series/name", () => {
             .send({
                 target: "seasons",
                 change: "2"
-            });
+            })
+            .set({Authorization: 'Bearer 000'});
+
         expect(response.statusCode).toBe(200);
     });
 
@@ -117,7 +145,8 @@ describe("test on content series/name", () => {
             .send({
                 target: "",
                 change: "6"
-            });
+            })
+            .set({Authorization: 'Bearer 000'});
         expect(response.statusCode).toBe(500);
     });
 });

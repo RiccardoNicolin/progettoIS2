@@ -6,13 +6,23 @@ const request = require("supertest");
 const app = require("../VisualizeAPI/app.js");
 const server="/home/";
 const serie = require("../DB/serie.js");
-//const inizializer = require("../DB/MongoDB.js");
+const inizializer = require("../DB/InizializeDB");
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 describe("Test on codes on home/", () =>{
 
-    beforeAll(() => {
-        //inizializer.inizializeDB();
+    beforeAll(async () => {
+
+        await mongoose.connect(process.env.DB_TEST1, {useNewUrlParser: true, useUnifiedTopology: true});
+
+        await inizializer.init();
     });
+
+    afterAll(async () =>{
+        await mongoose.connection.close();
+    });
+
 
     test("It should response the GET method affirmatively and return the item", async () => {
         const response = await request(app)
@@ -20,8 +30,6 @@ describe("Test on codes on home/", () =>{
             .set('Accept', 'application/json' )
             .set({Authorization: 'Bearer 000'});
         expect(response.type).toBe("application/json");
-
-        console.log(response.body);
 
         let res=response.body;
         
