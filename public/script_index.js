@@ -6,7 +6,10 @@ function Logout(){
     document.getElementById("register").style.display = "block";
 }
 
-
+function Login(){
+    sessionStorage.setItem("old_url","../");
+    window.open("./login.html","_self");
+}
 
 function setUser(user){
     if (user === undefined){
@@ -51,7 +54,6 @@ function creaLinks (){
        for (var i = 0; i < json.seriesnew.length; i++){
             document.getElementById("link_serie_new").innerHTML+='<div class="single"><a href="./serie.html?name='+json.seriesnew[i].name+'"><img src='+json.seriesnew[i].poster+'><br><span>'+json.seriesnew[i].name+'</span></a></div>';
        }
-       //console.log(json.serieswatched);
       if (json.serieswatched != undefined){
         for (var i = 0; i < json.serieswatched.length; i++){
             console.log("start sub");

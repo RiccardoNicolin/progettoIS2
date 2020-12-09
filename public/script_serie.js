@@ -9,6 +9,12 @@ function getParameterByName(name, url = window.location.href) {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
 
+function Login(){
+    const title = getParameterByName('name');
+    sessionStorage.setItem("old_url","../serie.html?name="+title);
+    window.open("../login.html","_self")
+}
+
 function Search(){
     const query = document.getElementById("search_bar").value;
     fetch('./series/',{
