@@ -5,8 +5,13 @@ const dotenv = require('dotenv');
 dotenv.config();
 const inzialize = require('./InizializeDB');
 
-await mongoose.connect(process.env.DB_URL_TEST, {useNewUrlParser: true, useUnifiedTopology: true});
+async function connectAndIinit() {
 
-await inzialize.init();
+    await mongoose.connect(process.env.DB_URL_TEST, {useNewUrlParser: true, useUnifiedTopology: true});
 
-await mongoose.disconnect();
+    await inzialize.init();
+
+    await mongoose.disconnect();
+};
+
+connectAndIinit();
