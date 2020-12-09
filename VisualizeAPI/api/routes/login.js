@@ -14,6 +14,8 @@ router.post('/', async (req, res) =>{
     console.log("Questo è l'user" + user); //test riga
     if (user){    
         //checking if the password is correct
+        console.log("merdaccia2");
+
         bcrypt.compare(req.body.password, user.password, (err, result) => {
             if (err){
                 res.status(401).json({
@@ -22,12 +24,13 @@ router.post('/', async (req, res) =>{
             }
             //if the password is correct create a jwt token and send it back
            else  if (result){
+
                 const token = jwt.sign({
                     email: user.email,
                     username: user.username,
                     admin: user.admin
                 }, process.env.JWT_KEY, {
-                    expiresIn: "3y"
+                    expiresIn: "1h"
                 } )
                 return res.status(200).json({
                     message: "Authentication successful",
@@ -43,6 +46,7 @@ router.post('/', async (req, res) =>{
     }
     else {
         //fail for non existing user
+        console.log("hey2");
         res.status(401).json({
             message: "Authentication unsuccessful, retry using other data"
         });

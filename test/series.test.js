@@ -42,7 +42,7 @@ describe("Test on codes in series/ ", () => {
                 poster: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png/260px-Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png",
             })
             .set('Accept', 'application/json')
-            .set({Authorization: 'Bearer 000'});
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
         expect(response.statusCode).toBe(201);
     });
 
@@ -53,7 +53,7 @@ describe("Test on codes in series/ ", () => {
                 name : "",
             })
             .set('Accept', 'application/json')
-            .set({Authorization: 'Bearer 000'});
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
         expect(response.statusCode).toBe(500);
     });
 });
@@ -76,10 +76,10 @@ describe("test on content series/name", () => {
         const response = await request(app)
             .get(server+"Firefly")
             .set('Accept', 'application/json')
-            .set({Authorization: 'Bearer 000'});
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
         expect(response.type).toBe("application/json");
 
-        let res=  JSON.stringify(response.body);
+        let res=  JSON.stringify(response.body.selected);
         
         let query = await serie.get("Firefly");
 
@@ -96,7 +96,7 @@ describe("test on content series/name", () => {
                 poster: "Gianfrantonio",
                 comment: "a me me piace nutella"
             })
-            .set({Authorization: 'Bearer 000'});
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
 
         expect(response.statusCode).toBe(201);
     });
@@ -105,11 +105,9 @@ describe("test on content series/name", () => {
         const response = await request(app)
             .post(server+"Firefly")
             .send({
-                name: "",
-                poster: "",
-                comment: "a me me piace nutella"
+                comment: ""
             })
-            .set({Authorization: 'Bearer 000'});
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
         expect(response.statusCode).toBe(500);
     });
 
@@ -119,7 +117,7 @@ describe("test on content series/name", () => {
             .send({
                 score: 8
             })
-            .set({Authorization: 'Bearer 000'});
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
 
         expect(response.statusCode).toBe(200);
     });
@@ -131,7 +129,7 @@ describe("test on content series/name", () => {
                 target: "seasons",
                 change: "2"
             })
-            .set({Authorization: 'Bearer 000'});
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
 
         expect(response.statusCode).toBe(200);
     });
@@ -143,7 +141,7 @@ describe("test on content series/name", () => {
                 target: "",
                 change: "6"
             })
-            .set({Authorization: 'Bearer 000'});
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
         expect(response.statusCode).toBe(500);
     });
 });

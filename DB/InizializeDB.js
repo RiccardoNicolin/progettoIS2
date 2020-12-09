@@ -29,6 +29,7 @@ var testuser = {
 //hashing password
 bcrypt.hash(utente2.password,10, (err, pass) => utente2.password = pass);
 bcrypt.hash(utente1.password,10, (err, pass) => utente1.password = pass);
+bcrypt.hash(testuser.password,10, (err, pass) => testuser.password = pass);
 
 //inizializza serie
 var Firefly = {

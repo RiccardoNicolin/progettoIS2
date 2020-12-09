@@ -47,7 +47,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', checkAuth, async (req, res) => {
     //post req for home page, esempio postare manualmente hot in frontpage
     if (req.body.verifydec.admin) {
-        if (!req.body.nome || !req.body.genre || !req.body.actors || !req.body.seasons || !req.body.poster || !req.body.tag) {
+        if (!req.body.name || !req.body.genre || !req.body.actors || !req.body.seasons || !req.body.poster || !req.body.tag) {
             res.status(500).json({ error: "Not all fields present" });
         }
         else {
