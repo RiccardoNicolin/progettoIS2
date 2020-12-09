@@ -18,6 +18,14 @@ var utente2 = {
     admin: 0,
     subbed: []
 }
+
+var testuser = {
+    username: "testuser",
+    email : "testuser@mail.com",
+    password: "testuser",
+    admin: 1,
+    subbed: []
+}
 //hashing password
 bcrypt.hash(utente2.password,10, (err, pass) => utente2.password = pass);
 bcrypt.hash(utente1.password,10, (err, pass) => utente1.password = pass);
@@ -54,6 +62,7 @@ async function inizializeDB()
     await user.user.deleteMany().then(async () => {
         await new user.user(utente1).save();
         await new user.user(utente2).save();
+        await new user.user(testuser).save();
     });
 
     await serie.serie.deleteMany().then(async () => {
