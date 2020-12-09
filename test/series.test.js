@@ -79,16 +79,13 @@ describe("test on content series/name", () => {
             .set({Authorization: 'Bearer 000'});
         expect(response.type).toBe("application/json");
 
-        let testBody={
-            name: response.body.serie.nome,
-            genre: response.body.serie.genere,
-            actors: response.body.serie.attori,
-            seasons: response.body.serie.stagioni,
-            poster: response.body.serie.locandina
-        }
-        expect(testBody).toStrictEqual(
-            serie.get("Firefly")
-        );
+        let res=  JSON.stringify(response.body);
+        
+        let query = await serie.get("Firefly");
+
+        let test = JSON.stringify(query);
+
+        expect(test).toBe(res);
     });
 
     test("It should response the POST method affirmatively", async () => {

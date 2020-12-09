@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 const inzialize = require('./InizializeDB');
-async function connectAndIinit() {
 
 async function connectAndIinit() {
 
