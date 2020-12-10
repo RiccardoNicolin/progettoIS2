@@ -149,7 +149,7 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
         if (req.body.verifydec.admin) {
             if (!req.body.change) {res.status(500).json({ message: 'Missing change parameters' });}
             else if (!req.body.target)
-             {
+            {
                 res.status(500).json({ message: 'Missing target parameters' });
             }
             else { //DA SISTEMARE!!!!!!!!
@@ -168,7 +168,6 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
 
             }
         }
-
         else {
             res.status(401).json({
                 message: "Lacking administration privileges to do this action"
