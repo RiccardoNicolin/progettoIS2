@@ -43,6 +43,12 @@ function SetPageNewT(title){
         document.getElementById("actual_poster").innerHTML = json.selected.poster;
         var s = json.selected.seasons;
         document.getElementById("actual_seasons").innerHTML = s.toString();
+        document.getElementById("actual_actors").innerHTML = "";
+        document.getElementById("actual_tag").innerHTML = "";
+        document.getElementById("actual_genre").innerHTML = "";
+        json.selected.actors.map(x => {document.getElementById("actual_actors").innerHTML += x + ", " });
+        json.selected.tag.map(x => {document.getElementById("actual_tag").innerHTML += x + ", " });
+        json.selected.genre.map(x => {document.getElementById("actual_genre").innerHTML += x +", " });
     });
 }
 SetPage();
