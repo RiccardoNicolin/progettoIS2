@@ -11,10 +11,8 @@ dotenv.config();
 router.post('/', async (req, res) =>{
     //check if the user exists
     let user= await userdb.find("username", req.body.username);
-    console.log("Questo è l'user" + user); //test riga
     if (user){    
         //checking if the password is correct
-        console.log("merdaccia2");
 
         bcrypt.compare(req.body.password, user.password, (err, result) => {
             if (err){
@@ -32,7 +30,7 @@ router.post('/', async (req, res) =>{
                 }, process.env.JWT_KEY, {
                     expiresIn: "1h"
                 } )
-                return res.status(200).json({
+                return res.status(201).json({
                     message: "Authentication successful",
                     token:token
                 });
@@ -46,7 +44,6 @@ router.post('/', async (req, res) =>{
     }
     else {
         //fail for non existing user
-        console.log("hey2");
         res.status(401).json({
             message: "Authentication unsuccessful, retry using other data"
         });

@@ -6,10 +6,10 @@ var serie = require('./serie');
 
 var utente1 = {
     username: "Admin",
-        email: "admin@admin",
-        password: "admin",
-        admin: 1,
-        subbed: []
+    email: "admin@admin",
+    password: "admin",
+    admin: 1,
+    subbed: []
 }
 var utente2 = {
     username: "Beppe",
@@ -24,7 +24,9 @@ var testuser = {
     email : "testuser@mail.com",
     password: "testuser",
     admin: 1,
-    subbed: []
+    subbed: [],
+    watching: 
+        { seriename: "Breaking Bad", nextToWatch: 7 } //oggetto che viene inserito
 }
 //hashing password
 bcrypt.hash(utente2.password,10, (err, pass) => utente2.password = pass);

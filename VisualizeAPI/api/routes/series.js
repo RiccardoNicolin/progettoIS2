@@ -87,8 +87,6 @@ router.get('/:name', async (req, res, next) => {
                     watched: watched
                 });
             }
-               
-
         }catch (error) {
             let selected = await serie.get(id);
             if (selected) {
@@ -97,16 +95,24 @@ router.get('/:name', async (req, res, next) => {
                     verifydec: ""
                 });
             }
-        }
-    }else {
-            let selected = await serie.get(id);
-            if (selected) {
-                res.status(200).json({
-                    selected: selected,
-                    verifydec: ""
-                });
+            else
+            {
+                res.status(404).json({message: "serie not found"});
             }
         }
+    }else {
+        let selected = await serie.get(id);
+        if (selected) {
+            res.status(200).json({
+                selected: selected,
+                verifydec: ""
+            });
+        }
+        else
+        {
+            res.status(404).json({message: "serie not found"});
+        }
+    }
     });
 
 router.post('/:name', checkAuth, async (req, res) => {
@@ -166,9 +172,8 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
         else {
             res.status(401).json({
                 message: "Lacking administration privileges to do this action"
-            })
+            });
         }
-
     }
     else {
         //modifica voto

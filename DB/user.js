@@ -107,7 +107,6 @@ async function addWatched(serieName, username, episodenum) {
         ).then();
         return 0; //code/signal for "new added"
     }
-
     else {
         let data = userfound.watching.find(x => x.seriename === serieName);
         if (data !== undefined){
@@ -142,7 +141,6 @@ async function addWatched(serieName, username, episodenum) {
             return 0; //code/signal for "new added"
         }
     }
-
 }
 
 async function addVote(serie, vote, username) {
@@ -191,13 +189,13 @@ async function updateVote(username, target, newvalue) {
     vote: newvalue
 };*/
 
-await user.updateOne(
-    {
-      username: username,
-      "votes.serie": target
-    },
-    { $set: { "votes.$.vote" : newvalue} }
- )
+    await user.updateOne(
+        {
+        username: username,
+        "votes.serie": target
+        },
+        { $set: { "votes.$.vote" : newvalue} }
+    );
 }
 
 async function getAll() {
