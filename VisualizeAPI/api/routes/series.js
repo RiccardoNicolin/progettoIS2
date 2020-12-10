@@ -160,7 +160,7 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
                 if(req.body.target == 'genre' || req.body.target == 'tag' || req.body.target == 'actors'){
                     console.log("sono entrato qua");
                     let changearray = req.body.change.split(',');
-                    await serie.modifyarray(id, req.body.target, changearray);
+                    await serie.modify(id, req.body.target, changearray);
                     res.status(200).json({ message: 'Category successfuly updated' });
                 }
                 else{
