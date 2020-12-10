@@ -1,8 +1,17 @@
 var mongoose = require('mongoose');
 var Float = require('mongoose-float').loadType(mongoose, 2);
+
 const comment_schema = mongoose.Schema({
     poster: String,
     comment: String
+});
+
+var episode_schema = mongoose.Schema({
+    episodeName: String,
+    episodeNumber: Number,
+    score: Float,
+    numberOfvotes: Number,
+    comments: [comment_schema]
 });
 
 var serie_schema = mongoose.Schema({
@@ -14,7 +23,8 @@ var serie_schema = mongoose.Schema({
     numberOfvotes: Number,
     actors: [String],
     seasons: Number,
-    comments: [comment_schema]
+    comments: [comment_schema],
+    episodes: [episode_schema]
 });
 
 const serie = mongoose.model('serie',serie_schema);
@@ -54,11 +64,52 @@ async function addSerie(body)
         numberOfvotes: 0,
         actors: body.attori,
         seasons: body.stagioni,
-        comments: []
+        comments: [],
+        episodes: []
         }
         await new serie(newSerie).save();
 }
 
+// start of episode functions
+async function addEpisode(name, body){
+
+    await serie.updateOne(
+        {name: name}, 
+        {$push:  
+            {episodes: 
+                {   episodeName: body.episodeName,
+                    episodeNumber: body.episodeNumber,
+                    score: 0.0,
+                    numberOfvotes: 0,
+                    comments: []
+                } 
+            }
+        }
+    ).then();
+}
+
+async function getEpisode(name, episodenum)
+{
+    let seriefound = await serie.findOne({
+        name: name
+    });
+
+    if (seriefound.episodes.length == 0) {
+        //no episodes available 
+        return 0;
+    }
+
+    else {
+        let data = userfound.episodes.find(x => x.episodeNumber === episodenum);
+        if (data === undefined){
+            data = 0; //Episode not found
+        } 
+        return data;//0 not found, whole episode if found
+    }
+}
+
+// modify, episode, update vote of episode, comment episode
+// end of episode functions
 async function  getAll()
 {
     let allSerie = await serie.find();
@@ -113,4 +164,6 @@ module.exports.getAll = getAll;
 module.exports.addSerie = addSerie;
 module.exports.modifyVote = modifyVote;
 module.exports.userChangedVote = userChangedVote;
+module.exports.addEpisode = addEpisode;
+module.exports.getEpisode = getEpisode;
 module.exports.serie = serie;

@@ -158,7 +158,6 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
                 db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
                  */
                 if(req.body.target == 'genre' || req.body.target == 'tag' || req.body.target == 'actors'){
-                    console.log("sono entrato qua");
                     let changearray = req.body.change.split(',');
                     await serie.modify(id, req.body.target, changearray);
                     res.status(200).json({ message: 'Category successfuly updated' });
@@ -197,4 +196,65 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
 
 });
 
+router.get('/:name/:episodenum', async (req, res, next) => {
+    const idserie = req.params.name;
+    const idepisode = req.params.episodenum;
+    //get series info specifying by username
+
+    const token = req.headers.authorization.split(" ")[1];
+    if (token != "000") {
+        try {
+            //trying to look for token, if there is respond with decoded, also TODO check if vote was casted
+            const token = req.headers.authorization.split(" ")[1];
+            const check = jwt.verify(token, process.env.JWT_KEY);
+            let selected = await serie.getEpisode(idepisode);
+            if (selected) {
+                let token = req.headers.authorization.split(" ")[1];
+                let verifydec = jwt.verify(token, process.env.JWT_KEY);
+                let idvote = idserie + idepisode;
+                let v = await userdb.checkIfVote(idvote, verifydec.username);
+                verifydec.voted = v;
+                let nextwatch = await userdb.findIfWatched(idserie, verifydec.username);
+                let watched = 0;
+                if (nextwatch > idepisode){
+                    watched = 1;
+                }
+                res.status(200).json({
+                    selected: selected,
+                    verifydec: verifydec,
+                    watched: watched  //returns 0 if it wasn't watched, 1 if it was
+                });
+            }
+        
+
+        }catch (error) {
+            let selected = await serie.getEpisode(idepisode);
+            if (selected) {
+                res.status(200).json({
+                    selected: selected,
+                    verifydec: ""
+                });
+            }
+            else{
+                res.status(404).json({
+                    message: "Episode not found"
+                })
+            }
+        }
+    }else {
+        let selected = await serie.getEpisode(idepisode);
+        if (selected) {
+            res.status(200).json({
+                selected: selected,
+                verifydec: ""
+            });
+        }
+        else{
+            res.status(404).json({
+                message: "Episode not found"
+            })
+        }
+        }
+
+});
 module.exports = router;
