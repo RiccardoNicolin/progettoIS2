@@ -1,5 +1,3 @@
-
-
 function getParameterByName(name, url = window.location.href) {
     name = name.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
@@ -61,6 +59,7 @@ function setUser(user){
         document.getElementById("register").style.display = "none";
         document.getElementById("cast_vote").style.display = "block";
         document.getElementById("subscribe").style.display = "block";
+        return user;
     }else{
         document.getElementById("logout").style.display = "none";
         document.getElementById("NotLog").style.display = "block";
@@ -69,12 +68,13 @@ function setUser(user){
         document.getElementById("register").style.display = "block";
         document.getElementById("cast_vote").style.display = "none";
         document.getElementById("subscribe").style.display = "none";
-
+        return undefined;
     }
 }
 
 
     function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
+
         const title = getParameterByName('name');
         fetch ('./series/'+title, {
             method:'GET',
@@ -93,8 +93,14 @@ function setUser(user){
                 document.getElementById("stagioni").innerHTML += s.toString();
                 document.getElementById("New_Comment").style.display = "none";
             }
-            setUser(json.verifydec.username);
-
+            let user = setUser(json.verifydec.username);
+            if (user!= undefined){
+                if (json.watched != 0 ){
+                document.getElementById("subscribe").style.display = "none";
+                document.getElementById("track_record").innerHTML = "Prossima episodio da guardare: "
+                }
+            }
+           
            
             if (json.verifydec.admin == 1){
                 document.getElementById("mod").style.display = "block";
@@ -173,7 +179,6 @@ function Subscribe(){
         },
         body: JSON.stringify( {watchednum: 1} )
     })
-    //.then(res => {settaserie(0);
     .then (res => res.json())
     .then(json => {
         console.log(json.watchedres);

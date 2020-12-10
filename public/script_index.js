@@ -4,6 +4,7 @@ function Logout(){
     document.getElementById("user").innerHTML = "";
     document.getElementById("logout").style.display = "none";
     document.getElementById("register").style.display = "block";
+    window.open("./","_self");
 }
 
 function Login(){
@@ -13,7 +14,11 @@ function Login(){
 
 function setUser(user){
     if (user === undefined){
-        Logout();
+        localStorage.setItem("token", "000");
+        document.getElementById("login").style.display = "block";
+        document.getElementById("user").innerHTML = "";
+        document.getElementById("logout").style.display = "none";
+        document.getElementById("register").style.display = "block";
     }
     let token = localStorage.getItem("token");
     if (token != "000"){
