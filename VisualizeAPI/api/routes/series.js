@@ -87,7 +87,7 @@ router.get('/:name', async (req, res, next) => {
                     watched: watched
                 });
             }
-               
+        
 
         }catch (error) {
             let selected = await serie.get(id);
@@ -142,8 +142,8 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
     if (!req.body.score) {
         if (req.body.verifydec.admin) {
             if (!req.body.change) {res.status(500).json({ message: 'Missing change parameters' });}
-            else if (!req.body.target)
-             {
+            else if (!req.body.target || !req.body.change)
+            {
                 res.status(500).json({ message: 'Missing target parameters' });
             }
             else { //DA SISTEMARE!!!!!!!!
@@ -155,10 +155,19 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
                 //COME DEFERENZIARE IL CAMPO DA UPDATARE???????
 
                 /* old code
-                 db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
+                db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
                  */
-                await serie.modify(id, req.body.target, req.body.change);
-                res.status(200).json({ message: 'Category successfuly updated' });
+                if(req.body.target == 'genre' || req.body.target == 'tag' || req.body.target == 'actors'){
+                    console.log("sono entrato qua");
+                    let changearray = req.body.change.split(',');
+                    await serie.modifyarray(id, req.body.target, changearray);
+                    res.status(200).json({ message: 'Category successfuly updated' });
+                }
+                else{
+                    await serie.modify(id, req.body.target, req.body.change);
+                    res.status(200).json({ message: 'Category successfuly updated' });
+                }
+                
 
             }
         }

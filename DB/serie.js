@@ -96,6 +96,14 @@ async function modify(name, target, newvalue)
     await serie.updateOne({name: name},{ [target] : newvalue});
 }
 
+async function modifyarray(name, target, newvalue)
+{
+    console.log(target);
+    console.log(newvalue);
+    console.log(name);
+    await serie.updateMany({name: name},{ [target] : newvalue});
+}
+
 async function findMore(propertyName, value)
 {
     let data = await serie.find({
@@ -114,3 +122,4 @@ module.exports.addSerie = addSerie;
 module.exports.modifyVote = modifyVote;
 module.exports.userChangedVote = userChangedVote;
 module.exports.serie = serie;
+module.exports.modifyarray = modifyarray;
