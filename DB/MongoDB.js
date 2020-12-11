@@ -36,6 +36,7 @@ user.user.deleteMany().then( () => {
     new user.user(utente2).save();
 });
 
+var ep1_Firefly = {episodeName: "Serenity", episodeNumber: 1, score: 0.0,numberOfvotes: 0,comments: []};
 //inizializza serie
 var Firefly = {
     name: "Firefly",
@@ -46,7 +47,8 @@ var Firefly = {
     numberOfvotes: 0.0,
     actors : ["Nathan Fillion"],
     seasons: 1,
-    comments: []
+    comments: [],
+    episodes: [ep1_Firefly]
 }
 
 
@@ -70,7 +72,7 @@ serie.serie.deleteMany().then( () => {
 
 console.log("DB Inizialized");
 
-function inizializeDB()
+ function inizializeDB()
 {
     user.user.deleteMany().then( () => {
         new user.user(utente1).save();
@@ -79,9 +81,8 @@ function inizializeDB()
 
     serie.serie.deleteMany().then( () => {
         new serie.serie(Firefly).save();
-        new serie.serie(Brek).save();
+        new serie.serie(Brpek).save();
     });
-
     console.log("DB Inizialized");
 }
 

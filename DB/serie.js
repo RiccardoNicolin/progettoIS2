@@ -28,6 +28,7 @@ var serie_schema = mongoose.Schema({
 });
 
 const serie = mongoose.model('serie',serie_schema);
+const episode = mongoose.model('episode',episode_schema);
 
 async function modifyVote(name, score)
 {
@@ -93,14 +94,13 @@ async function getEpisode(name, episodenum)
     let seriefound = await serie.findOne({
         name: name
     });
-
     if (seriefound.episodes.length == 0) {
         //no episodes available 
         return 0;
     }
 
     else {
-        let data = userfound.episodes.find(x => x.episodeNumber === episodenum);
+        let data = seriefound.episodes.find(x => x.episodeNumber == episodenum);
         if (data === undefined){
             data = 0; //Episode not found
         } 
@@ -183,4 +183,5 @@ module.exports.userChangedVote = userChangedVote;
 module.exports.addEpisode = addEpisode;
 module.exports.getEpisode = getEpisode;
 module.exports.addCommentEpisode = addCommentEpisode;
+module.exports.episode = episode;
 module.exports.serie = serie;

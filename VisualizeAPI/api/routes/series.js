@@ -199,14 +199,13 @@ router.get('/:name/:episodenum', async (req, res, next) => {
     const idserie = req.params.name;
     const idepisode = req.params.episodenum;
     //get series info specifying by username
-
     const token = req.headers.authorization.split(" ")[1];
     if (token != "000") {
         try {
             //trying to look for token, if there is respond with decoded, also TODO check if vote was casted
             const token = req.headers.authorization.split(" ")[1];
             const check = jwt.verify(token, process.env.JWT_KEY);
-            let selected = await serie.getEpisode(idepisode);
+            let selected = await serie.getEpisode(idserie,idepisode);
             if (selected) {
                 let token = req.headers.authorization.split(" ")[1];
                 let verifydec = jwt.verify(token, process.env.JWT_KEY);
@@ -219,7 +218,7 @@ router.get('/:name/:episodenum', async (req, res, next) => {
                     watched = 1;
                 }
                 let checknext = +idepisode + 1;
-                let isnotlast = await serie.getEpisode(checknext)
+                let isnotlast = await serie.getEpisode(idserie,checknext)
                 res.status(200).json({
                     selected: selected,
                     verifydec: verifydec,
@@ -235,7 +234,8 @@ router.get('/:name/:episodenum', async (req, res, next) => {
         
 
         }catch (error) {
-            let selected = await serie.getEpisode(idepisode);
+            let selected = await serie.getEpisode(idserie,idepisode);
+           
             if (selected) {
                 res.status(200).json({
                     selected: selected,
@@ -249,7 +249,7 @@ router.get('/:name/:episodenum', async (req, res, next) => {
             }
         }
     }else {
-        let selected = await serie.getEpisode(idepisode);
+        let selected = await serie.getEpisode(idserie,idepisode);
         if (selected) {
             res.status(200).json({
                 selected: selected,

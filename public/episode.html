@@ -2,8 +2,7 @@
 <html>
 
 <head>
-    <link rel="stylesheet" href="serie_style.css">
-    <title>Titolo</title>
+    <title>EPISODIO</title>
 </head>
 <body>
     <div id=top>
@@ -30,9 +29,9 @@
                 <p id ="genere">GENERE: </p>
                 <p id = "attori">ATTORI: </p>
                 <p id= "stagioni">STAGIONI: </p>
+                <p id ="number">EP Number:</p>
                 <p id = "vote_total">Score:</p>
                 <br>
-                <p id ="First_episode"></p>
                 <div id="cast_vote">
                 <span>Cast a vote:   </span>
                     <button type="button" id="vote1" onclick="AddVote(1)">1</button>
@@ -43,9 +42,9 @@
                 </div>
             </div>
         </div>
-        <div id = "subscribe">
-            <button type="button" onclick="Subscribe()">Start Traking</button>
-            <span id="track_record"></span>
+        <div id = "Set_seen">
+            <button type="button" onclick="SetSeen()">Set as already watched</button>
+            <span id="already_watched"></span>
         </div>
         <br><br>
         <h3>COMMENTI:</h3>
@@ -66,7 +65,7 @@
         </div>
         <br><br>
         <div id="comments"></div>
-    <script src="script_serie.js"></script>
+    <script src="script_episode.js"></script>
     
 </body>
 </html>
