@@ -227,6 +227,11 @@ router.get('/:name/:episodenum', async (req, res, next) => {
                     isnotlast: isnotlast //returns 0 if its the last episode, returns data of next episode if it exists
                 });
             }
+            else {
+                res.status(404).json({
+                    message: "Episode not existing in DB"
+                })
+            }
         
 
         }catch (error) {
