@@ -147,9 +147,8 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
     let id = req.params.name; //the series nome ['Firefly']
     if (!req.body.score) {
         if (req.body.verifydec.admin) {
-            if (!req.body.change) {res.status(500).json({ message: 'Missing change parameters' });}
-            else if (!req.body.target)
-             {
+            if (!req.body.target || !req.body.change)
+            {
                 res.status(500).json({ message: 'Missing target parameters' });
             }
             else { //DA SISTEMARE!!!!!!!!
@@ -161,10 +160,18 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
                 //COME DEFERENZIARE IL CAMPO DA UPDATARE???????
 
                 /* old code
-                 db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
+                db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
                  */
-                await serie.modify(id, req.body.target, req.body.change);
-                res.status(200).json({ message: 'Category successfuly updated' });
+                if(req.body.target == 'genre' || req.body.target == 'tag' || req.body.target == 'actors'){
+                    let changearray = req.body.change.split(',');
+                    await serie.modify(id, req.body.target, changearray);
+                    res.status(200).json({ message: 'Category successfuly updated' });
+                }
+                else{
+                    await serie.modify(id, req.body.target, req.body.change);
+                    res.status(200).json({ message: 'Category successfuly updated' });
+                }
+                
 
             }
         }
@@ -193,4 +200,95 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
 
 });
 
+router.get('/:name/:episodenum', async (req, res, next) => {
+    const idserie = req.params.name;
+    const idepisode = req.params.episodenum;
+    //get series info specifying by username
+
+    const token = req.headers.authorization.split(" ")[1];
+    if (token != "000") {
+        try {
+            //trying to look for token, if there is respond with decoded, also TODO check if vote was casted
+            const token = req.headers.authorization.split(" ")[1];
+            const check = jwt.verify(token, process.env.JWT_KEY);
+            let selected = await serie.getEpisode(idepisode);
+            if (selected) {
+                let token = req.headers.authorization.split(" ")[1];
+                let verifydec = jwt.verify(token, process.env.JWT_KEY);
+                let idvote = idserie + idepisode;
+                let v = await userdb.checkIfVote(idvote, verifydec.username);
+                verifydec.voted = v;
+                let nextwatch = await userdb.findIfWatched(idserie, verifydec.username);
+                let watched = 0;
+                if (nextwatch > idepisode){
+                    watched = 1;
+                }
+                let checknext = +idepisode + 1;
+                let isnotlast = await serie.getEpisode(checknext)
+                res.status(200).json({
+                    selected: selected,
+                    verifydec: verifydec,
+                    watched: watched,  //returns 0 if it wasn't watched, 1 if it was
+                    isnotlast: isnotlast //returns 0 if its the last episode, returns data of next episode if it exists
+                });
+            }
+        
+
+        }catch (error) {
+            let selected = await serie.getEpisode(idepisode);
+            if (selected) {
+                res.status(200).json({
+                    selected: selected,
+                    verifydec: ""
+                });
+            }
+            else{
+                res.status(404).json({
+                    message: "Episode not found"
+                })
+            }
+        }
+    }else {
+        let selected = await serie.getEpisode(idepisode);
+        if (selected) {
+            res.status(200).json({
+                selected: selected,
+                verifydec: ""
+            });
+        }
+        else{
+            res.status(404).json({
+                message: "Episode not found"
+            })
+        }
+        }
+});
+
+router.post('/:name/:episodenum', checkAuth, async (req, res) => {
+    //post comments or watch episode
+    let idserie = req.params.name; //la serie 
+    let idepisode = req.params.episodenum; //episode number
+    let poster = req.body.verifydec.username; //chi ha postato il commento
+    let comment = req.body.comment; //il testo del commento
+    let watchednum = +idepisode + 1;
+    if ((!poster || !comment) && (!watchednum)) {
+        res.status(500).json({ message: "Missing parameters" });
+    }
+    else {
+        if (!watchednum){
+            //enter add comment
+            await serie.addCommentEpisode(idserie, idepisode, poster, comment);
+            res.status(201).json({ message: "Comment Stored" });
+        }
+        else{
+            watchedres = await userdb.addWatched(idserie, req.body.verifydec.username, watchednum);
+            res.status(201).json({
+                message: "Watched added!",
+                watchedres: watchedres //codice 0/1/2 a seconda di che operazione è avvenuta, lo mando che forse può servire
+            })
+        }
+    }
+});
+
+//TODO register new episode, patch existing episode, implementa "last episode"
 module.exports = router;

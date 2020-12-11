@@ -18,7 +18,7 @@ function Login(){
             {
                 if (json.message === "Authentication successful"){
                     localStorage.setItem("token", json.token);
-                    window.open("../","_self")
+                    window.open(sessionStorage.getItem("old_url"),"_self");
                 }
                 else {
                     document.getElementById("message").innerHTML = json.message;

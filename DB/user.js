@@ -114,11 +114,11 @@ async function addWatched(serieName, username, episodenum) {
                 //modify existing
             await user.updateOne(
                 {
-                  username: username,
-                  "watching.seriename": serieName
+                username: username,
+                "watching.seriename": serieName
                 },
                 { $set: { "watching.$.nextToWatch" : episodenum} }
-             )
+            )
              return 1; //code/signal for "modified number of nextToWatch"
             }
             
@@ -176,13 +176,32 @@ async function checkIfVote(serieName, username) {
 
 }
 
+async function checkIfVote(serieName, username) { 
+    
+    let userfound = await user.findOne({
+        username: username
+    });
+    if (userfound.votes.length == 0) {
+        return 0;
+    }
+    else {
+        let data = userfound.votes.find(x => x.serie === serieName);
+        if (data !== undefined){
+            data = data.vote;
+        }
+        else {data = 0;}
+        return data;
+    }
+
+}
+
 async function updateVote(username, target, newvalue) {
     //await serie.updateOne({name: name},{ [target] : newvalue});
 
     
 
 /* if there is a way to re-upload the user here is nicely changed
-   let index = userfound.votes.findIndex((x) => x.serie === target);
+    let index = userfound.votes.findIndex((x) => x.serie === target);
     console.log(index);
     userfound.votes[index] = {
     serie: target,
