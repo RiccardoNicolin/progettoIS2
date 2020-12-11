@@ -225,12 +225,17 @@ router.get('/:name/:episodenum', async (req, res, next) => {
                 }
                 let checknext = +idepisode + 1;
                 let isnotlast = await serie.getEpisode(checknext)
-                res.status(200).json({
+                res.status(200).json({//ci entri se: token != 000, try block non da problemi (gli passi tutto in maniera giusta => token bearer corretto, )
                     selected: selected,
                     verifydec: verifydec,
                     watched: watched,  //returns 0 if it wasn't watched, 1 if it was
                     isnotlast: isnotlast //returns 0 if its the last episode, returns data of next episode if it exists
                 });
+            }
+            else {
+                res.status(404).json({
+                    message: "Episode not existing in DB"
+                })
             }
         
 
