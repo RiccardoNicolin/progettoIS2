@@ -218,10 +218,13 @@ router.get('/:name/:episodenum', async (req, res, next) => {
                 if (nextwatch > idepisode){
                     watched = 1;
                 }
+                let checknext = +idepisode + 1;
+                let isnotlast = await serie.getEpisode(checknext)
                 res.status(200).json({
                     selected: selected,
                     verifydec: verifydec,
-                    watched: watched  //returns 0 if it wasn't watched, 1 if it was
+                    watched: watched,  //returns 0 if it wasn't watched, 1 if it was
+                    isnotlast: isnotlast //returns 0 if its the last episode, returns data of next episode if it exists
                 });
             }
         
