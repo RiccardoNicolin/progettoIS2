@@ -9,7 +9,8 @@ function getParameterByName(name, url = window.location.href) {
 
 function Login(){
     const title = getParameterByName('name');
-    sessionStorage.setItem("old_url","../serie.html?name="+title);
+    const numep = getParameterByName('num');
+    sessionStorage.setItem("old_url","../episode.html?name="+title+"&num="+numep);
     window.open("../login.html","_self")
 }
 
@@ -38,7 +39,6 @@ function DispalyComment(comments){
 }
 
 function Logout(){
-   
     localStorage.setItem("token", "000");
     document.getElementById("login").style.display = "block";
     document.getElementById("user").innerHTML = "";
@@ -48,10 +48,10 @@ function Logout(){
 
 function setUser(user){
     if (user === undefined){
-    localStorage.setItem("token", "000");
-    document.getElementById("login").style.display = "block";
-    document.getElementById("user").innerHTML = "";
-    document.getElementById("logout").style.display = "none";
+        localStorage.setItem("token", "000");
+        document.getElementById("login").style.display = "block";
+        document.getElementById("user").innerHTML = "";
+        document.getElementById("logout").style.display = "none";
     }
     let token = localStorage.getItem("token");
     if (token != "000"){
@@ -62,7 +62,6 @@ function setUser(user){
         document.getElementById("open_form").style.display = "block";
         document.getElementById("register").style.display = "none";
         document.getElementById("cast_vote").style.display = "block";
-        document.getElementById("subscribe").style.display = "block";
         return user;
     }else{
         document.getElementById("logout").style.display = "none";
@@ -71,7 +70,7 @@ function setUser(user){
         document.getElementById("New_Comment").style.display = "none";
         document.getElementById("register").style.display = "block";
         document.getElementById("cast_vote").style.display = "none";
-        document.getElementById("subscribe").style.display = "none";
+       // document.getElementById("subscribe").style.display = "none";
         return undefined;
     }
 }
@@ -80,7 +79,8 @@ function setUser(user){
     function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
 
         const title = getParameterByName('name');
-        fetch ('./series/'+title, {
+        const numep = getParameterByName('num');
+        fetch ('./series/'+title+'/'+numep, {
             method:'GET',
             headers: {
                 Authorization: 'Bearer '+localStorage.getItem("token")
@@ -88,23 +88,20 @@ function setUser(user){
         })
         .then (res => res.json())
         .then (json => {
+            console.log(json);
             if (all === 1){
-                document.getElementById("titolo").innerHTML += json.selected.name;
+                /*document.getElementById("titolo").innerHTML += json.selected.episodeName;
                 document.getElementById("attori").innerHTML += json.selected.actors;
                 document.getElementById("genere").innerHTML += json.selected.genre;
                 document.getElementById("locandina").innerHTML = '<img src='+json.selected.poster+' id="poster">';
                 var s = json.selected.seasons;
-                document.getElementById("stagioni").innerHTML += s.toString();
+                document.getElementById("stagioni").innerHTML += s.toString();*/
+                var n = json.selected.episodeNumber;
+                document.getElementById("number").innerHTML += n.toString();
                 document.getElementById("New_Comment").style.display = "none";
-                document.getElementById("First_episode").innerHTML = '<a href="./episode.html?name='+title+'&num='+1+'">FIRST EPISODE</a>'
             }
             let user = setUser(json.verifydec.username);
-            if (user!= undefined){
-                if (json.watched != 0 ){
-                document.getElementById("subscribe").style.display = "none";
-                document.getElementById("track_record").innerHTML = "Prossima episodio da guardare: "
-                }
-            }
+            
            
            
             if (json.verifydec.admin == 1){
@@ -127,9 +124,9 @@ function setUser(user){
              }
             document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
             DispalyComment(json.selected.comments);
-            if (json.watched != 0){
+            /*if (json.watched != 0){
                 document.getElementById("subscribe").display = "none";
-            }
+            }*/
         })
     }
 
@@ -141,11 +138,12 @@ function NewComment(){
 function CreateComment(){
     const text = document.getElementById("comment_text").value;
     const title = getParameterByName('name');
+    const epnum = getParameterByName('num');
     if (text.length===0){
         document.getElementById("Message").innerHTML = "  One or more input left blank, please compile all fields";
     }else{
         document.getElementById("Message").innerHTML = "";
-        fetch('../series/'+title, {
+        fetch('../series/'+title+'/'+epnum, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json',
                         Authorization:'Bearer '+localStorage.getItem("token")
@@ -161,9 +159,9 @@ function CreateComment(){
 }
 
 function AddVote(points){
-    
     const title = getParameterByName('name');
-    fetch('../series/'+title, {
+    const epnum = getParameterByName('num');
+    fetch('../series/'+title+'/'+epnum, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json',
                     Authorization:'Bearer '+localStorage.getItem("token")
@@ -187,10 +185,15 @@ function Subscribe(){
     })
     .then (res => res.json())
     .then(json => {
+        console.log(json.watchedres);
         settaserie(0);
     })
 }
 
+function SetSeen(){};
 
 settaserie(1);
 
+
+//TODO sistemare addcomment e addvote
+//TODO add episode seen
