@@ -124,7 +124,43 @@ async function addCommentEpisode(name, episodenum, poster, comment)
         ).then();
 }
 
-// modify, episode, update vote of episode, comment episode
+async function userChangedVoteEpisode(name, episodenum, olds, news)
+{
+    let target = await serie.findOne({name: name});
+    //il secondo oggetto rappresenta quello che vine ritornato, in questo caso il primo valore del campo score
+    //se _id: 0 non viene inserito, _id iene ritornato di default
+    let num = target.numberOfvotes
+    let tot =  num * target.score;
+    let newtot = tot - olds + news
+    let new_score = newtot / num;
+    await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{"episodes.$": {score: new_score, numberOfvotes: num}}).then(); //TODO check probable fault here
+}
+
+async function modifyEpisode(name, episodenum, target, newvalue)
+{
+    if(target == episodeName){
+        await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{ "episodes.$.episodeName" : newvalue});
+    }
+    else{
+        await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{ "episodes.$.episodeNumber" : newvalue});
+    }
+}
+
+async function modifyVoteEpisode(name, episodenum, score)
+{
+    let target = await serie.findOne({name: name, "episodes.episodeNumber": episodenum});
+    console.log(target);
+    //il secondo oggetto rappresenta quello che vine ritornato, in questo caso il primo valore del campo score
+    //se _id: 0 non viene inserito, _id iene ritornato di default
+    let old_num =target.numberOfvotes;
+    let old_score = target.score;
+    let new_num = +old_num+1;
+    let new_score = ((old_score * old_num)+ score) / new_num;
+    await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{"episodes.$": {score: new_score, numberOfvotes:new_num}}).then(); //TODO CHECK
+}
+
+
+// episode
 // end of episode functions
 async function  getAll()
 {
@@ -180,7 +216,11 @@ module.exports.getAll = getAll;
 module.exports.addSerie = addSerie;
 module.exports.modifyVote = modifyVote;
 module.exports.userChangedVote = userChangedVote;
+module.exports.userChangedVoteEpisode = userChangedVoteEpisode;
 module.exports.addEpisode = addEpisode;
 module.exports.getEpisode = getEpisode;
 module.exports.addCommentEpisode = addCommentEpisode;
+module.exports.modifyEpisode = modifyEpisode;
+module.exports.modifyVoteEpisode = modifyVoteEpisode;
+
 module.exports.serie = serie;

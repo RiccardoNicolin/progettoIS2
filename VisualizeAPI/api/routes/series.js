@@ -36,7 +36,7 @@ router.get('/', async (req, res, next) => {
             verifydec: ""
         });
     }
-   /* let token = req.headers.authorization.split(" ")[1];
+    /* let token = req.headers.authorization.split(" ")[1];
     let verifydec = jwt.verify(token, process.env.JWT_KEY);
     res.status(200).json({
         allseries: allseries,
@@ -117,21 +117,42 @@ router.post('/:name', checkAuth, async (req, res) => {
     let poster = req.body.verifydec.username; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
     let watchednum = req.body.watchednum;
-    if ((!poster || !comment) && (!watchednum)) {
-        res.status(500).json({ message: "Missing parameters" });
-    }
-    else {
-        if (!watchednum){
-            //enter add comment
-            await serie.addComment(id, poster, comment);
-            res.status(201).json({ message: "Comment Stored" });
+    let episode = req.body.episode;
+    if(!episode){
+        if ((!poster || !comment) && (!watchednum)) {
+            res.status(500).json({ message: "Missing parameters" });
         }
-        else{
-            watchedres = await userdb.addWatched(id, req.body.verifydec.username, watchednum);
-            res.status(201).json({
-                message: "Watched added!",
-                watchedres: watchedres //codice 0/1/2 a seconda di che operazione è avvenuta, lo mando che forse può servire
-            })
+        else {
+            if (!watchednum){
+                //enter add comment
+                await serie.addComment(id, poster, comment);
+                res.status(201).json({ message: "Comment Stored" });
+            }
+            else{
+                watchedres = await userdb.addWatched(id, req.body.verifydec.username, watchednum);
+                res.status(201).json({
+                    message: "Watched added!",
+                    watchedres: watchedres //codice 0/1/2 a seconda di che operazione è avvenuta, lo mando che forse può servire
+                })
+            }
+        }
+    } //TODO
+    else{
+        if (req.body.verifydec.admin) {
+            if (!req.body.episode.episodeNumber || !req.body.episode.episodeName) {
+                res.status(500).json({ error: "Not all fields present" });
+            }
+            else {
+    
+                //checks if basic series data is present
+                await serie.addEpisode(id, req.body.episode);
+                res.status(201).json({ message: 'Episode added' });
+            }
+        }
+        else {
+            res.status(401).json({
+                message: "Lacking administration privileges to do this action"
+            });
         }
     }
 });
@@ -145,17 +166,7 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
             {
                 res.status(500).json({ message: 'Missing target parameters' });
             }
-            else { //DA SISTEMARE!!!!!!!!
-
-                //modifica categoria, funziona testato per mandare attori o generi bisogna mandare più chiamate change con change[0],change[1]... change[x]
-                // serie.updateOne({name: id}{$req.body.target : req.body.change}) 
-
-
-                //COME DEFERENZIARE IL CAMPO DA UPDATARE???????
-
-                /* old code
-                db.lista_serie.modificaCategoria(id, req.body.target, req.body.change);
-                 */
+            else {
                 if(req.body.target == 'genre' || req.body.target == 'tag' || req.body.target == 'actors'){
                     let changearray = req.body.change.split(',');
                     await serie.modify(id, req.body.target, changearray);
@@ -220,11 +231,13 @@ router.get('/:name/:episodenum', async (req, res, next) => {
                 }
                 let checknext = +idepisode + 1;
                 let isnotlast = await serie.getEpisode(checknext)
+                let rootserie = await serie.get(idserie);
                 res.status(200).json({
                     selected: selected,
                     verifydec: verifydec,
                     watched: watched,  //returns 0 if it wasn't watched, 1 if it was
-                    isnotlast: isnotlast //returns 0 if its the last episode, returns data of next episode if it exists
+                    isnotlast: isnotlast, //returns 0 if its the last episode, returns data of next episode if it exists
+                    rootserie: rootserie
                 });
             }
             else {
@@ -271,11 +284,12 @@ router.post('/:name/:episodenum', checkAuth, async (req, res) => {
     let poster = req.body.verifydec.username; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
     let watchednum = +idepisode + 1;
-    if ((!poster || !comment) && (!watchednum)) {
+    let watchupdate = req.body.watchupdate;
+    if ((!poster || !comment) && (!watchupdate)) {
         res.status(500).json({ message: "Missing parameters" });
     }
     else {
-        if (!watchednum){
+        if (!watchupdate){
             //enter add comment
             await serie.addCommentEpisode(idserie, idepisode, poster, comment);
             res.status(201).json({ message: "Comment Stored" });
@@ -290,5 +304,54 @@ router.post('/:name/:episodenum', checkAuth, async (req, res) => {
     }
 });
 
-//TODO register new episode, patch existing episode, implementa "last episode"
+router.patch('/:name/:episodenum', checkAuth, async (req, res, next) => {
+    //Either register a new series vote or patch something about the series
+    let idserie = req.params.name; //the series nome ['Firefly']
+    let idepisode = req.params.episodenum;
+    if (!req.body.score) {
+        if (req.body.verifydec.admin) {
+            if (!req.body.target || !req.body.change)
+            {
+                res.status(500).json({ message: 'Missing target parameters' });
+            }
+            else {
+                if(req.body.target == 'episodeName' || req.body.target == 'episodeNumber'){
+                    await serie.modifyEpisode(idserie, idepisode, req.body.target, req.body.change); 
+                    res.status(200).json({ message: 'Category successfuly updated' });
+                }
+                else{
+                    res.status(422).json({ message: 'The category provided cannot be processed' });
+                }
+                
+
+            }
+        }
+
+        else {
+            res.status(401).json({
+                message: "Lacking administration privileges to do this action"
+            })
+        }
+
+    }
+    else {
+        //modifica voto
+        let idvote = idserie + idepisode;
+        let oldvote = await userdb.checkIfVote(idvote, req.body.verifydec.username);
+        if (oldvote !== 0) {
+            await userdb.updateVote(req.body.verifydec.username, idvote, req.body.score);
+            await serie.userChangedVoteEpisode(idserie, oldvote, req.body.score); 
+            res.status(200).json({ message: "Vote successfully updated" });
+        }
+        else {
+            await userdb.addVote(idserie, req.body.score, req.body.verifydec.username);
+            await serie.modifyVoteEpisode(idserie, idepisode, req.body.score); 
+            res.status(200).json({ message: 'Vote successfully recorded' });
+        }
+
+    }
+
+});
+
+
 module.exports = router;
