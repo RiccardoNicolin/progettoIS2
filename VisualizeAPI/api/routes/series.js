@@ -225,30 +225,30 @@ router.get('/:name/:episodenum', async (req, res, next) => {
                 }
                 let checknext = +idepisode + 1;
                 let isnotlast = await serie.getEpisode(checknext)
-                res.status(200).json({//ci entri se: token != 000, try block non da problemi (gli passi tutto in maniera giusta => token bearer corretto, )
-                    selected: selected,
-                    verifydec: verifydec,
+                res.status(200).json({//ci entri se: token != 000, try block non da problemi (gli passi tutto in maniera giusta => token bearer corretto, se esiste l'episodio)
+                    selected: selected,//un grosso blocco dell'episodio richiesto
+                    verifydec: verifydec,//dati utente
                     watched: watched,  //returns 0 if it wasn't watched, 1 if it was
-                    isnotlast: isnotlast //returns 0 if its the last episode, returns data of next episode if it exists
+                    isnotlast: isnotlast //returns 0 if its the last episode, returns data of next episode if it is not last episode (next episode exists)
                 });
             }
             else {
-                res.status(404).json({
+                res.status(404).json({//ci entri se: token != 000, try block non da problemi MA l'episodio non esiste
                     message: "Episode not existing in DB"
                 })
             }
         
 
-        }catch (error) {
+        }catch (error) {//ci entri se fuckuppa qualcosa (token sbagliato ma non 000)
             let selected = await serie.getEpisode(idepisode);
             if (selected) {
                 res.status(200).json({
-                    selected: selected,
-                    verifydec: ""
+                    selected: selected,//blocco episodio richiesto
+                    verifydec: ""//no dati utenti
                 });
             }
             else{
-                res.status(404).json({
+                res.status(404).json({//ci entri se token sbagliato E episodio non esiste
                     message: "Episode not found"
                 })
             }
@@ -256,13 +256,13 @@ router.get('/:name/:episodenum', async (req, res, next) => {
     }else {
         let selected = await serie.getEpisode(idepisode);
         if (selected) {
-            res.status(200).json({
-                selected: selected,
-                verifydec: ""
+            res.status(200).json({//ci entri se token == 000, e episodio esiste
+                selected: selected,//blocco episodio richiesto
+                verifydec: ""//no dati utenti
             });
         }
         else{
-            res.status(404).json({
+            res.status(404).json({//token == 000 episodio non esiste
                 message: "Episode not found"
             })
         }
@@ -276,18 +276,18 @@ router.post('/:name/:episodenum', checkAuth, async (req, res) => {
     let poster = req.body.verifydec.username; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
     let watchednum = +idepisode + 1;
-    if ((!poster || !comment) && (!watchednum)) {
+    if ((!poster || !comment) && (!watchednum)) { //entri se non mi passi proprio nulla
         res.status(500).json({ message: "Missing parameters" });
     }
     else {
         if (!watchednum){
             //enter add comment
             await serie.addCommentEpisode(idserie, idepisode, poster, comment);
-            res.status(201).json({ message: "Comment Stored" });
+            res.status(201).json({ message: "Comment Stored" });//entri se mi passi poster E commento
         }
         else{
             watchedres = await userdb.addWatched(idserie, req.body.verifydec.username, watchednum);
-            res.status(201).json({
+            res.status(201).json({//entri se passi SOLO watched
                 message: "Watched added!",
                 watchedres: watchedres //codice 0/1/2 a seconda di che operazione è avvenuta, lo mando che forse può servire
             })
