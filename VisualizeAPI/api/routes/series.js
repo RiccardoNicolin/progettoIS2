@@ -141,8 +141,7 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
     let id = req.params.name; //the series nome ['Firefly']
     if (!req.body.score) {
         if (req.body.verifydec.admin) {
-            if (!req.body.change) {res.status(500).json({ message: 'Missing change parameters' });}
-            else if (!req.body.target || !req.body.change)
+            if (!req.body.target || !req.body.change)
             {
                 res.status(500).json({ message: 'Missing target parameters' });
             }
@@ -255,6 +254,33 @@ router.get('/:name/:episodenum', async (req, res, next) => {
             })
         }
         }
-
 });
+
+router.post('/:name/:episodenum', checkAuth, async (req, res) => {
+    //post comments or watch episode
+    let idserie = req.params.name; //la serie 
+    let idepisode = req.params.episodenum; //episode number
+    let poster = req.body.verifydec.username; //chi ha postato il commento
+    let comment = req.body.comment; //il testo del commento
+    let watchednum = +idepisode + 1;
+    if ((!poster || !comment) && (!watchednum)) {
+        res.status(500).json({ message: "Missing parameters" });
+    }
+    else {
+        if (!watchednum){
+            //enter add comment
+            await serie.addCommentEpisode(idserie, idepisode, poster, comment);
+            res.status(201).json({ message: "Comment Stored" });
+        }
+        else{
+            watchedres = await userdb.addWatched(idserie, req.body.verifydec.username, watchednum);
+            res.status(201).json({
+                message: "Watched added!",
+                watchedres: watchedres //codice 0/1/2 a seconda di che operazione è avvenuta, lo mando che forse può servire
+            })
+        }
+    }
+});
+
+//TODO register new episode, patch existing episode, implementa "last episode"
 module.exports = router;

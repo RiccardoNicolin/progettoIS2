@@ -108,6 +108,22 @@ async function getEpisode(name, episodenum)
     }
 }
 
+async function addCommentEpisode(name, episodenum, poster, comment)
+{
+        await serie.updateOne(
+            {
+                name: name,
+                "episodes.episodeNumber": episodenum
+            }, //seleziono la serie con nome == id (ovvero quella che mi serve)
+           {$push:  //insersco in fondo all'array
+                {"episodes.$.comments": //nome del campo array  //TODO maybe fucked up have to check
+                        {poster: poster,comment: comment} //oggetto che viene inserito 
+                    
+                }
+            }
+        ).then();
+}
+
 // modify, episode, update vote of episode, comment episode
 // end of episode functions
 async function  getAll()
@@ -166,4 +182,5 @@ module.exports.modifyVote = modifyVote;
 module.exports.userChangedVote = userChangedVote;
 module.exports.addEpisode = addEpisode;
 module.exports.getEpisode = getEpisode;
+module.exports.addCommentEpisode = addCommentEpisode;
 module.exports.serie = serie;
