@@ -126,11 +126,12 @@ async function addCommentEpisode(name, episodenum, poster, comment)
 
 async function userChangedVoteEpisode(name, episodenum, olds, news)
 {
-    let target = await serie.findOne({name: name});
+    let seriefound = await serie.findOne({name: name});
+    let data = seriefound.episodes.find(x => x.episodeNumber == episodenum);
     //il secondo oggetto rappresenta quello che vine ritornato, in questo caso il primo valore del campo score
     //se _id: 0 non viene inserito, _id iene ritornato di default
-    let num = target.numberOfvotes
-    let tot =  num * target.score;
+    let num = data.numberOfvotes
+    let tot =  num * data.score;
     let newtot = tot - olds + news
     let new_score = newtot / num;
     await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{"episodes.$": {score: new_score, numberOfvotes: num}}).then(); //TODO check probable fault here
@@ -146,17 +147,15 @@ async function modifyEpisode(name, episodenum, target, newvalue)
     }
 }
 
-async function modifyVoteEpisode(name, episodenum, score)
-{
-    let target = await serie.findOne({name: name, "episodes.episodeNumber": episodenum});
-    console.log(target);
-    //il secondo oggetto rappresenta quello che vine ritornato, in questo caso il primo valore del campo score
-    //se _id: 0 non viene inserito, _id iene ritornato di default
-    let old_num =target.numberOfvotes;
-    let old_score = target.score;
+async function modifyVoteEpisode(name, episodenum, score){
+let seriefound = await serie.findOne({name: name});
+let data = seriefound.episodes.find(x => x.episodeNumber == episodenum);
+    let old_num =data.numberOfvotes;
+    let old_score = data.score;
     let new_num = +old_num+1;
     let new_score = ((old_score * old_num)+ score) / new_num;
-    await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{"episodes.$": {score: new_score, numberOfvotes:new_num}}).then(); //TODO CHECK
+
+    await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{"episodes.$.score": new_score, "episodes.$.numberOfvotes": new_num}).then(); //TODO CHECK
 }
 
 
