@@ -24,11 +24,17 @@ function Search(){
     })
     .then(res => res.json())
     .then(json => {
-        const res = json.allseries.find(element => element.name == query);
+        const res = json.allseries.filter(element => element.name.includes(query));
+        console.log(res);
         if (res === undefined){
             document.getElementById("search_message").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
         }else{
-            document.getElementById("search_message").innerHTML='RESULT: <a href="./serie.html?name='+res.name+'">'+res.name+'</a>';
+            document.getElementById("search_message").innerHTML="RESULT:   ";
+            res.map(x => {
+                document.getElementById("search_message").innerHTML+='<a href="./serie.html?name='+x.name+'">'+x.name+'</a>';
+                document.getElementById("search_message").innerHTML+="    ";
+            })
+            
         }
     });
 }
@@ -222,11 +228,9 @@ function Prec(){
 
 settapagina(1);
 
-//TODO add episode seen
 //TODO Add serie
 //TODO Add episode
 //TODO Modify episode
-//TODO ricerca per nome parziale
 //Maybe: % guardate su home
 
 
