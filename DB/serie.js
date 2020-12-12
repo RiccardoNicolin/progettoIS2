@@ -83,7 +83,7 @@ if (seriefound.episodes.length == 0) {
 }
 
 else {
-    let data = seriefound.episodes.find(x => x.episodeNumber == episodenum);
+    let data = seriefound.episodes.find(x => x.episodeNumber == episodenumber);
     if (data === undefined){
         await serie.updateOne(
             {name: name}, 
@@ -153,7 +153,7 @@ async function userChangedVoteEpisode(name, episodenum, olds, news)
     let tot =  num * data.score;
     let newtot = tot - olds + news
     let new_score = newtot / num;
-    await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{"episodes.$": {score: new_score, numberOfvotes: num}}).then(); //TODO check probable fault here
+    await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{"episodes.$.score": new_tot, "episodes.$.numberOfvotes": new_score}).then(); //TODO check probable fault here
 }
 
 async function modifyEpisode(name, episodenum, target, newvalue)
