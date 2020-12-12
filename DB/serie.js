@@ -149,11 +149,11 @@ async function userChangedVoteEpisode(name, episodenum, olds, news)
     let data = seriefound.episodes.find(x => x.episodeNumber == episodenum);
     //il secondo oggetto rappresenta quello che vine ritornato, in questo caso il primo valore del campo score
     //se _id: 0 non viene inserito, _id iene ritornato di default
-    let num = data.numberOfvotes
+    let num = data.numberOfvotes;
     let tot =  num * data.score;
     let newtot = (tot - olds) + news
     let new_score = newtot / num;
-    await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{"episodes.$.score": new_tot, "episodes.$.numberOfvotes": new_score}).then(); //TODO check probable fault here
+    await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{"episodes.$.score": new_score, "episodes.$.numberOfvotes": num}).then(); //TODO check probable fault here
 }
 
 async function modifyEpisode(name, episodenum, target, newvalue)

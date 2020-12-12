@@ -343,7 +343,7 @@ router.patch('/:name/:episodenum', checkAuth, async (req, res, next) => {
         let oldvote = await userdb.checkIfVote(idvote, req.body.verifydec.username);
         if (oldvote !== 0) {
             await userdb.updateVote(req.body.verifydec.username, idvote, req.body.score);
-            await serie.userChangedVoteEpisode(idvote, oldvote, req.body.score); 
+            await serie.userChangedVoteEpisode(idserie,idepisode, oldvote, req.body.score);
             res.status(200).json({ message: "Vote successfully updated" });
         }
         else {
