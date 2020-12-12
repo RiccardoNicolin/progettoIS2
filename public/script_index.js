@@ -72,7 +72,7 @@ function creaLinks (){
 
 
 
- function Search(){
+function Search(){
     const query = document.getElementById("search_bar").value;
     fetch('./series/',{
         method:'GET',
@@ -82,11 +82,17 @@ function creaLinks (){
     })
     .then(res => res.json())
     .then(json => {
-        const res = json.allseries.find(element => element.name == query);
+        const res = json.allseries.filter(element => element.name.includes(query));
+        console.log(res);
         if (res === undefined){
-            document.getElementById("result").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
+            document.getElementById("search_message").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
         }else{
-            document.getElementById("result").innerHTML='RESULT: <a href="./serie.html?name='+res.name+'">'+res.name+'</a>';
+            document.getElementById("search_message").innerHTML="RESULT:   ";
+            res.map(x => {
+                document.getElementById("search_message").innerHTML+='<a href="./serie.html?name='+x.name+'">'+x.name+'</a>';
+                document.getElementById("search_message").innerHTML+="    ";
+            })
+            
         }
     });
 }
