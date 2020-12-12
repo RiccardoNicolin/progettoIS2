@@ -347,8 +347,8 @@ router.patch('/:name/:episodenum', checkAuth, async (req, res, next) => {
             res.status(200).json({ message: "Vote successfully updated" });
         }
         else {
-            await userdb.addVote(idserie, req.body.score, req.body.verifydec.username);
-            await serie.modifyVoteEpisode(idvote, idepisode, req.body.score); 
+            await userdb.addVote(idvote, req.body.score, req.body.verifydec.username);
+            await serie.modifyVoteEpisode(idserie, idepisode, req.body.score); 
             res.status(200).json({ message: 'Vote successfully recorded' });
         }
 

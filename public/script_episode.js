@@ -148,7 +148,7 @@ function CreateComment(){
             headers: { 'Content-Type': 'application/json',
                         Authorization:'Bearer '+localStorage.getItem("token")
                     },
-            body: JSON.stringify( {comment: text} )
+            body: JSON.stringify( {comment: text, watchupdate: 0} )
         })
         .then(res => {
             document.getElementById("New_Comment").style.display = "none";
