@@ -43,7 +43,7 @@ function Logout(){
     document.getElementById("login").style.display = "block";
     document.getElementById("user").innerHTML = "";
     document.getElementById("logout").style.display = "none";
-    settaserie(0);
+    settapagina(0);
 }
 
 function setUser(user){
@@ -70,13 +70,13 @@ function setUser(user){
         document.getElementById("New_Comment").style.display = "none";
         document.getElementById("register").style.display = "block";
         document.getElementById("cast_vote").style.display = "none";
-       // document.getElementById("subscribe").style.display = "none";
+        document.getElementById("seen_button").style.display = "none";
         return undefined;
     }
 }
 
 
-    function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
+function settapagina(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
 
         const title = getParameterByName('name');
         const numep = getParameterByName('num');
@@ -88,7 +88,6 @@ function setUser(user){
         })
         .then (res => res.json())
         .then (json => {
-            console.log(json);
             if (all === 1){
                 document.getElementById("titolo").innerHTML += json.selected.episodeName;
                 document.getElementById("attori").innerHTML += json.rootserie.actors;
@@ -98,10 +97,27 @@ function setUser(user){
                 document.getElementById("number").innerHTML += n.toString();
                 document.getElementById("New_Comment").style.display = "none";
             }
-            let user = setUser(json.verifydec.username);
+             setUser(json.verifydec.username);
+             document.getElementById("already_watched").innerHTML = "";
             
-           
-           
+
+            if (!json.isnotlast){
+                document.getElementById("Next").style.display="none";
+            }
+            else{
+                document.getElementById("Next").style.display="block";
+
+            }
+
+            if(json.selected.episodeNumber == 1){
+                document.getElementById("prec").style.display ="none";
+            }else{
+                document.getElementById("prec").style.display ="block";
+
+            }
+
+
+
             if (json.verifydec.admin == 1){
                 document.getElementById("mod").style.display = "block";
                 document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
@@ -122,9 +138,10 @@ function setUser(user){
              }
             document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
             DispalyComment(json.selected.comments);
-            /*if (json.watched != 0){
-                document.getElementById("subscribe").display = "none";
-            }*/
+            if (json.watched == 1){
+                document.getElementById("seen_button").style.display = "none";
+                document.getElementById("already_watched").innerHTML = "You have already seen this episode";
+            }
         })
     }
 
@@ -151,7 +168,7 @@ function CreateComment(){
         .then(res => {
             document.getElementById("New_Comment").style.display = "none";
             document.getElementById("open_form").style.display = "block";
-           settaserie(0);
+           settapagina(0);
         });
     }
 }
@@ -166,35 +183,52 @@ function AddVote(points){
                 },
         body: JSON.stringify( {score: points} )
     })
-    .then(res => settaserie(0));
+    .then(res => settapagina(0));
 }
 
 
-
-function Subscribe(){
+function SetSeen(){
     const title = getParameterByName('name');
-    fetch('./series/'+title, {
+    const epnum = getParameterByName('num');
+    fetch('../series/'+title+'/'+epnum, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer '+localStorage.getItem("token")
-        },
-        body: JSON.stringify( {watchednum: 1} )
+        headers: { 'Content-Type': 'application/json',
+                    Authorization:'Bearer '+localStorage.getItem("token")
+                },
+        body: JSON.stringify( {watchupdate: 1} )
     })
-    .then (res => res.json())
-    .then(json => {
-        console.log(json.watchedres);
-        settaserie(0);
-    })
-}
+    .then(res => settapagina(0));
+};
 
-function SetSeen(){};
+function Next(){
+    const title = getParameterByName('name');
+    const epnum = getParameterByName('num');
+    let next = +epnum + 1;
+    window.open("../episode.html?name='+title+'&num="+next,"_self");
+};
 
-settaserie(1);
+function Back(){
+    const title = getParameterByName('name');
+    window.open("../serie.html?name="+title,"_self");
+};
+
+function Prec(){
+    const title = getParameterByName('name');
+    const epnum = getParameterByName('num');
+    let prev = +epnum -1 ;
+    window.open("../episode.html?name='+title+'&num="+prev,"_self");
+};
 
 
-//TODO sistemare addcomment e addvote
+settapagina(1);
+
 //TODO add episode seen
+//TODO Add serie
+//TODO Add episode
+//TODO Modify episode
+//TODO ricerca per nome parziale
+//Maybe: % guardate su home
+
 
 /*add episode to serie {
     POST a /series/name

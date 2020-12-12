@@ -212,6 +212,7 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
 router.get('/:name/:episodenum', async (req, res, next) => {
     const idserie = req.params.name;
     const idepisode = req.params.episodenum;
+    let checknext = +idepisode + 1;
     //get series info specifying by username
     const token = req.headers.authorization.split(" ")[1];
     if (token != "000") {
@@ -231,7 +232,6 @@ router.get('/:name/:episodenum', async (req, res, next) => {
                 if (nextwatch > idepisode){
                     watched = 1;
                 }
-                let checknext = +idepisode + 1;
                 let isnotlast = await serie.getEpisode(idserie, checknext)
                 let rootserie = await serie.get(idserie);
                 res.status(200).json({
@@ -251,11 +251,14 @@ router.get('/:name/:episodenum', async (req, res, next) => {
 
         }catch (error) {
             let selected = await serie.getEpisode(idserie,idepisode);
-            
+            let isnotlast = await serie.getEpisode(idserie, checknext)
+            let rootserie = await serie.get(idserie);
             if (selected) {
                 res.status(200).json({
                     selected: selected,
-                    verifydec: ""
+                    verifydec: "",
+                    isnotlast: isnotlast,
+                    rootserie: rootserie
                 });
             }
             else{
@@ -266,10 +269,14 @@ router.get('/:name/:episodenum', async (req, res, next) => {
         }
     }else {
         let selected = await serie.getEpisode(idserie,idepisode);
+        let isnotlast = await serie.getEpisode(idserie, checknext)
+        let rootserie = await serie.get(idserie);
         if (selected) {
             res.status(200).json({
                 selected: selected,
-                verifydec: ""
+                verifydec: "",
+                isnotlast: isnotlast,
+                rootserie: rootserie
             });
         }
         else{
