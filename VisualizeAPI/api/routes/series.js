@@ -47,7 +47,7 @@ router.get('/', async (req, res, next) => {
 router.post('/', checkAuth, async (req, res) => {
     //post req for home page, esempio postare manualmente hot in frontpage
     if (req.body.verifydec.admin) {
-        if (!req.body.nome || !req.body.genre || !req.body.actors || !req.body.seasons || !req.body.poster || !req.body.tag) {
+        if (!req.body.name || !req.body.genre || !req.body.actors || !req.body.seasons || !req.body.poster || !req.body.tag) {
             res.status(500).json({ error: "Not all fields present" });
         }
         else {
@@ -343,12 +343,12 @@ router.patch('/:name/:episodenum', checkAuth, async (req, res, next) => {
         let oldvote = await userdb.checkIfVote(idvote, req.body.verifydec.username);
         if (oldvote !== 0) {
             await userdb.updateVote(req.body.verifydec.username, idvote, req.body.score);
-            await serie.userChangedVoteEpisode(idserie, oldvote, req.body.score); 
+            await serie.userChangedVoteEpisode(idvote, oldvote, req.body.score); 
             res.status(200).json({ message: "Vote successfully updated" });
         }
         else {
             await userdb.addVote(idserie, req.body.score, req.body.verifydec.username);
-            await serie.modifyVoteEpisode(idserie, idepisode, req.body.score); 
+            await serie.modifyVoteEpisode(idvote, idepisode, req.body.score); 
             res.status(200).json({ message: 'Vote successfully recorded' });
         }
 
