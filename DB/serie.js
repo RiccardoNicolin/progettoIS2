@@ -57,7 +57,7 @@ async function userChangedVote(name, olds, news)
 async function addSerie(body)
 {
     let newSerie = {
-        name: body.nome,
+        name: body.name,
         poster: body.poster,
         genre: body.genere,
         tag: body.tag,
@@ -83,7 +83,7 @@ if (seriefound.episodes.length == 0) {
 }
 
 else {
-    let data = seriefound.episodes.find(x => x.episodeNumber == episodenum);
+    let data = seriefound.episodes.find(x => x.episodeNumber == episodenumber);
     if (data === undefined){
         await serie.updateOne(
             {name: name}, 
