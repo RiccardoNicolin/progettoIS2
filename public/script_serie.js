@@ -96,13 +96,13 @@ function setUser(user){
                 var s = json.selected.seasons;
                 document.getElementById("stagioni").innerHTML += s.toString();
                 document.getElementById("New_Comment").style.display = "none";
-                document.getElementById("First_episode").innerHTML = '<a href="./episode.html?name='+title+'&num='+1+'">FIRST EPISODE</a>'
             }
+            document.getElementById("track_record").innerHTML = '<a href="./episode.html?name='+title+'&num='+1+'">FIRST EPISODE</a>'
             let user = setUser(json.verifydec.username);
             if (user!= undefined){
                 if (json.watched != 0 ){
-                document.getElementById("subscribe").style.display = "none";
-                document.getElementById("track_record").innerHTML = "Prossima episodio da guardare: "
+                document.getElementById("sub_button").style.display = "none";
+                document.getElementById("track_record").innerHTML = '<a href="./episode.html?name='+title+'&num='+json.watched+'">Next episode: '+json.watched+'</a>'
                 }
             }
            

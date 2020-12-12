@@ -90,12 +90,10 @@ function setUser(user){
         .then (json => {
             console.log(json);
             if (all === 1){
-                /*document.getElementById("titolo").innerHTML += json.selected.episodeName;
-                document.getElementById("attori").innerHTML += json.selected.actors;
-                document.getElementById("genere").innerHTML += json.selected.genre;
-                document.getElementById("locandina").innerHTML = '<img src='+json.selected.poster+' id="poster">';
-                var s = json.selected.seasons;
-                document.getElementById("stagioni").innerHTML += s.toString();*/
+                document.getElementById("titolo").innerHTML += json.selected.episodeName;
+                document.getElementById("attori").innerHTML += json.rootserie.actors;
+                document.getElementById("genere").innerHTML += json.rootserie.genre;
+                document.getElementById("locandina").innerHTML = '<img src='+json.rootserie.poster+' id="poster">';
                 var n = json.selected.episodeNumber;
                 document.getElementById("number").innerHTML += n.toString();
                 document.getElementById("New_Comment").style.display = "none";
