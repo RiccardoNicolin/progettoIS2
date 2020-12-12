@@ -197,3 +197,22 @@ settaserie(1);
 
 //TODO sistemare addcomment e addvote
 //TODO add episode seen
+
+/*add episode to serie {
+    POST a /series/name
+    body: {episodeNumber: x,
+            episodeName: name_ep
+    }
+
+
+    POST in /series
+    body: {
+        name: 
+        genre:[]
+        actors:[]
+        seasons:
+        poster:
+        tag:[]
+    }
+}
+*/
