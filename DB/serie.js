@@ -113,17 +113,25 @@ async function getEpisode(name, episodenum)
     let seriefound = await serie.findOne({
         name: name
     });
-    if (seriefound.episodes.length == 0) {
-        //no episodes available 
-        return 0;
-    }
 
-    else {
-        let data = seriefound.episodes.find(x => x.episodeNumber == episodenum);
-        if (data === undefined){
-            data = 0; //Episode not found
-        } 
-        return data;//0 not found, whole episode if found
+    if(seriefound)
+    {
+        if (seriefound.episodes.length == 0) {
+            //no episodes available 
+            return 0;
+        }
+        else {
+            let data =await seriefound.episodes.find(x => x.episodeNumber == episodenum);
+
+            if (data === undefined){
+                data = 0; //Episode not found
+            }
+            return data;//0 not found, whole episode if found
+        }
+    }
+    else
+    {
+        return 0;
     }
 }
 

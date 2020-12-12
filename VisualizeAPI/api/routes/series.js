@@ -87,8 +87,6 @@ router.get('/:name', async (req, res, next) => {
                     watched: watched
                 });
             }
-        
-
         }catch (error) {
             let selected = await serie.get(id);
             if (selected) {
@@ -97,16 +95,24 @@ router.get('/:name', async (req, res, next) => {
                     verifydec: ""
                 });
             }
-        }
-    }else {
-            let selected = await serie.get(id);
-            if (selected) {
-                res.status(200).json({
-                    selected: selected,
-                    verifydec: ""
-                });
+            else
+            {
+                res.status(404).json({message: "serie not found"});
             }
         }
+    }else {
+        let selected = await serie.get(id);
+        if (selected) {
+            res.status(200).json({
+                selected: selected,
+                verifydec: ""
+            });
+        }
+        else
+        {
+            res.status(404).json({message: "serie not found"});
+        }
+    }
     });
 
 router.post('/:name', checkAuth, async (req, res) => {
@@ -187,9 +193,8 @@ router.patch('/:name', checkAuth, async (req, res, next) => {
         else {
             res.status(401).json({
                 message: "Lacking administration privileges to do this action"
-            })
+            });
         }
-
     }
     else {
         //modifica voto
@@ -219,11 +224,11 @@ router.get('/:name/:episodenum', async (req, res, next) => {
             //trying to look for token, if there is respond with decoded, also TODO check if vote was casted
             const token = req.headers.authorization.split(" ")[1];
             const check = jwt.verify(token, process.env.JWT_KEY);
-            let selected = await serie.getEpisode(idserie,idepisode);
+            let selected = await serie.getEpisode(idserie, idepisode);
             if (selected) {
                 let token = req.headers.authorization.split(" ")[1];
                 let verifydec = jwt.verify(token, process.env.JWT_KEY);
-                let idvote = idserie + idepisode;
+                let idvote = idserie + idepisode; // c'è qualcosa che non va stai cercando di sommare una stringa e un numero
                 let v = await userdb.checkIfVote(idvote, verifydec.username);
                 verifydec.voted = v;
                 let nextwatch = await userdb.findIfWatched(idserie, verifydec.username);
@@ -249,35 +254,34 @@ router.get('/:name/:episodenum', async (req, res, next) => {
             }
         
 
-        }catch (error) {
-            let selected = await serie.getEpisode(idserie,idepisode);
-            
+        }catch (error) {//ci entri se fuckuppa qualcosa (token sbagliato ma non 000)
+            let selected = await serie.getEpisode(idserie, idepisode);
             if (selected) {
                 res.status(200).json({
-                    selected: selected,
-                    verifydec: ""
+                    selected: selected,//blocco episodio richiesto
+                    verifydec: ""//no dati utenti
                 });
             }
             else{
-                res.status(404).json({
+                res.status(404).json({//ci entri se token sbagliato E episodio non esiste
                     message: "Episode not found"
-                })
+                });
             }
         }
     }else {
-        let selected = await serie.getEpisode(idserie,idepisode);
+        let selected = await serie.getEpisode(idserie, idepisode);
         if (selected) {
-            res.status(200).json({
-                selected: selected,
-                verifydec: ""
+            res.status(200).json({//ci entri se token == 000, e episodio esiste
+                selected: selected,//blocco episodio richiesto
+                verifydec: ""//no dati utenti
             });
         }
         else{
-            res.status(404).json({
+            res.status(404).json({//token == 000 episodio non esiste
                 message: "Episode not found"
-            })
+            });
         }
-        }
+    }
 });
 
 router.post('/:name/:episodenum', checkAuth, async (req, res) => {
@@ -295,11 +299,11 @@ router.post('/:name/:episodenum', checkAuth, async (req, res) => {
         if (!watchupdate){
             //enter add comment
             await serie.addCommentEpisode(idserie, idepisode, poster, comment);
-            res.status(201).json({ message: "Comment Stored" });
+            res.status(201).json({ message: "Comment Stored" });//entri se mi passi poster E commento
         }
         else{
             watchedres = await userdb.addWatched(idserie, req.body.verifydec.username, watchednum);
-            res.status(201).json({
+            res.status(201).json({//entri se passi SOLO watched
                 message: "Watched added!",
                 watchedres: watchedres //codice 0/1/2 a seconda di che operazione è avvenuta, lo mando che forse può servire
             })
