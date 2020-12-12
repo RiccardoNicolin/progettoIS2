@@ -158,7 +158,7 @@ async function userChangedVoteEpisode(name, episodenum, olds, news)
 
 async function modifyEpisode(name, episodenum, target, newvalue)
 {
-    if(target == episodeName){
+    if(target == "episodeName"){
         await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{ "episodes.$.episodeName" : newvalue});
     }
     else{
