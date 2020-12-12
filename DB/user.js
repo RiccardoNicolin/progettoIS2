@@ -156,7 +156,6 @@ async function addVote(serie, vote, username) {
     ).then();
 }
 
-
 async function checkIfVote(serieName, username) { 
     
     let userfound = await user.findOne({
@@ -166,26 +165,7 @@ async function checkIfVote(serieName, username) {
         return 0;
     }
     else {
-        let data = userfound.votes.find(x => x.serie === serieName);
-        if (data !== undefined){
-            data = data.vote;
-        }
-        else {data = 0;}
-        return data;
-    }
-
-}
-
-async function checkIfVote(serieName, username) { 
-    
-    let userfound = await user.findOne({
-        username: username
-    });
-    if (userfound.votes.length == 0) {
-        return 0;
-    }
-    else {
-        let data = userfound.votes.find(x => x.serie === serieName);
+        let data =await  userfound.votes.find(x => x.serie === serieName);
         if (data !== undefined){
             data = data.vote;
         }

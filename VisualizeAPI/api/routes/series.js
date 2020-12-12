@@ -211,11 +211,11 @@ router.get('/:name/:episodenum', async (req, res, next) => {
             //trying to look for token, if there is respond with decoded, also TODO check if vote was casted
             const token = req.headers.authorization.split(" ")[1];
             const check = jwt.verify(token, process.env.JWT_KEY);
-            let selected = await serie.getEpisode(idepisode);
+            let selected = await serie.getEpisode(idserie, idepisode);
             if (selected) {
                 let token = req.headers.authorization.split(" ")[1];
                 let verifydec = jwt.verify(token, process.env.JWT_KEY);
-                let idvote = idserie + idepisode;
+                let idvote = idserie + idepisode; // c'è qualcosa che non va stai cercando di sommare una stringa e un numero
                 let v = await userdb.checkIfVote(idvote, verifydec.username);
                 verifydec.voted = v;
                 let nextwatch = await userdb.findIfWatched(idserie, verifydec.username);
@@ -224,7 +224,7 @@ router.get('/:name/:episodenum', async (req, res, next) => {
                     watched = 1;
                 }
                 let checknext = +idepisode + 1;
-                let isnotlast = await serie.getEpisode(checknext)
+                let isnotlast = await serie.getEpisode(idserie, checknext);
                 res.status(200).json({//ci entri se: token != 000, try block non da problemi (gli passi tutto in maniera giusta => token bearer corretto, se esiste l'episodio)
                     selected: selected,//un grosso blocco dell'episodio richiesto
                     verifydec: verifydec,//dati utente
@@ -240,7 +240,7 @@ router.get('/:name/:episodenum', async (req, res, next) => {
         
 
         }catch (error) {//ci entri se fuckuppa qualcosa (token sbagliato ma non 000)
-            let selected = await serie.getEpisode(idepisode);
+            let selected = await serie.getEpisode(idserie, idepisode);
             if (selected) {
                 res.status(200).json({
                     selected: selected,//blocco episodio richiesto
@@ -250,11 +250,11 @@ router.get('/:name/:episodenum', async (req, res, next) => {
             else{
                 res.status(404).json({//ci entri se token sbagliato E episodio non esiste
                     message: "Episode not found"
-                })
+                });
             }
         }
     }else {
-        let selected = await serie.getEpisode(idepisode);
+        let selected = await serie.getEpisode(idserie, idepisode);
         if (selected) {
             res.status(200).json({//ci entri se token == 000, e episodio esiste
                 selected: selected,//blocco episodio richiesto
@@ -264,9 +264,9 @@ router.get('/:name/:episodenum', async (req, res, next) => {
         else{
             res.status(404).json({//token == 000 episodio non esiste
                 message: "Episode not found"
-            })
+            });
         }
-        }
+    }
 });
 
 router.post('/:name/:episodenum', checkAuth, async (req, res) => {

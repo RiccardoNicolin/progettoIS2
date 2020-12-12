@@ -298,5 +298,110 @@ describe("test on content series/name", () => {
             .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
         expect(response.statusCode).toBe(500);
     });
+
+    
 });
 
+describe("test on content series/name/episodeNumber", () => {
+
+    beforeAll(async () => {
+
+        await mongoose.connect(process.env.DB_TEST3, {useNewUrlParser: true, useUnifiedTopology: true});
+
+        await inizializer.init();
+    });
+
+    afterAll(async () =>{
+        await mongoose.connection.close();
+    });
+
+    test("It should response the GET method affirmatively and return the item with admin token", async () => {
+        const response = await request(app)
+            .get(server+"Firefly/2")
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
+        expect(response.type).toBe("application/json");
+
+        res=response.body.selected;
+
+        res=JSON.stringify(res);
+
+        test=await serie.getEpisode("Firefly", 2);
+
+        test=JSON.stringify(test);
+
+        expect(response.statusCode).toBe(200);
+
+        expect(test).toBe(res);
+    });
+
+    test("It should response the GET method affirmatively and return the item with token 000", async () => {
+        const response = await request(app)
+            .get(server+"Firefly/1")
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer 000'});
+        expect(response.type).toBe("application/json");
+
+        res=response.body.selected;
+
+        res=JSON.stringify(res);
+
+        test=await serie.getEpisode("Firefly", 1);
+
+        test=JSON.stringify(test);
+
+        expect(response.statusCode).toBe(200);
+
+        expect(test).toBe(res);
+    });
+
+    test("It should response the GET method affirmatively and return the item with token invalid", async () => {
+        const response = await request(app)
+            .get(server+"Firefly/3")
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer invalid'});
+        expect(response.type).toBe("application/json");
+
+        res=response.body.selected;
+
+        res=JSON.stringify(res);
+
+        test=await serie.getEpisode("Firefly", 3);
+
+        test=JSON.stringify(test);
+
+        expect(response.statusCode).toBe(200);
+
+        expect(test).toBe(res);
+    });
+
+    test("It should response the GET method negatively with admin token", async () => {
+        const response = await request(app)
+            .get(server+"Firefly/1000")
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
+        expect(response.type).toBe("application/json");
+
+        expect(response.statusCode).toBe(404);
+    });
+
+    test("It should response the GET method negatively with token 000", async () => {
+        const response = await request(app)
+            .get(server+"Firefly/1000")
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer 000'});
+        expect(response.type).toBe("application/json");
+
+        expect(response.statusCode).toBe(404);
+    });
+
+    test("It should response the GET method negatively with token invalid", async () => {
+        const response = await request(app)
+            .get(server+"Firefly/1000")
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer invalid'});
+        expect(response.type).toBe("application/json");
+
+        expect(response.statusCode).toBe(404);
+    });
+});

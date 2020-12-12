@@ -43,9 +43,37 @@ var Firefly = {
     numberOfvotes: 0.0,
     actors : ["Nathan Fillion"],
     seasons: 1,
-    comments: []
-}
+    comments: [],
+    episodes: []
+};
 
+var ep1= {
+    episodeName: "il sole è rosso",
+    episodeNumber: 1,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep2= {
+    episodeName: "il sole è nero",
+    episodeNumber: 2,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep3= {
+    episodeName: "il sole è verde",
+    episodeNumber: 3,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+Firefly.episodes.push(ep1);
+Firefly.episodes.push(ep2);
+Firefly.episodes.push(ep3);
 
 var Brek = {
     name: "Breaking Bad",
@@ -57,7 +85,7 @@ var Brek = {
     actors : ["Bryan Cranston", "Aaron Paul"],
     seasons: 5,
     comments: []
-}
+};
 
 
 async function inizializeDB()
