@@ -151,7 +151,7 @@ async function userChangedVoteEpisode(name, episodenum, olds, news)
     //se _id: 0 non viene inserito, _id iene ritornato di default
     let num = data.numberOfvotes
     let tot =  num * data.score;
-    let newtot = tot - olds + news
+    let newtot = (tot - olds) + news
     let new_score = newtot / num;
     await serie.updateOne({name: name, "episodes.episodeNumber": episodenum},{"episodes.$.score": new_tot, "episodes.$.numberOfvotes": new_score}).then(); //TODO check probable fault here
 }

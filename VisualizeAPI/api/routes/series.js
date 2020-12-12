@@ -284,7 +284,7 @@ router.post('/:name/:episodenum', checkAuth, async (req, res) => {
     //post comments or watch episode
     let idserie = req.params.name; //la serie 
     let idepisode = req.params.episodenum; //episode number
-    let poster = req.body.verifydec.username; //chi ha postato il commento
+    let poster = req.body.verifydec.username; //chi ha postato il commento TODO CAMBIA PLIS
     let comment = req.body.comment; //il testo del commento
     let watchednum = +idepisode + 1;
     let watchupdate = req.body.watchupdate;
