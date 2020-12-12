@@ -72,21 +72,40 @@ async function addSerie(body)
 }
 
 // start of episode functions
-async function addEpisode(name, body){
+async function addEpisode(name, episodenumber, episodename){
+//TODO implementa controllo se esiste già
+let seriefound = await serie.findOne({
+    name: name
+});
+if (seriefound.episodes.length == 0) {
+    //no episodes available 
+    return 0;
+}
 
-    await serie.updateOne(
-        {name: name}, 
-        {$push:  
-            {episodes: 
-                {   episodeName: body.episodeName,
-                    episodeNumber: body.episodeNumber,
-                    score: 0.0,
-                    numberOfvotes: 0,
-                    comments: []
-                } 
+else {
+    let data = seriefound.episodes.find(x => x.episodeNumber == episodenum);
+    if (data === undefined){
+        await serie.updateOne(
+            {name: name}, 
+            {$push:  
+                {episodes: 
+                    {   episodeName: episodename,
+                        episodeNumber: episodenumber,
+                        score: 0.0,
+                        numberOfvotes: 0,
+                        comments: []
+                    } 
+                }
             }
-        }
-    ).then();
+        )
+        return 1;
+    } 
+    else{
+        return 0;
+    }
+}
+
+    
 }
 
 async function getEpisode(name, episodenum)

@@ -117,8 +117,8 @@ router.post('/:name', checkAuth, async (req, res) => {
     let poster = req.body.verifydec.username; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
     let watchednum = req.body.watchednum;
-    let episode = req.body.episode;
-    if(!episode){
+    console.log("Questo è l'episodio: " + req.body.episodeNumber + "   " + req.body.episodeName);
+    if(!req.body.episodeName && !req.body.episodeNumber){
         if ((!poster || !comment) && (!watchednum)) {
             res.status(500).json({ message: "Missing parameters" });
         }
@@ -139,14 +139,17 @@ router.post('/:name', checkAuth, async (req, res) => {
     } //TODO
     else{
         if (req.body.verifydec.admin) {
-            if (!req.body.episode.episodeNumber || !req.body.episode.episodeName) {
+            if (!req.body.episodeNumber || !req.body.episodeName) {
                 res.status(500).json({ error: "Not all fields present" });
             }
             else {
     
                 //checks if basic series data is present
-                await serie.addEpisode(id, req.body.episode);
-                res.status(201).json({ message: 'Episode added' });
+                let success = await serie.addEpisode(id, req.body.episodeNumber, req.body.episodeName);
+                if (success){
+                    res.status(201).json({ message: 'Episode added' });
+                }
+                else {res.status(403).json({message: 'Episode number already existing retry'})}
             }
         }
         else {
@@ -248,7 +251,7 @@ router.get('/:name/:episodenum', async (req, res, next) => {
 
         }catch (error) {
             let selected = await serie.getEpisode(idserie,idepisode);
-           
+            
             if (selected) {
                 res.status(200).json({
                     selected: selected,
