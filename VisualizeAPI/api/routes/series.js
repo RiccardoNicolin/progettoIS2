@@ -123,7 +123,6 @@ router.post('/:name', checkAuth, async (req, res) => {
     let poster = req.body.verifydec.username; //chi ha postato il commento
     let comment = req.body.comment; //il testo del commento
     let watchednum = req.body.watchednum;
-    console.log("Questo è l'episodio: " + req.body.episodeNumber + "   " + req.body.episodeName);
     if(!req.body.episodeName && !req.body.episodeNumber){
         if ((!poster || !comment) && (!watchednum)) {
             res.status(500).json({ message: "Missing parameters" });
@@ -329,8 +328,6 @@ router.patch('/:name/:episodenum', checkAuth, async (req, res, next) => {
                 else{
                     res.status(422).json({ message: 'The category provided cannot be processed' });
                 }
-                
-
             }
         }
 
