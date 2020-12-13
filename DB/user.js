@@ -22,24 +22,21 @@ var User_schema = mongoose.Schema({
 
 const user = mongoose.model('user', User_schema);
 
-async function find(propertyName, value) {
+async function find(propertyName, value) {//Finds specific user with property ("propertyName") equal to value passed ("value")
     let data = await user.findOne({
         [propertyName]: value
     });
     return data;
 }
 
-function addUser(body, hashedpass, cb) {
+function addUser(body, hashedpass, cb) {//Adds new user to database with data provided ("body" and "hashedpass"). Idk what cb is I am a bit scared of it
     let newuser = { username: body.username, email: body.email, password: hashedpass, admin: 0, subbed:[] };
     new user(newuser).save().then(
         cb()
     );
 }
 
-//returns array of all series watched by username
-
-
-async function findAllWatched(username) { 
+async function findAllWatched(username) { //returns array of first 6 series watched by user ("username") paried with how many episodes were watched
     
     let userfound = await user.findOne({
         username: username
@@ -64,8 +61,8 @@ async function findAllWatched(username) {
         return listserie;
     }
 }
-//returns if username is watching serieName and if so what episode they are on
-async function findIfWatched(serieName, username) { 
+
+async function findIfWatched(serieName, username) { //returns if user ("username") is watching target serie ("serieName") and if so what episode they are on
     
     let userfound = await user.findOne({
         username: username
@@ -87,7 +84,7 @@ async function findIfWatched(serieName, username) {
 
 }
 
-async function addWatched(serieName, username, episodenum) { 
+async function addWatched(serieName, username, episodenum) { //Checks and adds/updates target user ("username") watching status of target serie/episode ("serieName") depending on the value passed ("episodenum")
     
     let userfound = await user.findOne({
         username: username
@@ -143,7 +140,7 @@ async function addWatched(serieName, username, episodenum) {
     }
 }
 
-async function addVote(serie, vote, username) {
+async function addVote(serie, vote, username) {//Adds target serie/episode ("serie") vote ("vote") to user ("username") database of recorded votes
     await user.updateOne(
         { username: username }, //seleziono la serie con nome == id (ovvero quella che mi serve)
         {
@@ -156,7 +153,7 @@ async function addVote(serie, vote, username) {
     ).then();
 }
 
-async function checkIfVote(serieName, username) { 
+async function checkIfVote(serieName, username) { //Checks if target user ("username") has any recorded vote on target serie/episode ("serieName")
     
     let userfound = await user.findOne({
         username: username
@@ -175,18 +172,7 @@ async function checkIfVote(serieName, username) {
 
 }
 
-async function updateVote(username, target, newvalue) {
-    //await serie.updateOne({name: name},{ [target] : newvalue});
-
-    
-
-/* if there is a way to re-upload the user here is nicely changed
-    let index = userfound.votes.findIndex((x) => x.serie === target);
-    console.log(index);
-    userfound.votes[index] = {
-    serie: target,
-    vote: newvalue
-};*/
+async function updateVote(username, target, newvalue) {//Updates target user ("username") vote ("newvalue") for provided serie/episode ("target")
 
     await user.updateOne(
         {
@@ -197,7 +183,7 @@ async function updateVote(username, target, newvalue) {
     );
 }
 
-async function getAll() {
+async function getAll() {//returns all users saved in database
     let allUsers = await user.find();
     return allUsers;
 
