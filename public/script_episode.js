@@ -129,7 +129,7 @@ function settapagina(all){ //parametro all = 1 se devo caricare tutta la pagine,
 
                 if (json.verifydec.admin == 1){
                     document.getElementById("mod").style.display = "block";
-                    document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
+                    document.getElementById("mod").innerHTML = '<a href="./modify_episode.html?name='+json.rootserie.name+'&num='+json.selected.episodeNumber+'">MODIFY</a><br>'
                 }
                 else{
                     document.getElementById("mod").style.display = "none";
@@ -232,16 +232,4 @@ function Prec(){
 
 settapagina(1);
 
-//TODO Add episode
-//TODO Modify episode
 //Maybe: % guardate su home
-
-
-/*add episode to serie {
-    POST a /series/name
-    body: {episodeNumber: x,
-            episodeName: name_ep
-    }
-
-
-*/
