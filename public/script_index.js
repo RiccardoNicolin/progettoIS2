@@ -52,6 +52,7 @@ function creaLinks (){
        )
    .then (json => {
     setUser(json.verifydec.username);
+    console.log(json.verifydec);
        for (var i = 0; i < json.serieshot.length; i++){
             document.getElementById("link_serie_hot").innerHTML+=
              '<div class="single"><a href="./serie.html?name='+json.serieshot[i].name+'"><img src='+json.serieshot[i].poster+'><br><span>'+json.serieshot[i].name+'</span></a></div>';
@@ -61,11 +62,16 @@ function creaLinks (){
        }
       if (json.serieswatched != undefined){
         for (var i = 0; i < json.serieswatched.length; i++){
-            console.log("start sub");
             document.getElementById("link_serie_seguite").innerHTML+=
             '<div class="single"><a href="./serie.html?name='+json.serieswatched[i].storageserie.name+'"><img src='+json.serieswatched[i].storageserie.poster+'><br><span>'+json.serieswatched[i].storageserie.name+'</span></a></div>';
             }
         }else{document.getElementById("subbed").style.display = "none";}
+
+        if(json.verifydec.admin == 1){
+            document.getElementById("AddSerie").innerHTML = '<a href="./add_serie.html">ADD SERIE<a>';
+        }else{
+            document.getElementById("AddSerie").innerHTML = "";
+        }
 
     });
 }
@@ -85,12 +91,12 @@ function Search(){
         const res = json.allseries.filter(element => element.name.includes(query));
         console.log(res);
         if (res === undefined){
-            document.getElementById("search_message").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
+            document.getElementById("result").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
         }else{
-            document.getElementById("search_message").innerHTML="RESULT:   ";
+            document.getElementById("result").innerHTML="RESULT:   ";
             res.map(x => {
-                document.getElementById("search_message").innerHTML+='<a href="./serie.html?name='+x.name+'">'+x.name+'</a>';
-                document.getElementById("search_message").innerHTML+="    ";
+                document.getElementById("result").innerHTML+='<a href="./serie.html?name='+x.name+'">'+x.name+'</a>';
+                document.getElementById("result").innerHTML+="    ";
             })
             
         }

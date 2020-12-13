@@ -94,59 +94,63 @@ function settapagina(all){ //parametro all = 1 se devo caricare tutta la pagine,
         })
         .then (res => res.json())
         .then (json => {
-            if (all === 1){
-                document.getElementById("titolo").innerHTML += json.selected.episodeName;
-                document.getElementById("attori").innerHTML += json.rootserie.actors;
-                document.getElementById("genere").innerHTML += json.rootserie.genre;
-                document.getElementById("locandina").innerHTML = '<img src='+json.rootserie.poster+' id="poster">';
-                var n = json.selected.episodeNumber;
-                document.getElementById("number").innerHTML += n.toString();
-                document.getElementById("New_Comment").style.display = "none";
-            }
-             setUser(json.verifydec.username);
-             document.getElementById("already_watched").innerHTML = "";
-            
-
-            if (!json.isnotlast){
-                document.getElementById("Next").style.display="none";
-            }
-            else{
-                document.getElementById("Next").style.display="block";
-
-            }
-
-            if(json.selected.episodeNumber == 1){
-                document.getElementById("prec").style.display ="none";
+            if (json.message === "Episode not existing in DB" ){
+                document.getElementById("body").innerHTML = "<h1>EPISODE NOT FOUND, SORRY";
             }else{
-                document.getElementById("prec").style.display ="block";
+                if (all === 1){
+                    document.getElementById("titolo").innerHTML += json.selected.episodeName;
+                    document.getElementById("attori").innerHTML += json.rootserie.actors;
+                    document.getElementById("genere").innerHTML += json.rootserie.genre;
+                    document.getElementById("locandina").innerHTML = '<img src='+json.rootserie.poster+' id="poster">';
+                    var n = json.selected.episodeNumber;
+                    document.getElementById("number").innerHTML += n.toString();
+                    document.getElementById("New_Comment").style.display = "none";
+                }
+                setUser(json.verifydec.username);
+                document.getElementById("already_watched").innerHTML = "";
+                
 
-            }
+                if (!json.isnotlast){
+                    document.getElementById("Next").style.display="none";
+                }
+                else{
+                    document.getElementById("Next").style.display="block";
+
+                }
+
+                if(json.selected.episodeNumber == 1){
+                    document.getElementById("prec").style.display ="none";
+                }else{
+                    document.getElementById("prec").style.display ="block";
+
+                }
 
 
 
-            if (json.verifydec.admin == 1){
-                document.getElementById("mod").style.display = "block";
-                document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
-            }
-            else{
-                document.getElementById("mod").style.display = "none";
-                document.getElementById("mod").innerHTML = '';
-            }
-            if (localStorage.getItem("token") != "000"){
-            let v = json.verifydec.voted;
-                for (var i=1; i<=5; i++){
-                    if (i==v){
-                        document.getElementById("vote"+i).style.backgroundColor = "yellow";
-                    }else {
-                        document.getElementById("vote"+i).style.backgroundColor = "white";
+                if (json.verifydec.admin == 1){
+                    document.getElementById("mod").style.display = "block";
+                    document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
+                }
+                else{
+                    document.getElementById("mod").style.display = "none";
+                    document.getElementById("mod").innerHTML = '';
+                }
+                if (localStorage.getItem("token") != "000"){
+                let v = json.verifydec.voted;
+                    for (var i=1; i<=5; i++){
+                        if (i==v){
+                            document.getElementById("vote"+i).style.backgroundColor = "yellow";
+                        }else {
+                            document.getElementById("vote"+i).style.backgroundColor = "white";
+                        }
                     }
                 }
-             }
-            document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
-            DispalyComment(json.selected.comments);
-            if (json.watched == 1){
-                document.getElementById("seen_button").style.display = "none";
-                document.getElementById("already_watched").innerHTML = "You have already seen this episode";
+                document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
+                DispalyComment(json.selected.comments);
+                if (json.watched == 1){
+                    document.getElementById("seen_button").style.display = "none";
+                    document.getElementById("already_watched").innerHTML = "You have already seen this episode";
+                }
             }
         })
     }
@@ -210,7 +214,7 @@ function Next(){
     const title = getParameterByName('name');
     const epnum = getParameterByName('num');
     let next = +epnum + 1;
-    window.open("../episode.html?name='+title+'&num="+next,"_self");
+    window.open("../episode.html?name="+title+"&num="+next,"_self");
 };
 
 function Back(){
@@ -222,7 +226,7 @@ function Prec(){
     const title = getParameterByName('name');
     const epnum = getParameterByName('num');
     let prev = +epnum -1 ;
-    window.open("../episode.html?name='+title+'&num="+prev,"_self");
+    window.open("../episode.html?name="+title+"&num="+prev,"_self");
 };
 
 

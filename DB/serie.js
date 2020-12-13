@@ -55,12 +55,12 @@ async function addSerie(body)//adding new serie specified in "body"
     let newSerie = {
         name: body.name,
         poster: body.poster,
-        genre: body.genere,
+        genre: body.genre,
         tag: body.tag,
         score: 0.0,
         numberOfvotes: 0,
-        actors: body.attori,
-        seasons: body.stagioni,
+        actors: body.actors,
+        seasons: body.seasons,
         comments: [],
         episodes: []
         }

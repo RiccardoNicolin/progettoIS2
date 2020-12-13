@@ -94,6 +94,7 @@ function setUser(user){
         })
         .then (res => res.json())
         .then (json => {
+            console.log(json);
             if (all === 1){
                 document.getElementById("titolo").innerHTML += json.selected.name;
                 document.getElementById("attori").innerHTML += json.selected.actors;

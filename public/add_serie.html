@@ -1,0 +1,64 @@
+<!DOCTYPE html> 
+
+<html>
+    <head>
+        <title>Modify Serie</title>
+    </head>
+
+    <body>
+        <a href="../">HOME</a>
+        <br>
+        <br>
+        <script src="./script_add.js"></script>
+
+        <table>
+            <tr>
+                <th>FIELD</th>
+                <th>NEW</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>Title</td>
+                <td>
+                    <input type="text" id="new_title" />
+                </td>
+            </tr>
+            <tr>
+                <td>Poster</td>
+                <td>
+                    <input type="text" id="new_poster" />
+                </td>
+            </tr>
+            <tr>
+                <td>Seasons</td>
+                <td>
+                    <input type="number" id="new_seasons" />
+                </td>
+            </tr>
+            <tr>
+                <td>Genre</td>
+                <td>
+                    <input type="text" id="new_genre" />
+                </td>
+            </tr>
+            <tr>
+                <td>Tag</td>
+                <td>
+                    <input type="text" id="new_tag" />
+                </td>
+            </tr>
+            <tr>
+                <td>Actors</td>
+                <td>
+                    <input type="text" id="new_actors" />
+                </td>
+            </tr>
+        </table>
+        <br>
+        <br>
+        <button type="button" onclick="AddSerie()">SUBMIT</button>
+        <p id = "message"></p>
+        <p>To modify actors, genre and tag insert all value you want to display separetd with a comma (EG: el1,el2, el l3)</p>
+    </body>
+
+</html>
