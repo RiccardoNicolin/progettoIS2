@@ -12,13 +12,13 @@ module.exports = (req, res, next ) => {
             
         } catch (error) {
             //returning error and preventing access to page if its not
-            return res.status(402).json({
+            return res.status(401).json({
                 message: "Authentication Failed"
             });
         }
     }
     else{
-        res.status(403).json({
+        res.status(401).json({
             message: "Missing token"
         })
     }
