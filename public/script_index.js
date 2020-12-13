@@ -51,8 +51,8 @@ function creaLinks (){
    .then (res => res.json()
        )
    .then (json => {
+       console.log(json);
     setUser(json.verifydec.username);
-    console.log(json.verifydec);
        for (var i = 0; i < json.serieshot.length; i++){
             document.getElementById("link_serie_hot").innerHTML+=
              '<div class="single"><a href="./serie.html?name='+json.serieshot[i].name+'"><img src='+json.serieshot[i].poster+'><br><span>'+json.serieshot[i].name+'</span></a></div>';
