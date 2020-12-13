@@ -117,6 +117,7 @@ function setUser(user){
             if (json.verifydec.admin == 1){
                 document.getElementById("mod").style.display = "block";
                 document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
+                document.getElementById("mod").innerHTML += '<a href="./add_episode.html?name='+json.selected.name+'">ADD EPISODE</a><br>'
             }
             else{
                 document.getElementById("mod").style.display = "none";

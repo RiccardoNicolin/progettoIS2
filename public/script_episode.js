@@ -232,7 +232,6 @@ function Prec(){
 
 settapagina(1);
 
-//TODO Add serie
 //TODO Add episode
 //TODO Modify episode
 //Maybe: % guardate su home
@@ -245,14 +244,4 @@ settapagina(1);
     }
 
 
-    POST in /series
-    body: {
-        name: 
-        genre:[]
-        actors:[]
-        seasons:
-        poster:
-        tag:[]
-    }
-}
 */
