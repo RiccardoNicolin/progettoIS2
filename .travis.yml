@@ -1,14 +1,3 @@
 language: node_js
 node_js:
   - "14"
-
-env:
-  global:
-    DB_URL = mongodb+srv://Admin:admin@cluster0.bcut9.mongodb.net/db?retryWrites=true&w=majority
-    DB_URL_TEST = mongodb+srv://Admin:admin@cluster0.bcut9.mongodb.net/db_test?retryWrites=true&w=majority
-    JWT_KEY = -----BEGIN RSA PRIVATE KEY-----MIIBOgIBAAJBAOhOarRLaOHFkpp688Y0I3u5Tan9Z6uSt1B4uAmK09bEmfGidapIICSJ1vNCO/Nym9cCs1ZUvnArXy10najpMGsCAwEAAQJAaBtMYoQw+o0KSES1nqubA0Vl8rpnjVJw6JVRFKWsjeAuzMZLJUmPZLtrvkYaocLtWwPl26GruDUeeIKVfBr0EQIhAPzeeUYLzzy0d9M99xNcNTtPJrngYJDmyOJBk/QqsfTdAiEA6y7DzD0Ru55qvjlQK9oUreXUDWhuG7Q6JIXr8O0r4ecCIQCi/bfH2abb5ytxYviWZxH8x7kbiLBV1hxYEpMOiFKqlQIgUHOf8TcW4NqxYz9R6J5iopZTcv69Y+bEWQgjDTjk4RMCIEH03pKI4BbXvCIqK09suY4Uoe50IsnX3pvqtP1MD/ps-----END RSA PRIVATE KEY-----
-    DB_TEST1 = mongodb+srv://Admin:admin@cluster0.bcut9.mongodb.net/db_et1?retryWrites=true&w=majority
-    DB_TEST2 = mongodb+srv://Admin:admin@cluster0.bcut9.mongodb.net/db_et2?retryWrites=true&w=majority
-    DB_TEST3 = mongodb+srv://Admin:admin@cluster0.bcut9.mongodb.net/db_et3?retryWrites=true&w=majority
-    DB_TEST4 = mongodb+srv://Admin:admin@cluster0.bcut9.mongodb.net/db_et4?retryWrites=true&w=majority
-    TOKEN_TEST = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3R1c2VyQG1haWwuY29tIiwidXNlcm5hbWUiOiJ0ZXN0dXNlciIsImFkbWluIjoxLCJpYXQiOjE2MDc1MzQ5NTIsImV4cCI6MTcwMjIwNzc1Mn0.Xym_jF09J0kFUAUMgoVW0oC1I20K8PTeFa7HokOp-Bo
