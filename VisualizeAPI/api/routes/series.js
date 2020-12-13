@@ -69,10 +69,12 @@ router.get('/:name', async (req, res, next) => {
             if (selected) {
                 let token = req.headers.authorization.split(" ")[1];
                 let verifydec = jwt.verify(token, process.env.JWT_KEY);
+                console.log(verifydec);
                 let v = await userdb.checkIfVote(id, verifydec.username);
                 verifydec.voted = v;
                 let watched = await userdb.findIfWatched(id, verifydec.username);
                 let numepisodes = await serie.countEpisodes(id);
+                console.log(verifydec);
                 res.status(200).json({
                     selected: selected,
                     verifydec: verifydec,

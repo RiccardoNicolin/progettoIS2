@@ -195,7 +195,7 @@ async function addEpisode(name, episodenumber, episodename){//Adding new episode
             name: name
         });
         
-        let numepisodes = seriefound.episodes.length()
+        let numepisodes = seriefound.episodes.length
         return numepisodes;
     }
 
