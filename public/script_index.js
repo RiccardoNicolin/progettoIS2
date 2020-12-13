@@ -62,8 +62,10 @@ function creaLinks (){
        }
       if (json.serieswatched != undefined){
         for (var i = 0; i < json.serieswatched.length; i++){
+            let already = json.serieswatched[i].nextToWatch - 1;
             document.getElementById("link_serie_seguite").innerHTML+=
-            '<div class="single"><a href="./serie.html?name='+json.serieswatched[i].storageserie.name+'"><img src='+json.serieswatched[i].storageserie.poster+'><br><span>'+json.serieswatched[i].storageserie.name+'</span></a></div>';
+            '<div class="single"><a href="./serie.html?name='+json.serieswatched[i].serie.name+'"><img src='+json.serieswatched[i].serie.poster+'><br><span>'+json.serieswatched[i].serie.name+'</span></a><br><p>'+already+'/'+json.serieswatched[i].numepisodes+'</p></div>';
+
             }
         }else{document.getElementById("subbed").style.display = "none";}
 
