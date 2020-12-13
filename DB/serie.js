@@ -189,6 +189,16 @@ async function addEpisode(name, episodenumber, episodename){//Adding new episode
         }
     }
     
+    async function countEpisodes(name){//Returns how many episode target serie ("name") has
+
+        let seriefound = await serie.findOne({
+            name: name
+        });
+        
+        let numepisodes = seriefound.episodes.length()
+        return numepisodes;
+    }
+
     async function addCommentEpisode(name, episodenum, poster, comment)//Add a comment ("comment") made by user ("poster") to a specific episode ("episodenum") of target serie ("name")
     {
             await serie.updateOne(
@@ -253,5 +263,6 @@ module.exports.getEpisode = getEpisode;
 module.exports.addCommentEpisode = addCommentEpisode;
 module.exports.modifyEpisode = modifyEpisode;
 module.exports.modifyVoteEpisode = modifyVoteEpisode;
+module.exports.countEpisodes = countEpisodes;
 module.exports.episode = episode;
 module.exports.serie = serie;

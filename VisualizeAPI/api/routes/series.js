@@ -72,10 +72,12 @@ router.get('/:name', async (req, res, next) => {
                 let v = await userdb.checkIfVote(id, verifydec.username);
                 verifydec.voted = v;
                 let watched = await userdb.findIfWatched(id, verifydec.username);
+                let numepisodes = await serie.countEpisodes(id);
                 res.status(200).json({
                     selected: selected,
                     verifydec: verifydec,
-                    watched: watched
+                    watched: watched,
+                    numepisodes: numepisodes
                 });
             }
         }catch (error) {//enter here if token is expired/faulty

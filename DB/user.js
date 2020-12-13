@@ -50,10 +50,12 @@ async function findAllWatched(username) { //returns array of first 6 series watc
         let listserie = [];
         let storageserie;
         let storagenum;
+        let storagenumepisodes;
         for (var i=0; i<listuser.length && i<6; i++){
             storageserie = await seriedb.get(listuser[i].seriename);
             storagenum = listuser[i].nextToWatch;
-            listserie.push({storageserie: storageserie, storagenum: storagenum});
+            storagenumepisodes = storageserie.episodes.length()
+            listserie.push({serie: storageserie, nextToWatch: storagenum, numepisodes: storagenumepisodes});
         }
         if (listserie == undefined){
             listserie = 0;
