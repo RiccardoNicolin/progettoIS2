@@ -44,7 +44,6 @@ function DispalyComment(comments){
 }
 
 function Logout(){
-   
     localStorage.setItem("token", "000");
     document.getElementById("login").style.display = "block";
     document.getElementById("user").innerHTML = "";
@@ -84,7 +83,7 @@ function setUser(user){
 
 
     function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
-
+        
         const title = getParameterByName('name');
         fetch ('./series/'+title, {
             method:'GET',
@@ -94,49 +93,53 @@ function setUser(user){
         })
         .then (res => res.json())
         .then (json => {
-            console.log(json);
-            if (all === 1){
-                document.getElementById("titolo").innerHTML += json.selected.name;
-                document.getElementById("attori").innerHTML += json.selected.actors;
-                document.getElementById("genere").innerHTML += json.selected.genre;
-                document.getElementById("locandina").innerHTML = '<img src='+json.selected.poster+' id="poster">';
-                var s = json.selected.seasons;
-                document.getElementById("stagioni").innerHTML += s.toString();
-                document.getElementById("New_Comment").style.display = "none";
-            }
-            document.getElementById("track_record").innerHTML = '<a href="./episode.html?name='+title+'&num='+1+'">FIRST EPISODE</a>'
-            let user = setUser(json.verifydec.username);
-            if (user!= undefined){
-                if (json.watched != 0 ){
-                document.getElementById("sub_button").style.display = "none";
-                document.getElementById("track_record").innerHTML = '<a href="./episode.html?name='+title+'&num='+json.watched+'">Next episode: '+json.watched+'</a>'
+            if (json.message == "serie not found"){
+                document.getElementById("body").innerHTML = "<h1>SORRY, THIS SERIE DOESN'T EXIST </h1> "
+            }else{
+                
+                if (all === 1){
+                    document.getElementById("titolo").innerHTML += json.selected.name;
+                    document.getElementById("attori").innerHTML += json.selected.actors;
+                    document.getElementById("genere").innerHTML += json.selected.genre;
+                    document.getElementById("locandina").innerHTML = '<img src='+json.selected.poster+' id="poster">';
+                    var s = json.selected.seasons;
+                    document.getElementById("stagioni").innerHTML += s.toString();
+                    document.getElementById("New_Comment").style.display = "none";
                 }
-            }
-           
-           
-            if (json.verifydec.admin == 1){
-                document.getElementById("mod").style.display = "block";
-                document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
-                document.getElementById("mod").innerHTML += '<a href="./add_episode.html?name='+json.selected.name+'">ADD EPISODE</a><br>'
-            }
-            else{
-                document.getElementById("mod").style.display = "none";
-                document.getElementById("mod").innerHTML = '';
-            }
-            if (localStorage.getItem("token") != "000"){
-            let v = json.verifydec.voted;
-                for (var i=1; i<=5; i++){
-                    if (i==v){
-                        document.getElementById("vote"+i).style.backgroundColor = "yellow";
-                    }else {
-                        document.getElementById("vote"+i).style.backgroundColor = "white";
+                document.getElementById("track_record").innerHTML = '<a href="./episode.html?name='+title+'&num='+1+'">FIRST EPISODE</a>'
+                let user = setUser(json.verifydec.username);
+                if (user!= undefined){
+                    if (json.watched != 0 ){
+                    document.getElementById("sub_button").style.display = "none";
+                    document.getElementById("track_record").innerHTML = '<a href="./episode.html?name='+title+'&num='+json.watched+'">Next episode: '+json.watched+'</a>'
                     }
                 }
-             }
-            document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
-            DispalyComment(json.selected.comments);
-            if (json.watched != 0){
-                document.getElementById("subscribe").display = "none";
+            
+            
+                if (json.verifydec.admin == 1){
+                    document.getElementById("mod").style.display = "block";
+                    document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
+                    document.getElementById("mod").innerHTML += '<a href="./add_episode.html?name='+json.selected.name+'">ADD EPISODE</a><br>'
+                }
+                else{
+                    document.getElementById("mod").style.display = "none";
+                    document.getElementById("mod").innerHTML = '';
+                }
+                if (localStorage.getItem("token") != "000"){
+                let v = json.verifydec.voted;
+                    for (var i=1; i<=5; i++){
+                        if (i==v){
+                            document.getElementById("vote"+i).style.backgroundColor = "yellow";
+                        }else {
+                            document.getElementById("vote"+i).style.backgroundColor = "white";
+                        }
+                    }
+                }
+                document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
+                DispalyComment(json.selected.comments);
+                if (json.watched != 0){
+                    document.getElementById("subscribe").display = "none";
+                }
             }
         })
     }
