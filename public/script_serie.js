@@ -15,27 +15,8 @@ function Login(){
 
 function Search(){
     const query = document.getElementById("search_bar").value;
-    fetch('./series/',{
-        method:'GET',
-        headers: {
-            Authorization: 'Bearer '+localStorage.getItem("token")
-        }
-    })
-    .then(res => res.json())
-    .then(json => {
-        const res = json.allseries.filter(element => element.name.includes(query));
-        console.log(res);
-        if (res === undefined){
-            document.getElementById("search_message").innerHTML="No series with that name (beware of upper and lower case --> each word must have a capitol letter"
-        }else{
-            document.getElementById("search_message").innerHTML="RESULT:   ";
-            res.map(x => {
-                document.getElementById("search_message").innerHTML+='<a href="./serie.html?name='+x.name+'">'+x.name+'</a>';
-                document.getElementById("search_message").innerHTML+="    ";
-            })
-            
-        }
-    });
+    sessionStorage.setItem("query",query)
+    window.open('./search.html',"self");
 }
 
 function DispalyComment(comments){
