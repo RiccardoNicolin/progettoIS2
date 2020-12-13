@@ -39,6 +39,7 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', checkAuth, async (req, res) => {
     //Add new series
+    console.log(req.body.verifydec.admin);
     if (req.body.verifydec.admin) {//check if user has admin priviledges
         if (!req.body.name || !req.body.genre || !req.body.actors || !req.body.seasons || !req.body.poster || !req.body.tag) {//checks if basic series data is present
             res.status(500).json({ error: "Not all fields present" });
