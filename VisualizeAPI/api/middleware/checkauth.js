@@ -4,6 +4,7 @@ module.exports = (req, res, next ) => {
     const token = req.headers.authorization.split(" ")[1];
     if (token != "000"){
         try {
+            console.log(token);
             //checking if the token is valid            
                 const verifydec = jwt.verify(token, process.env.JWT_KEY);
                 req.body.verifydec = verifydec;
