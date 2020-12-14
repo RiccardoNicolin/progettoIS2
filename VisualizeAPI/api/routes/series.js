@@ -324,8 +324,6 @@ router.patch('/:name/:episodenum', checkAuth, async (req, res, next) => {
                 else{
                     res.status(422).json({ message: 'The category provided cannot be processed' });//tried to access to an invalid parameter
                 }
-                
-
             }
         }
         else {
