@@ -258,8 +258,8 @@ describe("test on content series/name", () => {
         const response = await request(app)
             .post(server+"Firefly")
             .send({
-                episodeName: "Il cielo è arancione",
-                episodeNumber: "4"
+                episodeName: "Serenity_Film",
+                episodeNumber: "15"
             })
             .set({Authorization: 'Bearer '+ process.env.TOKEN_TEST});
         expect(response.statusCode).toBe(201);
