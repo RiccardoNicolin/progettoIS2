@@ -13,6 +13,7 @@ router.post('/', async (req, res) =>{
     let user= await userdb.find("username", req.body.username);
     if (user){    
         //checking if the password is correct
+
         bcrypt.compare(req.body.password, user.password, (err, result) => {
             if (err){
                 res.status(401).json({
@@ -20,7 +21,8 @@ router.post('/', async (req, res) =>{
                 });
             }
             //if the password is correct create a jwt token and send it back
-           else  if (result){
+            else  if (result){
+
                 const token = jwt.sign({
                     email: user.email,
                     username: user.username,
@@ -28,7 +30,7 @@ router.post('/', async (req, res) =>{
                 }, process.env.JWT_KEY, {
                     expiresIn: "1h"
                 } )
-                return res.status(200).json({
+                return res.status(201).json({
                     message: "Authentication successful",
                     token:token
                 });

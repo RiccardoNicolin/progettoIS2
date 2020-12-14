@@ -1,0 +1,20 @@
+.single{
+    vertical-align: top; 
+    display: inline-block; 
+    width: 150px; 
+    text-align:center;
+    margin-right: 20px;
+}
+
+#log{
+    float:right;
+}
+
+#Welcome{
+    text-align:center;
+}
+
+img{
+    width: 150px;
+    height: 100px;
+}

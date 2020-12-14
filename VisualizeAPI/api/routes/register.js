@@ -26,14 +26,14 @@ else {
         user.addUser(req.body,hashedpass,  () => {
           res.status(201).location("/user/" + req.body.username).json({message:"User creation successful!"});
         });
-         
+      
       }
     });
   }
   //if username/email already exists error code
-   else{
-   res.status(500).json({message: "Error, username/email already existing"})
-   }
+    else{
+    res.status(500).json({message: "Error, username/email already existing"})
+    }
 }
 });
 

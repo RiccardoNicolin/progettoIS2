@@ -1,15 +1,12 @@
 const express = require('express');
 const app = express();
 //const db = require('../DB.js');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config();
-
-mongoose.connect(process.env.DB_URL_TEST, {useNewUrlParser: true, useUnifiedTopology: true})
+const morgan = require('morgan');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/', express.static('public'));
+app.use(morgan('dev'));
 
 const homeRoutes = require('./api/routes/home');
 const seriesRoutes = require('./api/routes/series');

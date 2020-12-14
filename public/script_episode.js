@@ -9,7 +9,8 @@ function getParameterByName(name, url = window.location.href) {
 
 function Login(){
     const title = getParameterByName('name');
-    sessionStorage.setItem("old_url","../serie.html?name="+title);
+    const numep = getParameterByName('num');
+    sessionStorage.setItem("old_url","../episode.html?name="+title+"&num="+numep);
     window.open("../login.html","_self")
 }
 
@@ -29,15 +30,15 @@ function Logout(){
     document.getElementById("login").style.display = "block";
     document.getElementById("user").innerHTML = "";
     document.getElementById("logout").style.display = "none";
-    settaserie(0);
+    settapagina(0);
 }
 
 function setUser(user){
     if (user === undefined){
-    localStorage.setItem("token", "000");
-    document.getElementById("login").style.display = "block";
-    document.getElementById("user").innerHTML = "";
-    document.getElementById("logout").style.display = "none";
+        localStorage.setItem("token", "000");
+        document.getElementById("login").style.display = "block";
+        document.getElementById("user").innerHTML = "";
+        document.getElementById("logout").style.display = "none";
     }
     let token = localStorage.getItem("token");
     if (token != "000"){
@@ -48,7 +49,6 @@ function setUser(user){
         document.getElementById("open_form").style.display = "block";
         document.getElementById("register").style.display = "none";
         document.getElementById("cast_vote").style.display = "block";
-        document.getElementById("subscribe").style.display = "block";
         return user;
     }else{
         document.getElementById("logout").style.display = "none";
@@ -57,16 +57,17 @@ function setUser(user){
         document.getElementById("New_Comment").style.display = "none";
         document.getElementById("register").style.display = "block";
         document.getElementById("cast_vote").style.display = "none";
-        document.getElementById("subscribe").style.display = "none";
+        document.getElementById("seen_button").style.display = "none";
         return undefined;
     }
 }
 
 
-    function settaserie(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
-        
+function settapagina(all){ //parametro all = 1 se devo caricare tutta la pagine, altrimenti (uso 0) carica solo i commenti e i voti (ovvero le parti più variabili)
+
         const title = getParameterByName('name');
-        fetch ('./series/'+title, {
+        const numep = getParameterByName('num');
+        fetch ('./series/'+title+'/'+numep, {
             method:'GET',
             headers: {
                 Authorization: 'Bearer '+localStorage.getItem("token")
@@ -74,38 +75,42 @@ function setUser(user){
         })
         .then (res => res.json())
         .then (json => {
-            if (json.message == "serie not found"){
-                document.getElementById("body").innerHTML = "<h1>SORRY, THIS SERIE DOESN'T EXIST </h1> "
+            if (json.message === "Episode not existing in DB" ){
+                document.getElementById("body").innerHTML = "<h1>EPISODE NOT FOUND, SORRY";
             }else{
-                
                 if (all === 1){
-                    document.getElementById("titolo").innerHTML += json.selected.name;
-                    document.getElementById("attori").innerHTML += json.selected.actors;
-                    document.getElementById("genere").innerHTML += json.selected.genre;
-                    document.getElementById("locandina").innerHTML = '<img src='+json.selected.poster+' id="poster">';
-                    var s = json.selected.seasons;
-                    document.getElementById("stagioni").innerHTML += s.toString();
+                    document.getElementById("titolo").innerHTML += json.selected.episodeName;
+                    document.getElementById("attori").innerHTML += json.rootserie.actors;
+                    document.getElementById("genere").innerHTML += json.rootserie.genre;
+                    document.getElementById("locandina").innerHTML = '<img src='+json.rootserie.poster+' id="poster">';
+                    var n = json.selected.episodeNumber;
+                    document.getElementById("number").innerHTML += n.toString();
                     document.getElementById("New_Comment").style.display = "none";
                 }
-                document.getElementById("track_record").innerHTML = '<a href="./episode.html?name='+title+'&num='+1+'">FIRST EPISODE</a>'
-                let user = setUser(json.verifydec.username);
-                console.log(json);
-                if (user!= undefined){
-                    if (json.watched != 0 ){
-                    document.getElementById("sub_button").style.display = "none";
-                    if (json.numepisodes >= json.watched){
-                        document.getElementById("track_record").innerHTML += '<br><a href="./episode.html?name='+title+'&num='+json.watched+'">Next episode: '+json.watched+'</a>'
-                    }else{
-                        document.getElementById("track_record").innerHTML += '<p> You have finished this serie</p>'
-                    }
-                    }
+                setUser(json.verifydec.username);
+                document.getElementById("already_watched").innerHTML = "";
+                
+
+                if (!json.isnotlast){
+                    document.getElementById("Next").style.display="none";
                 }
-            
-            
+                else{
+                    document.getElementById("Next").style.display="block";
+
+                }
+
+                if(json.selected.episodeNumber == 1){
+                    document.getElementById("prec").style.display ="none";
+                }else{
+                    document.getElementById("prec").style.display ="block";
+
+                }
+
+
+
                 if (json.verifydec.admin == 1){
                     document.getElementById("mod").style.display = "block";
-                    document.getElementById("mod").innerHTML = '<a href="./modify_serie.html?name='+json.selected.name+'">MODIFY</a><br>'
-                    document.getElementById("mod").innerHTML += '<a href="./add_episode.html?name='+json.selected.name+'">ADD EPISODE</a><br>'
+                    document.getElementById("mod").innerHTML = '<a href="./modify_episode.html?name='+json.rootserie.name+'&num='+json.selected.episodeNumber+'">MODIFY</a><br>'
                 }
                 else{
                     document.getElementById("mod").style.display = "none";
@@ -123,8 +128,9 @@ function setUser(user){
                 }
                 document.getElementById("vote_total").innerHTML ="Score: "+ json.selected.score;
                 DispalyComment(json.selected.comments);
-                if (json.watched != 0){
-                    document.getElementById("subscribe").display = "none";
+                if (json.watched == 1){
+                    document.getElementById("seen_button").style.display = "none";
+                    document.getElementById("already_watched").innerHTML = "You have already seen this episode";
                 }
             }
         })
@@ -138,56 +144,73 @@ function NewComment(){
 function CreateComment(){
     const text = document.getElementById("comment_text").value;
     const title = getParameterByName('name');
+    const epnum = getParameterByName('num');
     if (text.length===0){
         document.getElementById("Message").innerHTML = "  One or more input left blank, please compile all fields";
     }else{
         document.getElementById("Message").innerHTML = "";
-        fetch('../series/'+title, {
+        fetch('../series/'+title+'/'+epnum, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json',
                         Authorization:'Bearer '+localStorage.getItem("token")
                     },
-            body: JSON.stringify( {comment: text} )
+            body: JSON.stringify( {comment: text, watchupdate: 0} )
         })
         .then(res => {
             document.getElementById("New_Comment").style.display = "none";
             document.getElementById("open_form").style.display = "block";
-           settaserie(0);
+           settapagina(0);
         });
     }
 }
 
 function AddVote(points){
-    
     const title = getParameterByName('name');
-    fetch('../series/'+title, {
+    const epnum = getParameterByName('num');
+    fetch('../series/'+title+'/'+epnum, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json',
                     Authorization:'Bearer '+localStorage.getItem("token")
                 },
         body: JSON.stringify( {score: points} )
     })
-    .then(res => settaserie(0));
+    .then(res => settapagina(0));
 }
 
 
-
-function Subscribe(){
+function SetSeen(){
     const title = getParameterByName('name');
-    fetch('./series/'+title, {
+    const epnum = getParameterByName('num');
+    fetch('../series/'+title+'/'+epnum, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer '+localStorage.getItem("token")
-        },
-        body: JSON.stringify( {watchednum: 1} )
+        headers: { 'Content-Type': 'application/json',
+                    Authorization:'Bearer '+localStorage.getItem("token")
+                },
+        body: JSON.stringify( {watchupdate: 1} )
     })
-    .then (res => res.json())
-    .then(json => {
-        settaserie(0);
-    })
-}
+    .then(res => settapagina(0));
+};
+
+function Next(){
+    const title = getParameterByName('name');
+    const epnum = getParameterByName('num');
+    let next = +epnum + 1;
+    window.open("../episode.html?name="+title+"&num="+next,"_self");
+};
+
+function Back(){
+    const title = getParameterByName('name');
+    window.open("../serie.html?name="+title,"_self");
+};
+
+function Prec(){
+    const title = getParameterByName('name');
+    const epnum = getParameterByName('num');
+    let prev = +epnum -1 ;
+    window.open("../episode.html?name="+title+"&num="+prev,"_self");
+};
 
 
-settaserie(1);
+settapagina(1);
 
+//Maybe: % guardate su home

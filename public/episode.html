@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>EPISODIO</title>
+    <link rel="stylesheet" href="episode_style.css">
+</head>
+<body id="body">
+
+    <div id=top>
+        <a href="../">HOME</a>
+        <input type="text" id="search_bar" placeholder="Search name">
+        <button type="button" onclick="Search()">SEARCH</button>
+        <span id="search_message"></span>
+        
+        <div id = mod ></div>
+
+        <div id="log" style="float:right">
+            <button id="login" onclick="Login()" >LOGIN</button>
+            <span id="user"></span>
+            <button id="logout" onclick="Logout()">LOGOUT</button>
+            <button id="register" onclick = "window.location.href='./register.html'">REGISTER</button>
+        </div>
+    </div> 
+        <h1 id= "titolo"></h1>
+        <br>
+        <br>
+            <div id="info_sec">
+                <div id = "locandina"></div>
+                <div id="info">
+                    <p id ="genere">GENERE: </p>
+                    <p id = "attori">ATTORI: </p>
+                    <p id ="number">EP Number:</p>
+                    <p id = "vote_total">Score:</p>
+                    <br>
+                    <div id="cast_vote">
+                    <span>Cast a vote:   </span>
+                        <button type="button" id="vote1" onclick="AddVote(1)">1</button>
+                        <button type="button" id="vote2" onclick="AddVote(2)">2</button>
+                        <button type="button" id="vote3" onclick="AddVote(3)">3</button>
+                        <button type="button" id="vote4" onclick="AddVote(4)">4</button>
+                        <button type="button" id="vote5" onclick="AddVote(5)">5</button>
+                    </div>
+                </div>
+            </div>
+            <div id="navigation">
+                <button id="prec" type="button" onclick="Prec()">PREC.</button>
+                <button id="Back" type="button" onclick ="Back()">SERIE</button>
+                <button id="Next" type="button" onclick="Next()">NEXT</button>
+            </div>
+            <div id = "Set_seen">
+                <button id="seen_button" type="button" onclick="SetSeen()">Set as already watched</button>
+                <span id="already_watched"></span>
+            </div>
+            <br><br>
+        <h3>COMMENTI:</h3>
+        <p id="NotLog">To Post a comment you must be logged</p>
+        <button type="button" id="open_form" onclick="NewComment()">NEW COMMENT</button>
+        <div id="New_Comment">
+            <div id="tag">
+                <p>Comment:</p>
+            </div> 
+            <div id="input">
+                <br>
+                <input type="text" id="comment_text"/>
+                <br>
+            </div>
+            <br>
+            <button type="button" onclick="CreateComment()">CONFIRM</button>
+            <span id="Message"></span>
+        </div>
+        <br><br>
+        <div id="comments"></div>
+    <script src="script_episode.js"></script>
+    
+</body>
+</html>

@@ -5,8 +5,9 @@
     <link rel="stylesheet" href="serie_style.css">
     <title>Titolo</title>
 </head>
-<body>
+<body id = "body">
     <div id=top>
+        <a href="../">HOME</a>
         <input type="text" id="search_bar" placeholder="Search name">
         <button type="button" onclick="Search()">SEARCH</button>
         <span id="search_message"></span>
@@ -14,7 +15,7 @@
         <div id = mod ></div>
 
         <div id="log" style="float:right">
-            <button id="login" onclick="window.location.href='/login.html'" >LOGIN</button>
+            <button id="login" onclick="Login()" >LOGIN</button>
             <span id="user"></span>
             <button id="logout" onclick="Logout()">LOGOUT</button>
             <button id="register" onclick = "window.location.href='./register.html'">REGISTER</button>
@@ -41,6 +42,10 @@
                 </div>
             </div>
         </div>
+        <div id = "subscribe">
+            <button id="sub_button" type="button" onclick="Subscribe()">Start Traking</button>
+        </div>
+        <span id="track_record"></span>
         <br><br>
         <h3>COMMENTI:</h3>
         <p id="NotLog">To Post a comment you must be logged</p>
@@ -61,5 +66,6 @@
         <br><br>
         <div id="comments"></div>
     <script src="script_serie.js"></script>
+    
 </body>
 </html>
