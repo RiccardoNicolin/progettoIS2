@@ -56,11 +56,4 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/userlist', async (req, res) => {
-    let userlist = await user.getAll();
-    //userlist shown
-    res.status(200).json(userlist);
-});
-
-
 module.exports = router;
