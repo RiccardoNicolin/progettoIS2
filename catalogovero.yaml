@@ -59,19 +59,6 @@ paths:
                 oneOf:
                   - $ref: '#/components/schemas/Home1'
                   - $ref: '#/components/schemas/Home2'
-                  
-  /home/userlist:
-    get:
-      description: get all users
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/User'
   /series:
     post:
       description: >-

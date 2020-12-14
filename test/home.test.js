@@ -120,11 +120,4 @@ describe("Test on codes on home/", () =>{
         expect(response.statusCode).toBe(200);
     });
 
-    test("It should response the GET method positively on /userlist", async() =>{
-        const response = await request(app)
-            .get(server+"/userlist")
-            .set('Authorization', 'Bearer 000');
-        expect(response.statusCode).toBe(200);
-    });
-
 });
