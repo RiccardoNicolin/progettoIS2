@@ -15,7 +15,7 @@ paths:
     post:
       description: >-
         Creates a new user in the system.
-      summary: Create a new user
+      summary: Create a new user 
       requestBody:
         content:
           application/json:
@@ -24,17 +24,42 @@ paths:
       responses:
         '201':
           description: 'User created'
-          #potremmo metterci l'header alla prossima locazione
+        '500':
+          description: 'Error during password hasing'
+  /login:
+    post:
+      description: >-
+        Login as a registered user and get a token 
+      summary: login as a registered user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: 'Authentication succeful'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '401':
+          description: 'Authentication unsuccessful, retry using other data'
   /home:
     get:
       description: home page
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Home'
+                oneOf:
+                  - $ref: '#/components/schemas/Home1'
+                  - $ref: '#/components/schemas/Home2'
+                  
   /home/userlist:
     get:
       description: get all users
@@ -52,6 +77,8 @@ paths:
       description: >-
         Creates a new serie in the system.
       summary: Create a new serie
+      security:
+        - bearerAuth: []
       requestBody:
         content:
           application/json:
@@ -60,25 +87,26 @@ paths:
       responses:
         '201':
           description: 'serie created.'
-          #potremmo metterci l'header alla prossima locazione
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '500':
+          description: 'Not all fields present'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '401':
+          description: 'Lacking administration privileges to do this action'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
     get:
       description: 'get all the series'
-      parameters:
-        - in: query
-          name: year
-          schema:
-            type: string
-          description: 'year of production'
-        - in: query
-          name: score
-          schema:
-            type: integer
-          description: 'score of the show'
-        - in: query
-          name: title
-          schema: 
-            type: string
-          description: 'partial or total name of the show'
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: OK
@@ -87,13 +115,20 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Serie'
+                  type: object
+                  properties:
+                    allseries:
+                      $ref: '#/components/schemas/Serie'
+                    verifydeck:
+                      $ref: '#/components/schemas/Verifydec'
   /series/{name}:
     get:
       description: 'get a particular serie'
+      security:
+        - bearerAuth: []
       parameters:
-        - name: name
-          in: path
+        - in: path
+          name: name
           schema:
             type: string
           required: true
@@ -104,9 +139,29 @@ paths:
           content:
             application/json:
               schema:
-                $ref= '#/components/schemas/Serie'
+                oneOf:
+                  - type: object
+                    properties:
+                      selected:
+                        $ref: '#/components/schemas/Serie'
+                      verifydec:
+                        $ref: '#/components/schemas/Verifydec'
+                      watched:
+                        $ref: '#/components/schemas/Episode'
+                  - type: object
+                    properties:
+                      selected:
+                        $ref: '#/components/schemas/Serie'
+                      verifydec:
+                        $ref: '#/components/schemas/Verifydec'
+        '404':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
     post:
-      description: 'post a comment'
+      description: 'post a comment, add a new episode or bookmark the serie'
       parameters:
         - name: name
           in: path
@@ -114,15 +169,54 @@ paths:
             type: string
           required: true
           description: 'name of the serie you want to comment'
+      security:
+        - bearerAuth: []
       requestBody:
           content:
             application/json:
               schema:
-                $ref= '#/components/schemas/Comments'
+                type: object
+                properties:
+                  comment:
+                    type: string
+                    description: 'comment to the serie'
+                  episodeName:
+                    type: string
+                    description: 'name of the episode to add'
+                  episodeNumber:
+                    type: string
+                    description: 'number of the episode to add'
+                  watchedNum:
+                    type: boolean
+                    description: 'true if you want to add the serie to watchlist'
       responses:
         '201':
-          description: 'comments created.'
-          #potremmo metterci l'header alla prossima locazione
+          description: 'operation succesful.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/message'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                        description: 'confirmation message'
+                      watchedres:
+                        type: integer
+                        description: 'only for frontend usage'
+        '500':
+          description: 'missing parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '403':
+          description: 'error in parameters when adding the serie'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
     patch:
       description: 'update a particular show'
       parameters:
@@ -136,11 +230,196 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Serie'
+              oneOf:
+                - type: object
+                  properties:
+                    score:
+                      type: number
+                      description: 'vote that you want to change to' 
+                - type: object
+                  properties:
+                    target:
+                      type: string
+                      description: 'target field you want to change'
+                    change:
+                      type: string
+                      description: 'new value of the field'
       responses:
         '200':
           description: 'serie updated'
-          #potremmo metterci l'header alla prossima locazione
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '500':
+          description: 'missing target parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '401':
+          description: 'lacking administartion priviledge'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+  /series/{name}/{episodeNumber}:
+    get:
+      description: 'get a particular episode of a serie'
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'name of the requested show'
+        - name: episodeNumber
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'number of the episode'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      selected:
+                        $ref: '#/components/schemas/Episode'
+                      verifydec:
+                        $ref: '#/components/schemas/Verifydec'
+                      watched:
+                        type: boolean
+                        description: 'return 1 if the episode is already watched otherwise return 0'
+                      isnotlast:
+                        $ref: '#/components/schemas/Episode'
+                      rootserie:
+                        $ref: '#/components/schemas/Serie'
+                  - $ref: '#/components/schemas/Episode'
+        '404':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+    post:
+      description: 'post a comment or add an episode to watched'
+      parameters:
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'name of the serie you want to comment'
+        - name: episodeNumber
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'number of the episode'
+      security:
+        - bearerAuth: []
+      requestBody:
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      comment:
+                        type: string
+                        description: 'comment to the serie'
+                  - type: object
+                    properties:
+                      watchupdate:
+                        type: boolean
+                        description: 'boolean to set if the episode is watched'
+      responses:
+        '201':
+          description: 'operation succesful.'
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/message'
+                  - type: object
+                    properties:
+                      message:
+                        type: string
+                        description: 'confirmation message'
+                      watchedres:
+                        type: integer
+                        description: 'only for frontend usage'
+        '500':
+          description: 'missing parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+    patch:
+      description: 'update a particular episode'
+      parameters:
+        - name: name
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'name of the requested show'
+        - name: episodeNumber
+          in: path
+          schema:
+            type: string
+          required: true
+          description: 'number of the episode'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - type: object
+                  properties:
+                    score:
+                      type: number
+                      description: 'vote that you want to change to' 
+                - type: object
+                  properties:
+                    target:
+                      type: string
+                      description: 'target field you want to change'
+                    change:
+                      type: string
+                      description: 'new value of the field'
+      responses:
+        '200':
+          description: 'episode updated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '500':
+          description: 'missing target parameters'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '401':
+          description: 'lacking administartion priviledge'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
+        '422':
+          description: 'cannot change that target'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/message'
 components:
   schemas:
     User:
@@ -169,7 +448,6 @@ components:
           description: 'name of the show'
         poster:
           type: string
-          format: byte
           description: 'poster of the show'
         genre:
           type: array
@@ -177,7 +455,7 @@ components:
             type: string
           description: 'genere e tag della serie'
         score:
-          type: float
+          type: number
           description: 'score della serie'
         numberOfvotes :
           type: integer
@@ -190,11 +468,12 @@ components:
         seasons:
           type: integer
           description: 'number of seasons of the series'
-    Home:
+    Home1:
       type: object
       required:
         - serieshot
         - seriesnew
+        - verifydeck
       properties:
         serieshot:
           type: array
@@ -206,6 +485,32 @@ components:
           items:
             $ref: '#/components/schemas/Serie'
           description: 'new series'
+        verifydeck:
+          $ref: '#/components/schemas/Verifydec'
+        serieswatched:
+          type: array
+          items:
+            $ref: '#/components/schemas/Serie'
+          description: 'series the user is currently watching, present only in logged user'
+    Home2:
+      type: object
+      required:
+        - serieshot
+        - seriesnew
+        - verifydeck
+      properties:
+        serieshot:
+          type: array
+          items:
+            $ref: '#/components/schemas/Serie'
+          description: 'hot series'
+        seriesnew:
+          type: array
+          items:
+            $ref: '#/components/schemas/Serie'
+          description: 'new series'
+        verifydeck:
+          $ref: '#/components/schemas/Verifydec'
     Comments:
       type: object
       required:
@@ -218,3 +523,51 @@ components:
         comment:
           type: string
           description: 'the body of the comment'
+    UserLogin:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: 'Username of the user'
+        password:
+          type: string
+          description: 'Hashed password of the user'
+    Verifydec:
+      type: string
+      description: 'decoded token'
+    Token:
+      type: string
+      description: 'token for the logged user'
+    Episode:
+      type: object
+      required:
+        - episodeName
+        - episodeNumber
+      properties:
+        episodeName:
+          type: string
+          description: 'name of the episode'
+        episodeNumber:
+          type: integer
+          description: 'number of the episode in relation to the whole serie, not the season'
+        score:
+          type: number
+          description: 'rounded score of the episode'
+        numberOfvotes:
+          type: integer
+          description: 'number of the total votes for the episode'
+        comments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Comments'
+    message:
+      type: string
+      description: 'status message'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
