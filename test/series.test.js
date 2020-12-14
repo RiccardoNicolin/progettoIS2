@@ -83,7 +83,7 @@ describe("Test on codes in series/ ", () => {
                 poster: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png/260px-Black_Lightning_logo_recreaci%C3%B3n_%28cropped%29.png",
             })
             .set('Accept', 'application/json')
-            .set({Authorization: '000'});
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST2});
         expect(response.statusCode).toBe(401);
     });
 });
@@ -116,6 +116,15 @@ describe("test on content series/name", () => {
         let test = JSON.stringify(query);
 
         expect(test).toBe(res);
+    });
+
+    test("It should response the GET method negatively with user token", async () => {
+        const response = await request(app)
+            .get(server+"SessioneStasera?")
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST2});
+        expect(response.type).toBe("application/json");
+        expect(response.statusCode).toBe(404);
     });
 
     test("It should response the GET method affirmatively and return the item with 000 token", async () => {
@@ -272,6 +281,17 @@ describe("test on content series/name", () => {
                 episodeName: "Il cielo è arancione",
                 episodeNumber: "4"
             })
+            .set({Authorization: 'Bearer '+ process.env.TOKEN_TEST2});
+        expect(response.statusCode).toBe(401);
+    });
+
+    test("It should response the POST method to add episode negatively because token 000", async () => {
+        const response = await request(app)
+            .post(server+"Firefly")
+            .send({
+                episodeName: "Il cielo è arancione",
+                episodeNumber: "4"
+            })
             .set({Authorization: 'Bearer 000'});
         expect(response.statusCode).toBe(401);
     });
@@ -319,7 +339,7 @@ describe("test on content series/name", () => {
         expect(response.statusCode).toBe(200);
     });
 
-    test("It should response the PATCH method affirmatively for changing tag", async () => {
+    test("It should response the PATCH method affirmatively for changing season", async () => {
         const response = await request(app)
             .patch(server+"Firefly")
             .send({
@@ -342,7 +362,30 @@ describe("test on content series/name", () => {
         expect(response.statusCode).toBe(500);
     });
 
-    
+    test("It should response the PATCH method affirmatively for changing season", async () => {
+        const response = await request(app)
+            .patch(server+"Firefly")
+            .send({
+                target: "tag",
+                change: "new,completed,sci-fi"
+            })
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
+
+        expect(response.statusCode).toBe(200);
+    });
+
+    test("It should response the PATCH method affirmatively for changing season", async () => {
+        const response = await request(app)
+            .patch(server+"Firefly")
+            .send({
+                target: "tag",
+                change: "new,completed,sci-fi"
+            })
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST2});
+
+        expect(response.statusCode).toBe(401);
+    });
+
 });
 
 describe("test on content series/name/episodeNumber", () => {
@@ -452,13 +495,33 @@ describe("test on content series/name/episodeNumber", () => {
         const response = await request(app)
             .post(server+"Firefly/3")
             .send({
-                watchupdate : 2
+                watchupdate : 1
             })
             .set('Accept', 'application/json')
             .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
         expect(response.type).toBe("application/json");
 
         expect(response.statusCode).toBe(201);
+    });
+
+    test("It should response the GET method affirmatively and return the item with admin token when episode already watched", async () => {
+        const response = await request(app)
+            .get(server+"Firefly/2")
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
+        expect(response.type).toBe("application/json");
+
+        res=response.body.selected;
+
+        res=JSON.stringify(res);
+
+        test=await serie.getEpisode("Firefly", 2);
+
+        test=JSON.stringify(test);
+
+        expect(response.statusCode).toBe(200);
+
+        expect(test).toBe(res);
     });
 
     test("It should response the POST method to store comments positively with admin token", async () => {
@@ -512,6 +575,19 @@ describe("test on content series/name/episodeNumber", () => {
         expect(response.statusCode).toBe(200);
     });
 
+    test("It should response the PATCH method positively to modify a score with admin token again", async () => {
+        const response = await request(app)
+            .patch(server+"Firefly/3")
+            .send({
+                score: 6
+            })
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST});
+        expect(response.type).toBe("application/json");
+
+        expect(response.statusCode).toBe(200);
+    });
+
     test("It should response the PATCH method positively to modify the name of an episode with admin token", async () => {
         const response = await request(app)
             .patch(server+"Firefly/3")
@@ -548,7 +624,7 @@ describe("test on content series/name/episodeNumber", () => {
                 change: "il cielo è violetto"
             })
             .set('Accept', 'application/json')
-            .set({Authorization: 'Bearer invalid'});
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST2});
         expect(response.type).toBe("application/json");
 
         expect(response.statusCode).toBe(401);

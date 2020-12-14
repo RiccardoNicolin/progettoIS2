@@ -28,7 +28,7 @@ describe("test on codes in signup/", ()=> {
             .post(server)
             .send({
                 username : "Ettore",
-                email: "ettore.carbone@studenti.unitn.it",
+                email: "ettore.pazzouomo@test.it",
                 password: "nonLaDico"
             })
             .set('Accept', 'application/json')
@@ -36,13 +36,38 @@ describe("test on codes in signup/", ()=> {
         expect(response.statusCode).toBe(201);
     });
 
-    test("It should response the POST method negatively", async() =>{
+    test("It should response the POST method negatively because duplicated user", async() =>{
         const response = await request(app)
             .post(server)
             .send({
                 username : "Ettore",
-                email: "ettore.carbone@studenti.unitn.it",
+                email: "ettore.pazzouomo@test.it",
                 password: "nonLaDico"
+            })
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer 000'});
+        expect(response.statusCode).toBe(500);
+    });
+
+    test("It should response the POST method negatively because missing parameters", async() =>{
+        const response = await request(app)
+            .post(server)
+            .send({
+                username : "Ettore",
+                email: "ettore.pazzouomo@test.it"
+            })
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer 000'});
+        expect(response.statusCode).toBe(500);
+    });
+
+    test("It should response the POST method negatively because strange password", async() =>{
+        const response = await request(app)
+            .post(server)
+            .send({
+                username : "Riccardo",
+                email: "Riccardo.pazzouomo@test.it",
+                password: +5
             })
             .set('Accept', 'application/json')
             .set({Authorization: 'Bearer 000'});

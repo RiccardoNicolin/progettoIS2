@@ -65,7 +65,7 @@ router.get('/:name', async (req, res, next) => {
             const token = req.headers.authorization.split(" ")[1];
             const check = jwt.verify(token, process.env.JWT_KEY);
             let selected = await serie.get(id);
-            if (selected) {
+            if (selected && selected!=null) {
                 let token = req.headers.authorization.split(" ")[1];
                 let verifydec = jwt.verify(token, process.env.JWT_KEY);
                 let v = await userdb.checkIfVote(id, verifydec.username);
@@ -78,6 +78,10 @@ router.get('/:name', async (req, res, next) => {
                     watched: watched,
                     numepisodes: numepisodes
                 });
+            }
+            else
+            {
+                res.status(404).json({message: "serie not found"});//ID didn't match any series
             }
         }catch (error) {//enter here if token is expired/faulty
             let selected = await serie.get(id);
@@ -105,7 +109,7 @@ router.get('/:name', async (req, res, next) => {
             res.status(404).json({message: "serie not found"});//ID didn't match any series
         }
     }
-    });
+});
 
 router.post('/:name', checkAuth, async (req, res) => {
     //either post a comment, "follow" (start watching) the series or add an episode to this serie (if you are an admin)
