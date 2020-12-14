@@ -1,0 +1,40 @@
+#locandina{
+    float: left;
+    margin-right:50px;
+}
+.aut-comm{
+    border: 1px dotted lightgray;
+}
+.next{
+    border-width: 1px;
+}
+#comments{
+    border-style: solid;
+    border-width: 2px;
+    padding-left: 5px;
+
+}
+#info{
+    float:left;
+}
+
+#tag{
+    float:left;
+    text-align:center;
+}
+
+#info_sec{
+    padding-left: 5px;
+    align-content: center;
+    overflow: auto;
+}
+
+#seen_button{
+    margin-left: 5px;
+    padding-left: 5px;
+}
+
+#poster{
+    width:200px;
+    height:200px
+}

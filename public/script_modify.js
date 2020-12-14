@@ -22,9 +22,14 @@ function SetPage(){
         document.getElementById("actual_poster").innerHTML = json.selected.poster;
         var s = json.selected.seasons;
         document.getElementById("actual_seasons").innerHTML = s.toString();
+        document.getElementById("actual_actors").innerHTML = "";
+        document.getElementById("actual_tag").innerHTML = "";
+        document.getElementById("actual_genre").innerHTML = "";
+        json.selected.actors.map(x => {document.getElementById("actual_actors").innerHTML += x + ", " });
+        json.selected.tag.map(x => {document.getElementById("actual_tag").innerHTML += x + ", " });
+        json.selected.genre.map(x => {document.getElementById("actual_genre").innerHTML += x +", " });
     });
 }
-
 function SetPageNewT(title){
     fetch('../series/'+title,{
         method:'GET',
@@ -38,6 +43,12 @@ function SetPageNewT(title){
         document.getElementById("actual_poster").innerHTML = json.selected.poster;
         var s = json.selected.seasons;
         document.getElementById("actual_seasons").innerHTML = s.toString();
+        document.getElementById("actual_actors").innerHTML = "";
+        document.getElementById("actual_tag").innerHTML = "";
+        document.getElementById("actual_genre").innerHTML = "";
+        json.selected.actors.map(x => {document.getElementById("actual_actors").innerHTML += x + ", " });
+        json.selected.tag.map(x => {document.getElementById("actual_tag").innerHTML += x + ", " });
+        json.selected.genre.map(x => {document.getElementById("actual_genre").innerHTML += x +", " });
     });
 }
 SetPage();
@@ -81,6 +92,51 @@ function Modify_Seasons(){
                         Authorization:'Bearer '+localStorage.getItem("token")
                     },
             body: JSON.stringify( {target: 'seasons', change: change} )
+        })
+        .then(res => SetPageNewT(title))
+    }
+}
+
+function Modify_Actors(){
+    const title = document.getElementById("actual_title").innerHTML;
+    let change = document.getElementById("new_actors").value;
+    if (change.length != 0){
+        fetch('../series/'+title, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json',
+                        Authorization:'Bearer '+localStorage.getItem("token")
+                    },
+            body: JSON.stringify( {target: 'actors', change: change} )
+        })
+        .then(res => SetPageNewT(title))
+    }
+}
+
+function Modify_Tag(){
+    const title = document.getElementById("actual_title").innerHTML;
+    let change = document.getElementById("new_tag").value;
+    if (change.length != 0){
+        fetch('../series/'+title, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json',
+                        Authorization:'Bearer '+localStorage.getItem("token")
+                    },
+            body: JSON.stringify( {target: 'tag', change: change} )
+        })
+        .then(res => SetPageNewT(title))
+    }
+}
+
+function Modify_Genre(){
+    const title = document.getElementById("actual_title").innerHTML;
+    let change = document.getElementById("new_genre").value;
+    if (change.length != 0){
+        fetch('../series/'+title, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json',
+                        Authorization:'Bearer '+localStorage.getItem("token")
+                    },
+            body: JSON.stringify( {target: 'genre', change: change} )
         })
         .then(res => SetPageNewT(title))
     }

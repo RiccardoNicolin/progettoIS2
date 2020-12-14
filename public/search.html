@@ -1,0 +1,42 @@
+<!DOCTYPE html> 
+<head>
+    <title>SEARCH</title>
+    <link rel="stylesheet" href="search_style.css">
+</head>
+
+<body id="wrapper">
+    <script src="./script_search.js"></script>
+    <div id=top>
+        <input type="text" id="search_bar" placeholder="Search name">
+        <button type="button" onclick="Search()">SEARCH</button>
+        <span>Attenzione: la ricerca funziona tramite barra di ricerca funziona solo per nome ed è Caps Sensitive. Per vedere tutte le serie lasciare in bianco</span> 
+        <div id="log">
+            <button id="login" onclick="Login()" >LOGIN</button>
+            <span id="user"></span>
+            <button id="logout" onclick="Logout()">LOGOUT</button>
+            <button id="register" onclick = "window.location.href='./register.html'">REGISTER</button>
+        </div>
+    </div>   
+
+    <div id="buttons">
+        <button type="button" onclick="FilterTag('new')">NEW</button>
+        <br>
+        <button type="button" onclick="FilterTag('hot')">HOT</button>
+        <br>
+        <button type="button" onclick="FilterTag('completed')">COMPLETED</button>
+        <br>
+        <button type="button" onclick="FilterTag('in production')">ONGOING</button>
+        <br>
+        <br>
+        <button type="button" onclick="Filter('Drama')">DRAMA</button>
+        <br>
+        <button type="button" onclick="Filter('Thriller')">THRILLER</button>
+        <br>
+        <button type="button" onclick="Filter('Sci-Fi')">Sci-fi</button>
+        <br>
+        <button type="button" onclick="Filter('Adventure')">Adventure</button>
+    </div>
+
+    <div id="result"></div>
+
+</body>

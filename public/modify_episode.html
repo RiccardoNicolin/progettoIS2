@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+    <title>MODIFY EPISODE</title>
+</head>
+
+<body>
+    <a href="../">HOME</a>
+    <br>
+    <br>
+    <script src="./script_modify_episode.js"></script>
+
+    <style>
+        table, td, th {
+            border: 1px solid black;
+        padding: 5px 10px 5px 10px
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+    </style>
+
+    <table>
+        <tr>
+            <th>FIELD</th>
+            <th>ACTUAL</th>
+            <th>NEW</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>Episode Name</td>
+            <td id="actual_name"></td>
+            <td>
+                <input type="text" id="new_name" />
+            </td>
+            <td>
+                <button type="button" onclick="Modify_Name()";>SUBMIT</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Number</td>
+            <td id="actual_number"></td>
+            <td>
+                <input type="text" id="new_number" />
+            </td>
+            <td>
+                <button type="button" onclick="Modify_Number()";>SUBMIT</button>
+            </td>
+        </tr>
+    </table>
+
+</body>

@@ -21,7 +21,7 @@ router.post('/', async (req, res) =>{
                 });
             }
             //if the password is correct create a jwt token and send it back
-           else  if (result){
+            else  if (result){
 
                 const token = jwt.sign({
                     email: user.email,

@@ -43,9 +43,136 @@ var Firefly = {
     numberOfvotes: 0.0,
     actors : ["Nathan Fillion"],
     seasons: 1,
-    comments: []
-}
+    comments: [],
+    episodes: []
+};
 
+var ep1= {
+    episodeName: "Serenity",
+    episodeNumber: 1,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep2= {
+    episodeName: "The Train Job",
+    episodeNumber: 2,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep3= {
+    episodeName: "Bushwhacked",
+    episodeNumber: 3,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep4= {
+    episodeName: "Shindig",
+    episodeNumber: 4,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep5= {
+    episodeName: "Safe",
+    episodeNumber: 5,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep6= {
+    episodeName: "Our Mrs. Reynolds",
+    episodeNumber: 6,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep7= {
+    episodeName: "Jaynestown",
+    episodeNumber: 7,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep8= {
+    episodeName: "Out of Gas",
+    episodeNumber: 8,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep9= {
+    episodeName: "Ariel",
+    episodeNumber: 9,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep10= {
+    episodeName: "War Stories",
+    episodeNumber: 10,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep11= {
+    episodeName: "Trash",
+    episodeNumber: 11,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep12= {
+    episodeName: "The Message",
+    episodeNumber: 12,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep13= {
+    episodeName: "Heart of Gold",
+    episodeNumber: 13,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+var ep14= {
+    episodeName: "Objects in Space",
+    episodeNumber: 14,
+    score: 0,
+    numberOfvotes: 0,
+    comments: []
+};
+
+Firefly.episodes.push(ep1);
+Firefly.episodes.push(ep2);
+Firefly.episodes.push(ep3);
+Firefly.episodes.push(ep4);
+Firefly.episodes.push(ep5);
+Firefly.episodes.push(ep6);
+Firefly.episodes.push(ep7);
+Firefly.episodes.push(ep8);
+Firefly.episodes.push(ep9);
+Firefly.episodes.push(ep10);
+Firefly.episodes.push(ep11);
+Firefly.episodes.push(ep12);
+Firefly.episodes.push(ep13);
+Firefly.episodes.push(ep14);
 
 var Brek = {
     name: "Breaking Bad",
@@ -57,7 +184,7 @@ var Brek = {
     actors : ["Bryan Cranston", "Aaron Paul"],
     seasons: 5,
     comments: []
-}
+};
 
 
 async function inizializeDB()
