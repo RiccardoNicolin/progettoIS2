@@ -30,7 +30,7 @@ async function find(propertyName, value) {//Finds specific user with property ("
 }
 
 function addUser(body, hashedpass, cb) {//Adds new user to database with data provided ("body" and "hashedpass"). Idk what cb is I am a bit scared of it
-    let newuser = { username: body.username, email: body.email, password: hashedpass, admin: 0, subbed:[] };
+    let newuser = { username: body.username, email: body.email, password: hashedpass, admin: 0, votes: [], watching: [] };
     new user(newuser).save().then(
         cb()
     );
