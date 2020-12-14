@@ -21,8 +21,8 @@ function Search(){
 
 function SetResult(res){
    
-    const query = sessionStorage.getItem("query");
-        part = res.filter(element => element.name.includes(query));
+    const query = sessionStorage.getItem("query").toLowerCase();
+     part = res.filter(element => element.name.toLowerCase().includes(query));
         if (part === undefined){
             document.getElementById("result").innerHTML="No series with this parameters"
         }else{

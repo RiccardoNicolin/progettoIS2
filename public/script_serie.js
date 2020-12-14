@@ -89,10 +89,15 @@ function setUser(user){
                 }
                 document.getElementById("track_record").innerHTML = '<a href="./episode.html?name='+title+'&num='+1+'">FIRST EPISODE</a>'
                 let user = setUser(json.verifydec.username);
+                console.log(json);
                 if (user!= undefined){
                     if (json.watched != 0 ){
                     document.getElementById("sub_button").style.display = "none";
-                    document.getElementById("track_record").innerHTML = '<a href="./episode.html?name='+title+'&num='+json.watched+'">Next episode: '+json.watched+'</a>'
+                    if (json.numepisodes >= json.watched){
+                        document.getElementById("track_record").innerHTML += '<br><a href="./episode.html?name='+title+'&num='+json.watched+'">Next episode: '+json.watched+'</a>'
+                    }else{
+                        document.getElementById("track_record").innerHTML += '<p> You have finished this serie</p>'
+                    }
                     }
                 }
             
