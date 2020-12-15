@@ -12,6 +12,27 @@ function Login(){
     window.open("./login.html","_self");
 }
 
+function setUser(user){
+    if (user === undefined){
+        localStorage.setItem("token", "000");
+        document.getElementById("login").style.display = "block";
+        document.getElementById("user").innerHTML = "";
+        document.getElementById("logout").style.display = "none";
+        document.getElementById("register").style.display = "block";
+    }
+    let token = localStorage.getItem("token");
+    if (token != "000"){
+        document.getElementById("user").innerHTML = user;
+        document.getElementById("login").style.display = "none";
+        document.getElementById("logout").style.display = "block";
+        document.getElementById("register").style.display = "none";
+    }else{
+        document.getElementById("logout").style.display = "none";
+        document.getElementById("login").style.display = "block";
+        document.getElementById("register").style.display = "block";
+    }
+}
+
 function Search(){
     const query = document.getElementById("search_bar").value;
     sessionStorage.setItem("query",query);
@@ -62,6 +83,7 @@ function SetPage(){
     })
     .then(res => res.json())
     .then(json => {
+        setUser(json.verifydec.username);
         sessionStorage.setItem("all_serie",JSON.stringify(json.allseries));
         SetResult(json.allseries);
     })
