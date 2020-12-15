@@ -6,7 +6,8 @@
   },
   "scripts": {
     "start": "node ./VisualizeAPI/server.js",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "populate": "node ./DB/MongoDB.js"
   },
   "jest": {
     "verbose": true,
