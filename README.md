@@ -6,7 +6,7 @@ How To Demo:
 > In Locale:
 > > * Clonare la repository git in locale (git clone https://github.com/RiccardoNicolin/progettoIS2.git)
 > > * Nella cartella "ProgettoIS2" eseguire il comando "npm install" per installare tutti i moduli necessari al funzionamento dell'applicazione (express, bcrypt, jest, superagent, supertest)
-> > * Eseguire il comando "node ./VisualizaAPI/server.js" per avviare l'applicazione: nella console compare il link a "hhtp://localhost:3000/" dove si può vedere l'UI dell'applicazione.
+> > * Eseguire il comando "npm start" per avviare l'applicazione: nella console compare il link a "hhtp://localhost:3000/" dove si può vedere l'UI dell'applicazione.
 > > * Per eseguire i test segnati nel documento linkato sotto Testing eseguire il comando "npm run test".
 
 > In Heroku
