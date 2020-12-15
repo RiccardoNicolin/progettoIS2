@@ -8,6 +8,7 @@ How To Demo:
 > > * Nella cartella "ProgettoIS2" eseguire il comando "npm install" per installare tutti i moduli necessari al funzionamento dell'applicazione (express, bcrypt, jest, superagent, supertest)
 > > * Eseguire il comando "npm start" per avviare l'applicazione: nella console compare il link a "hhtp://localhost:3000/" dove si può vedere l'UI dell'applicazione.
 > > * Per eseguire i test segnati nel documento linkato sotto Testing eseguire il comando "npm run test".
+> > * Per popolare il database delle serie e utenti standard usare il comando "npm run populate"
 > > > Enviroment:
 > > > * Se si vuole eseguire il codice in locale è necessario aggiungere un file .env con i dati delle seguenti variabili:
 > > > > * DB_URL: url del database
