@@ -113,16 +113,35 @@ describe("Test on codes on home/", () =>{
         expect(requested).toBe( expectiong );
     });
 
+    test("It should response the GET method affirmatively and return the item with user token", async () => {
+        const response = await request(app)
+            .get(server)
+            .set('Accept', 'application/json' )
+            .set({Authorization: 'Bearer '+process.env.TOKEN_TEST2});
+        expect(response.type).toBe("application/json");
+
+        let res=response.body;
+        
+        let requested = {
+            serieshot: res.serieshot,
+            seriesnew: res.seriesnew,
+        };
+        
+        requested=JSON.stringify(requested);
+
+        let expectiong = {
+            serieshot: await serie.findMore('tag', "hot"),
+            seriesnew: await serie.findMore('tag', 'new'),
+        };
+
+        expectiong=JSON.stringify(expectiong);
+        //assolutamente da cambiare, qui il check è fatto manualmente, se aggiungiamo serie in hot o new crea errore in test
+        expect(requested).toBe( expectiong );
+    });
+
     test("It should response the GET method positively", async() =>{
         const response = await request(app)
             .get(server)
-            .set('Authorization', 'Bearer 000');
-        expect(response.statusCode).toBe(200);
-    });
-
-    test("It should response the GET method positively on /userlist", async() =>{
-        const response = await request(app)
-            .get(server+"/userlist")
             .set('Authorization', 'Bearer 000');
         expect(response.statusCode).toBe(200);
     });

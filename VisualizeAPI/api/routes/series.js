@@ -39,7 +39,6 @@ router.get('/', async (req, res, next) => {
 
 router.post('/', checkAuth, async (req, res) => {
     //Add new series
-    console.log(req.body.verifydec.admin);
     if (req.body.verifydec.admin) {//check if user has admin priviledges
         if (!req.body.name || !req.body.genre || !req.body.actors || !req.body.seasons || !req.body.poster || !req.body.tag) {//checks if basic series data is present
             res.status(500).json({ error: "Not all fields present" });
@@ -66,21 +65,23 @@ router.get('/:name', async (req, res, next) => {
             const token = req.headers.authorization.split(" ")[1];
             const check = jwt.verify(token, process.env.JWT_KEY);
             let selected = await serie.get(id);
-            if (selected) {
+            if (selected && selected!=null) {
                 let token = req.headers.authorization.split(" ")[1];
                 let verifydec = jwt.verify(token, process.env.JWT_KEY);
-                console.log(verifydec);
                 let v = await userdb.checkIfVote(id, verifydec.username);
                 verifydec.voted = v;
                 let watched = await userdb.findIfWatched(id, verifydec.username);
                 let numepisodes = await serie.countEpisodes(id);
-                console.log(verifydec);
                 res.status(200).json({
                     selected: selected,
                     verifydec: verifydec,
                     watched: watched,
                     numepisodes: numepisodes
                 });
+            }
+            else
+            {
+                res.status(404).json({message: "serie not found"});//ID didn't match any series
             }
         }catch (error) {//enter here if token is expired/faulty
             let selected = await serie.get(id);
@@ -108,7 +109,7 @@ router.get('/:name', async (req, res, next) => {
             res.status(404).json({message: "serie not found"});//ID didn't match any series
         }
     }
-    });
+});
 
 router.post('/:name', checkAuth, async (req, res) => {
     //either post a comment, "follow" (start watching) the series or add an episode to this serie (if you are an admin)
@@ -324,8 +325,6 @@ router.patch('/:name/:episodenum', checkAuth, async (req, res, next) => {
                 else{
                     res.status(422).json({ message: 'The category provided cannot be processed' });//tried to access to an invalid parameter
                 }
-                
-
             }
         }
         else {

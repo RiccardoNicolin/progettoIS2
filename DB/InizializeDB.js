@@ -28,10 +28,20 @@ var testuser = {
     watching: 
         { seriename: "Breaking Bad", nextToWatch: 7 } //oggetto che viene inserito
 }
+
+var testuserscarso = {
+    username: "testuserscarso",
+    email : "testuserscarso@mail.com",
+    password: "testuserscarso",
+    admin: 0,
+    subbed: []
+}
+
 //hashing password
 bcrypt.hash(utente2.password,10, (err, pass) => utente2.password = pass);
 bcrypt.hash(utente1.password,10, (err, pass) => utente1.password = pass);
 bcrypt.hash(testuser.password,10, (err, pass) => testuser.password = pass);
+bcrypt.hash(testuserscarso.password,10, (err, pass) => testuserscarso.password = pass);
 
 //inizializza serie
 var Firefly = {
@@ -193,6 +203,7 @@ async function inizializeDB()
         await new user.user(utente1).save();
         await new user.user(utente2).save();
         await new user.user(testuser).save();
+        await new user.user(testuserscarso).save();
     });
 
     await serie.serie.deleteMany().then(async () => {

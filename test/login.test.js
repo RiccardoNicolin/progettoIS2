@@ -48,6 +48,17 @@ describe("Test on codes in login/ ", () => {
         expect(response.statusCode).toBe(401);
     });
 
+    test("It should response the POST method negatively because empty password", async() =>{
+        const response = await request(app)
+            .post(server)
+            .send({
+                username : "testuser",
+            })
+            .set('Accept', 'application/json')
+            .set({Authorization: 'Bearer 000'});
+        expect(response.statusCode).toBe(401);
+    });
+
     test("It should response the POST method negatively because user not found", async() =>{
         const response = await request(app)
             .post(server)
@@ -58,5 +69,7 @@ describe("Test on codes in login/ ", () => {
             .set({Authorization: 'Bearer 000'});
         expect(response.statusCode).toBe(401);
     });
+
+
 
 });
