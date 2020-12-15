@@ -25,6 +25,11 @@
     grid-template-rows: 100px 20px auto;
 }
 
+#query{
+    grid-column-start: 3;
+    grid-row-start:2;
+}
+
 
 #result{
     grid-column-start: 3;

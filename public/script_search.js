@@ -22,6 +22,7 @@ function Search(){
 function SetResult(res){
    
     const query = sessionStorage.getItem("query").toLowerCase();
+    document.getElementById("query").innerHTML="<span>Query: "+query+"</span>"
      part = res.filter(element => element.name.toLowerCase().includes(query));
         if (part === undefined){
             document.getElementById("result").innerHTML="No series with this parameters"
@@ -35,19 +36,19 @@ function SetResult(res){
     }
 
 function FilterTag(tag){
-    const query = sessionStorage.getItem("query");
+    const query = sessionStorage.getItem("query").toLowerCase();;
     let series = sessionStorage.getItem('all_serie');
     let res = JSON.parse(series);
-    let part = res.filter(element => element.name.includes(query));
+    let part = res.filter(element => element.name.toLowerCase().includes(query));
     let filtered = part.filter(element => element.tag.includes(tag));
     SetResult(filtered); 
 }
 
 function Filter(genre){
-    const query = sessionStorage.getItem("query");
+    const query = sessionStorage.getItem("query").toLowerCase();
     let series = sessionStorage.getItem('all_serie');
     let res = JSON.parse(series);
-    let part = res.filter(element => element.name.includes(query));
+    let part = res.filter(element => element.name.toLowerCase().includes(query));
     let filtered = part.filter(element => element.genre.includes(genre));
     SetResult(filtered); 
 }
